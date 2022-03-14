@@ -9,8 +9,8 @@ type ArticleProps = {
 
 const Article = ({ article }: ArticleProps) => {
   return (
-    <div>
-      <h1 className="font-bold text-center text-4xl mb-8">{article.title}</h1>
+    <div className="space-y-8">
+      <h1 className="font-bold text-center text-4xl">{article.title}</h1>
       <p
         className="mb-6 first-line:uppercase first-line:tracking-widest
   first-letter:text-7xl first-letter:font-bold first-letter:text-slate-900
