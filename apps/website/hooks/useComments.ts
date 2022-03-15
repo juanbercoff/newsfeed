@@ -1,7 +1,10 @@
 import { useFetch } from './useFetch';
-import { CommentWithClosureDto } from '@newsfeed/data';
+import { CommentWithAuthorDto, GetCommentsListPayload } from '@newsfeed/data';
 import { getCommentsList } from '../services/comments-api';
 
-export function useGetComments() {
-  return useFetch<CommentWithClosureDto[]>(getCommentsList, {});
+export function useGetComments(articleId: GetCommentsListPayload) {
+  return useFetch<CommentWithAuthorDto[], GetCommentsListPayload>(
+    getCommentsList,
+    articleId
+  );
 }

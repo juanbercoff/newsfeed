@@ -19,7 +19,7 @@ const Article = ({ article }: ArticleProps) => {
         {article.content}
       </p>
       <CommentForm />
-      <CommentsList />
+      <CommentsList articleId={article.id} />
     </div>
   );
 };

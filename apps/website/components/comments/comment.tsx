@@ -1,10 +1,9 @@
 import Actions from '../common/actions';
-import CommentsList from './comments-list';
-import { CommentWithClosureDto } from '@newsfeed/data';
+import { CommentWithAuthorDto } from '@newsfeed/data';
 
 interface CommentProps {
-  comment: CommentWithClosureDto;
-  commentChildren?: CommentWithClosureDto[];
+  comment: CommentWithAuthorDto;
+  commentChildren?: CommentWithAuthorDto[];
 }
 
 const Comment = ({ comment, commentChildren }: CommentProps) => {
@@ -13,7 +12,7 @@ const Comment = ({ comment, commentChildren }: CommentProps) => {
       <div className="flex flex-col space-y-2">
         <div className="flex flex-row justify-start space-x-2 items-end">
           <div className="rounded-full border-2 p-3"></div>
-          <p className="font-medium text-sm">{comment.authorId}</p>
+          <p className="font-medium text-sm">{comment.author.username}</p>
           <p className="text-gray-400 text-sm">{comment.createdAt}</p>
         </div>
         <div className="space-y-2">

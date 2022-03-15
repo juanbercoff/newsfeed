@@ -7,7 +7,6 @@ type FeedProps = {
 };
 
 const Feed = ({ articles }: FeedProps) => {
-  console.log(articles);
   return (
     <div className="flex flex-col space-y-4">
       {articles?.map((item) => (
