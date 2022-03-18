@@ -1,15 +1,10 @@
 import { callApiService, getEndpoint } from './api-service-utilities';
 
-import {
-  GetOneArticlePayload,
-  ArticleWithAuthorResponseDto,
-} from '@newsfeed/data';
+import { GetOneArticlePayload, ArticleResponseDto } from '@newsfeed/data';
 
-export async function getArticlesList(): Promise<
-  ArticleWithAuthorResponseDto[]
-> {
+export async function getArticlesList(): Promise<ArticleResponseDto[]> {
   // TODO: Apply payload once it has pagination, order by, etc.
-  return callApiService<ArticleWithAuthorResponseDto[]>({
+  return callApiService<ArticleResponseDto[]>({
     url: getEndpoint('articles'),
     method: 'GET',
   });
@@ -17,8 +12,8 @@ export async function getArticlesList(): Promise<
 
 export async function getOneArticle(
   payload: GetOneArticlePayload
-): Promise<ArticleWithAuthorResponseDto> {
-  return callApiService<ArticleWithAuthorResponseDto>({
+): Promise<ArticleResponseDto> {
+  return callApiService<ArticleResponseDto>({
     url: getEndpoint(`articles/${payload.id}`),
     method: 'GET',
   });

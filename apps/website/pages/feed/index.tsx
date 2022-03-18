@@ -1,12 +1,15 @@
 import Card from '../../components/feed/card';
 import { getArticlesList } from '../../services/articles-api';
-import { ArticleWithAuthorResponseDto } from '@newsfeed/data';
+import { ArticleResponseDto } from '@newsfeed/data';
+import { useUserProfileContext } from '../../contexts/user-context';
 
-type FeedProps = {
-  articles: ArticleWithAuthorResponseDto[];
-};
+interface FeedProps {
+  articles: ArticleResponseDto[];
+}
 
 const Feed = ({ articles }: FeedProps) => {
+  const { userProfile } = useUserProfileContext();
+  console.log(userProfile);
   return (
     <div className="flex flex-col space-y-4">
       {articles?.map((item) => (

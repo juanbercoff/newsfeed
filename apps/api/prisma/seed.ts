@@ -5,6 +5,39 @@ const prisma = new PrismaClient({
 });
 
 const seed = async () => {
+  const userProfile = await prisma.userProfile.create({
+    data: {
+      firstName: 'Juan',
+      lastName: 'B',
+      userName: 'juanb',
+    },
+  });
+
+  const userProfile2 = await prisma.userProfile.create({
+    data: {
+      firstName: 'Cristian',
+      lastName: 'G',
+      userName: 'cristiang',
+    },
+  });
+
+  await prisma.user.createMany({
+    data: [
+      {
+        id: 'e332f468-1bd1-4ea4-84f0-11865080d6c6',
+        email: 'test@test.com',
+        auth0Id: 'google-oauth2|116916332888683556306',
+        profileId: userProfile.id,
+      },
+      {
+        id: 'e332f468-1bd1-4ea4-84f0-11865080d7c6',
+        email: 'test2@test.com',
+        auth0Id: 'auth0|5e9f8f8f9c9d450b1c0c8f0c',
+        profileId: userProfile2.id,
+      },
+    ],
+  });
+
   const articles = [
     {
       id: 'e432f468-1bd1-4ea4-84f0-11865080d6c6',
@@ -132,34 +165,6 @@ const seed = async () => {
       authorId: 'e332f468-1bd1-4ea4-84f0-11865080d6c6',
     },
   ];
-  await prisma.user.createMany({
-    data: [
-      {
-        id: 'e332f468-1bd1-4ea4-84f0-11865080d6c6',
-        username: 'eterguy',
-        email: 'test@test.com',
-        password: 'passowrd',
-      },
-      {
-        id: 'e332f468-1bd1-4ea4-84f0-11865080d7c6',
-        username: 'test123',
-        email: 'test@test.com',
-        password: 'passowrd',
-      },
-      {
-        id: 'e332f468-1bd1-4ea4-84f0-11865080d8c6',
-        username: 'carlosG',
-        email: 'test@test.com',
-        password: 'passowrd',
-      },
-      {
-        id: 'e332f468-1bd1-4ea4-84f0-11865080d9c6',
-        username: 'tito555',
-        email: 'test@test.com',
-        password: 'passowrd',
-      },
-    ],
-  });
 
   await prisma.article.createMany({ data: articles });
 
@@ -188,14 +193,14 @@ const seed = async () => {
       },
       {
         id: 'e332f468-1bd1-4ea4-84f0-11865080d6c8',
-        authorId: 'e332f468-1bd1-4ea4-84f0-11865080d8c6',
+        authorId: 'e332f468-1bd1-4ea4-84f0-11865080d7c6',
         articleId: 'e432f468-1bd1-4ea4-84f0-11865080d6c6',
         content: `Alto perfil gatológico te mandaste, ja.`,
         parentCommentId: 'e332f461-1bd1-4ea4-84f0-11865080d6c6',
       },
       {
         id: 'e332f468-1bd1-4ea4-84f0-11865080d6c9',
-        authorId: 'e332f468-1bd1-4ea4-84f0-11865080d9c6',
+        authorId: 'e332f468-1bd1-4ea4-84f0-11865080d7c6',
         articleId: 'e432f468-1bd1-4ea4-84f0-11865080d6c6',
         content: `Tengo tres michis y los tres se comportan diferente, pero confirmo por uno de ellos`,
         parentCommentId: null,

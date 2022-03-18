@@ -18,7 +18,7 @@ const Comment = ({ comment, commentChildren }: CommentProps) => {
         <div className="space-y-2">
           <div className="ml-3">{comment.content}</div>
           <div className="ml-2">
-            <Actions />
+            <Actions isArticle={false} />
           </div>
         </div>
       </div>

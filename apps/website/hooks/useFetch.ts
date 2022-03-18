@@ -1,8 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 
 export function useFetch<ReturnData, RequestPayload = Record<string, never>>(
-  fetchFunction: (payload: RequestPayload) => Promise<ReturnData>,
-  payload: RequestPayload
+  fetchFunction: (
+    payload?: RequestPayload,
+    token?: string | null
+  ) => Promise<ReturnData>,
+  payload: RequestPayload,
+  token?: string | null
 ) {
   const [data, setData] = useState<ReturnData | null>(null);
   const [error, setError] = useState(false);
@@ -11,7 +15,7 @@ export function useFetch<ReturnData, RequestPayload = Record<string, never>>(
   const fetch = useCallback(
     async (payload: RequestPayload) => {
       try {
-        const data = await fetchFunction(payload);
+        const data = await fetchFunction(payload, token);
         setData(data);
       } catch (e) {
         setError(true);
@@ -20,7 +24,7 @@ export function useFetch<ReturnData, RequestPayload = Record<string, never>>(
         setIsLoading(false);
       }
     },
-    [fetchFunction]
+    [fetchFunction, token]
   );
 
   useEffect(() => {

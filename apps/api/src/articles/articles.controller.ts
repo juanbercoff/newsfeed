@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from '@newsfeed/data';
+import { AuthorizationGuard } from '../authorization/authorization.guard';
 
 @Controller('articles')
 export class ArticlesController {

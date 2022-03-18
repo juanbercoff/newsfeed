@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArticleWithAuthorResponseDto } from '@newsfeed/data';
+import { ArticleResponseDto } from '@newsfeed/data';
 import Actions from '../common/actions';
 
-const Card = ({ id, title, author }: ArticleWithAuthorResponseDto) => {
+const Card = ({ id, title, author, _count: count }: ArticleResponseDto) => {
   return (
     <Link href={`/feed/${id}`} passHref={true}>
       <div className="border flex justify-center flex-col items-start max-h-lg bg-white hover:bg-teal-100 hover:cursor-pointer">
@@ -11,7 +11,7 @@ const Card = ({ id, title, author }: ArticleWithAuthorResponseDto) => {
           <Image
             src="/image.webp"
             layout="fill"
-            objectFit="contain"
+            objectFit="cover"
             alt="news picture"
           />
         </div>
@@ -20,7 +20,7 @@ const Card = ({ id, title, author }: ArticleWithAuthorResponseDto) => {
           <p className="text-sm text-gray-500 mt-2">15/04/2022</p>
 
           <p className="text-lg">{author.username}</p>
-          <Actions />
+          <Actions countOfComments={count.comments} isArticle={true} />
         </div>
       </div>
     </Link>

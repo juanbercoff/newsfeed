@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
-import { CreateArticleDto, ArticleWithAuthorResponseDto } from '@newsfeed/data';
+import { CreateArticleDto, ArticleResponseDto } from '@newsfeed/data';
 import { UsersService } from '../users/users.service';
 import { Article } from '@prisma/client';
 
@@ -33,21 +33,31 @@ export class ArticlesService {
     });
   }
 
-  findOne(id: string): Promise<ArticleWithAuthorResponseDto> {
+  findOne(id: string): Promise<ArticleResponseDto> {
     return this.prisma.article.findFirst({
       where: {
         id,
       },
       include: {
         author: true,
+        _count: {
+          select: {
+            comments: true,
+          },
+        },
       },
     });
   }
 
-  findAll(): Promise<ArticleWithAuthorResponseDto[]> {
+  findAll(): Promise<ArticleResponseDto[]> {
     return this.prisma.article.findMany({
       include: {
         author: true,
+        _count: {
+          select: {
+            comments: true,
+          },
+        },
       },
     });
   }

@@ -1,37 +1,29 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from '@prisma/client';
+import { User, UserProfile } from '@prisma/client';
+import {
+  AuthenticatedRequest,
+  AuthenticatedUser,
+  UserWithUserProfileResponseDto,
+} from '@newsfeed/data';
+import { AuthorizationGuard } from '../authorization/authorization.guard';
 
+@UseGuards(AuthorizationGuard)
 @Controller('users')
 export class UsersController {
-  constructor(private readonly userService: UsersService) {}
+  constructor(private readonly usersService: UsersService) {}
 
-  @Get(':userId')
-  async getUser(@Param('userdId') userId: string): Promise<User> {
-    return this.userService.getUserById(userId);
+  @Post()
+  async createUser(
+    @Req() req: AuthenticatedRequest
+  ): Promise<UserWithUserProfileResponseDto> {
+    const user = req.user as AuthenticatedUser;
+    return this.usersService.create(user);
   }
 
   @Get()
-  async getUsers(): Promise<User[]> {
-    return this.userService.getUsers();
-  }
-
-  @Post()
-  async createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.userService.create(
-      createUserDto.username,
-      createUserDto.email,
-      createUserDto.password,
-    );
-  }
-
-  @Patch(':userId')
-  async updateUser(
-    @Param('userId') userId: string,
-    @Body() updateUserDto: UpdateUserDto,
-  ): Promise<User> {
-    return this.userService.updateUser(userId, updateUserDto);
+  async getUser(@Req() req: AuthenticatedRequest): Promise<User> {
+    const user = req.user as AuthenticatedUser;
+    return this.usersService.getUserAccount(user);
   }
 }

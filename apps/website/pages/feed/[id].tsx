@@ -1,11 +1,11 @@
 import CommentsList from '../../components/comments/comments-list';
 import CommentForm from '../..//components/comments/comment-form';
 import { getArticlesList, getOneArticle } from '../../services/articles-api';
-import { ArticleWithAuthorResponseDto } from '@newsfeed/data';
+import { ArticleResponseDto } from '@newsfeed/data';
 
-type ArticleProps = {
-  article: ArticleWithAuthorResponseDto;
-};
+interface ArticleProps {
+  article: ArticleResponseDto;
+}
 
 const Article = ({ article }: ArticleProps) => {
   return (
