@@ -16,10 +16,10 @@ export class UserProfilesController {
     return await this.userProfilesService.getUserProfile(user);
   }
 
-  @Get(':userId')
+  @Get(':userProfileId')
   async getUserProfileById(
-    @Param('userId') userId: string
+    @Param('userProfileId') userProfileId: string
   ): Promise<UserProfile> {
-    return await this.userProfilesService.getUserProfileById(userId);
+    return await this.userProfilesService.getUserProfileById(userProfileId);
   }
 }

@@ -1,5 +1,6 @@
 import { createUserWithUserProfile } from '../services/users/users-api';
 import { getUserProfile } from '../services/users/users-profiles-api';
+import { getUser } from '../services/users/users-api';
 import { UserProfile } from '@prisma/client';
 import { useFetch } from './useFetch';
 
@@ -8,13 +9,12 @@ export function useGetUserProfile(authToken: string) {
 }
 
 export async function getOrCreateUserWithUserProfile(authToken: string | null) {
-  let userProfile: UserProfile | null = null;
-  userProfile = await getUserProfile(authToken);
+  const user = await getUser(authToken);
 
-  if (!userProfile) {
+  if (!user) {
     const userWithUserProfile = await createUserWithUserProfile(authToken);
-    userProfile = userWithUserProfile.profile;
+    return userWithUserProfile.profile;
+  } else {
+    return await getUserProfile(authToken);
   }
-
-  return userProfile;
 }

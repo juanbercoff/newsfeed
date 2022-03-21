@@ -46,7 +46,6 @@ export class Auth0ManagementApiService {
         headers: { Authorization: `Bearer ${accessToken.access_token}` },
       }
     );
-
     return data;
   }
 }

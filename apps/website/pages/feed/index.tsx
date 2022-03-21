@@ -8,8 +8,6 @@ interface FeedProps {
 }
 
 const Feed = ({ articles }: FeedProps) => {
-  const { userProfile } = useUserProfileContext();
-  console.log(userProfile);
   return (
     <div className="flex flex-col space-y-4">
       {articles?.map((item) => (

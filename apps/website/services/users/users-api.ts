@@ -12,3 +12,15 @@ export async function createUserWithUserProfile(
     authToken
   );
 }
+
+export async function getUser(
+  authToken: string
+): Promise<UserWithUserProfileResponseDto> {
+  return callApiService<UserWithUserProfileResponseDto>(
+    {
+      url: getEndpoint('users'),
+      method: 'GET',
+    },
+    authToken
+  );
+}

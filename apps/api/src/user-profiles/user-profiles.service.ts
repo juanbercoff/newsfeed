@@ -12,7 +12,6 @@ export class UserProfilesService {
 
   async getUserProfile(authenticatedUser: AuthenticatedUser) {
     const user = await this.usersService.getUserAccount(authenticatedUser);
-
     return await this.prisma.userProfile.findUnique({
       where: {
         id: user.profileId,
@@ -20,10 +19,10 @@ export class UserProfilesService {
     });
   }
 
-  async getUserProfileById(userId: string) {
+  async getUserProfileById(userProfileId: string) {
     return await this.prisma.userProfile.findUnique({
       where: {
-        id: userId,
+        id: userProfileId,
       },
     });
   }
