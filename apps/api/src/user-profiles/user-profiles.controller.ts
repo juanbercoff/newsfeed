@@ -1,8 +1,7 @@
 import { Controller, Get, UseGuards, Req, Param } from '@nestjs/common';
-import { Prisma, UserProfile } from '@prisma/client';
+import { UserProfile } from '@prisma/client';
 import { UserProfilesService } from './user-profiles.service';
 import { AuthenticatedRequest, AuthenticatedUser } from '@newsfeed/data';
-import { FullyRegisteredUserGuard } from '../authorization/fully-registered-user.guard';
 import { AuthorizationGuard } from '../authorization/authorization.guard';
 
 @UseGuards(AuthorizationGuard)

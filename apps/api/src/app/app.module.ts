@@ -9,8 +9,7 @@ import { CommentsModule } from '../comments/comments.module';
 import { AuthorizationModule } from '../authorization/authorization.module';
 import { Auth0ManagementApiService } from '../auth0-management-api/auth0-management-api.service';
 import { UserProfilesModule } from '../user-profiles/user-profiles.module';
-import { UsersService } from '../users/users.service';
-import { UserProfilesService } from '../user-profiles/user-profiles.service';
+import { ArticleLikesModule } from '../article-likes/article-likes.module';
 
 @Module({
   imports: [
@@ -20,6 +19,7 @@ import { UserProfilesService } from '../user-profiles/user-profiles.service';
     CommentsModule,
     AuthorizationModule,
     UserProfilesModule,
+    ArticleLikesModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService, Auth0ManagementApiService],

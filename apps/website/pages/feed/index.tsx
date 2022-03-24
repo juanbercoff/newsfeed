@@ -8,6 +8,8 @@ interface FeedProps {
 }
 
 const Feed = ({ articles }: FeedProps) => {
+  const { authToken } = useUserProfileContext();
+  console.log(authToken);
   return (
     <div className="flex flex-col space-y-4">
       {articles?.map((item) => (

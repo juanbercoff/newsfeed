@@ -8,15 +8,16 @@ datasource db {
 }
 
 model User {
-  id        String       @id @default(uuid()) @db.Uuid
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
-  auth0Id   String       @unique
-  email     String       @unique
-  profile   UserProfile? @relation(fields: [profileId], references: [id])
-  profileId String       @unique @db.Uuid
-  articles  Article[]
-  comments  Comment[]
+  id           String        @id @default(uuid()) @db.Uuid
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  auth0Id      String        @unique
+  email        String        @unique
+  profile      UserProfile?  @relation(fields: [profileId], references: [id])
+  profileId    String        @unique @db.Uuid
+  articles     Article[]
+  comments     Comment[]
+  articleLikes ArticleLike[]
 }
 
 model UserProfile {
@@ -30,14 +31,15 @@ model UserProfile {
 }
 
 model Article {
-  id        String    @id @default(uuid()) @db.Uuid
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id        String        @id @default(uuid()) @db.Uuid
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
   title     String
   content   String
-  authorId  String    @db.Uuid
-  author    User      @relation(fields: [authorId], references: [id])
+  authorId  String        @db.Uuid
+  author    User          @relation(fields: [authorId], references: [id])
   comments  Comment[]
+  likes     ArticleLike[]
 }
 
 model Comment {
@@ -52,4 +54,15 @@ model Comment {
   parentComment   Comment?  @relation("commentToComment", fields: [parentCommentId], references: [id])
   parentCommentId String?   @db.Uuid
   comments        Comment[] @relation("commentToComment")
+}
+
+model ArticleLike {
+  id        String   @id @default(uuid()) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id])
+  articleId String   @db.Uuid
+  article   Article  @relation(fields: [articleId], references: [id])
+  like      Int
 }
