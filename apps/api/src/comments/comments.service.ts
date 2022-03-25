@@ -9,7 +9,11 @@ export class CommentsService {
   findAll(articleId: string): Promise<CommentWithAuthorDto[]> {
     return this.prisma.comment.findMany({
       include: {
-        author: true,
+        author: {
+          include: {
+            profile: true,
+          },
+        },
       },
       where: {
         articleId,

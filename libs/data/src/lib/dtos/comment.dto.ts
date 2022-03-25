@@ -3,7 +3,7 @@ import { PartialType } from '@nestjs/mapped-types';
 import { Prisma } from '@prisma/client';
 
 const commentsWithAuthor = Prisma.validator<Prisma.CommentArgs>()({
-  include: { author: true },
+  include: { author: { include: { profile: true } } },
 });
 
 export type CommentWithAuthorDto = Prisma.CommentGetPayload<

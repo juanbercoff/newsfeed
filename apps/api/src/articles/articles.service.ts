@@ -39,7 +39,11 @@ export class ArticlesService {
         id,
       },
       include: {
-        author: true,
+        author: {
+          include: {
+            profile: true,
+          },
+        },
         _count: {
           select: {
             comments: true,
@@ -52,7 +56,11 @@ export class ArticlesService {
   findAll(): Promise<ArticleResponseDto[]> {
     return this.prisma.article.findMany({
       include: {
-        author: true,
+        author: {
+          include: {
+            profile: true,
+          },
+        },
         _count: {
           select: {
             comments: true,
