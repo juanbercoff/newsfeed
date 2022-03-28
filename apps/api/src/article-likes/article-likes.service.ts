@@ -5,6 +5,7 @@ import {
   UpdateArticleLikeDto,
   AuthenticatedUser,
   CreateOrUpdateArticleLikeDto,
+  GetUserArticleLikeDto,
 } from '@newsfeed/data';
 import { UsersService } from '../users/users.service';
 
@@ -84,6 +85,28 @@ export class ArticleLikesService {
       by: ['articleId'],
       _sum: {
         like: true,
+      },
+    });
+  }
+
+  async delete(id: string) {
+    return await this.prisma.articleLike.delete({
+      where: {
+        id,
+      },
+    });
+  }
+
+  async getUserArticleLike(
+    { articleId }: GetUserArticleLikeDto,
+    authenticatedUser: AuthenticatedUser
+  ) {
+    const user = await this.usersService.getUserAccount(authenticatedUser);
+
+    return await this.prisma.articleLike.findFirst({
+      where: {
+        articleId,
+        userId: user.id,
       },
     });
   }

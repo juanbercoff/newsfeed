@@ -27,6 +27,8 @@ export class UpdateArticleLikeDto extends PartialType(CreateArticleLikeDto) {
   id: string;
 }
 
+export class GetUserArticleLikeDto extends PartialType(CreateArticleLikeDto) {}
+
 export type AllArticlesLikesDto = {
   articleId: string;
   _sum: {

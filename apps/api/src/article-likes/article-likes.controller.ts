@@ -6,6 +6,7 @@ import {
   Param,
   UseGuards,
   Req,
+  Delete,
 } from '@nestjs/common';
 import { ArticleLikesService } from './article-likes.service';
 import {
@@ -32,7 +33,7 @@ export class ArticleLikesController {
     );
   }
 
-  @Get(':articleId')
+  @Get('/all/:articleId')
   getAllLikesByArticle(@Param('articleId') articleId: string) {
     return this.articleLikesService.getAllLikesByArticle(articleId);
   }
@@ -45,5 +46,19 @@ export class ArticleLikesController {
   @Get('/likes-count/:articleId')
   getArticleLikesCount(@Param('articleId') articleId: string) {
     return this.articleLikesService.getArticleLikesCount(articleId);
+  }
+
+  @UseGuards(AuthorizationGuard)
+  @Delete(':articleLikeId')
+  delete(@Param('articleLikeId') articleLikeId: string) {
+    return this.articleLikesService.delete(articleLikeId);
+  }
+
+  @UseGuards(AuthorizationGuard)
+  @Get(':articleId')
+  get(@Param('articleId') articleId: string, @Req() req: AuthenticatedRequest) {
+    const user = req.user as AuthenticatedUser;
+
+    return this.articleLikesService.getUserArticleLike({ articleId }, user);
   }
 }
