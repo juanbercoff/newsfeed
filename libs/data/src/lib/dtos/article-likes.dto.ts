@@ -1,7 +1,5 @@
 import { IsUUID, IsNotEmpty, IsBoolean } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
-import { Prisma } from '@prisma/client';
-import { plainToClass } from 'class-transformer';
 
 export class CreateArticleLikeDto {
   @IsNotEmpty()
