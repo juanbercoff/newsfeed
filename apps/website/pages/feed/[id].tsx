@@ -2,22 +2,31 @@ import CommentsList from '../../components/comments/comments-list';
 import CommentForm from '../..//components/comments/comment-form';
 import { getArticlesList, getOneArticle } from '../../services/articles-api';
 import { ArticleResponseDto } from '@newsfeed/data';
+import ArticleContent from '../../components/feed/article-content';
+import { useState } from 'react';
 
 interface ArticleProps {
   article: ArticleResponseDto;
 }
 
 const Article = ({ article }: ArticleProps) => {
+  const [showFirstLevel, setShowFirstLevel] = useState<boolean>(false);
+  const [showSecondLevel, setShowSecondLevel] = useState(false);
   return (
-    <div className="space-y-8">
+    <div className="space-y-3">
       <h1 className="font-bold text-center text-4xl">{article.title}</h1>
-      <p
-        className="mb-6 first-line:uppercase first-line:tracking-widest
-  first-letter:text-7xl first-letter:font-bold first-letter:text-slate-900
-  first-letter:mr-3 first-letter:float-left"
-      >
-        {article.content}
-      </p>
+      <ArticleContent
+        showFirstLevel={showFirstLevel}
+        setShowFirstLevel={setShowFirstLevel}
+        showSecondLevel={showSecondLevel}
+        setShowSecondLevel={setShowSecondLevel}
+      />
+      <ArticleContent
+        showFirstLevel={showFirstLevel}
+        setShowFirstLevel={setShowFirstLevel}
+        showSecondLevel={showSecondLevel}
+        setShowSecondLevel={setShowSecondLevel}
+      />
       <CommentForm />
       <CommentsList articleId={article.id} />
     </div>
