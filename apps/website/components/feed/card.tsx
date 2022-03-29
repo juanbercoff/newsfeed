@@ -24,8 +24,8 @@ const Card = ({ article }: CardProps) => {
   );
   return (
     <Link href={`/feed/${article.id}`} passHref={true}>
-      <div className="border flex justify-center flex-col items-start max-h-lg bg-white ">
-        <div className="relative w-full h-[350px] hover:cursor-pointer">
+      <div className="border flex justify-center flex-col items-start max-h-lg bg-white hover:cursor-pointer">
+        <div className="relative w-full h-[350px]">
           <Image
             src="/image.webp"
             layout="fill"

@@ -18,6 +18,7 @@ model User {
   articles     Article[]
   comments     Comment[]
   articleLikes ArticleLike[]
+  commentLikes CommentLike[]
 }
 
 model UserProfile {
@@ -43,17 +44,18 @@ model Article {
 }
 
 model Comment {
-  id              String    @id @default(uuid()) @db.Uuid
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  id              String        @id @default(uuid()) @db.Uuid
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
   content         String
-  authorId        String    @db.Uuid
-  author          User      @relation(fields: [authorId], references: [id])
-  articleId       String    @db.Uuid
-  article         Article   @relation(fields: [articleId], references: [id])
-  parentComment   Comment?  @relation("commentToComment", fields: [parentCommentId], references: [id])
-  parentCommentId String?   @db.Uuid
-  comments        Comment[] @relation("commentToComment")
+  authorId        String        @db.Uuid
+  author          User          @relation(fields: [authorId], references: [id])
+  articleId       String        @db.Uuid
+  article         Article       @relation(fields: [articleId], references: [id])
+  parentComment   Comment?      @relation("commentToComment", fields: [parentCommentId], references: [id])
+  parentCommentId String?       @db.Uuid
+  comments        Comment[]     @relation("commentToComment")
+  likes           CommentLike[]
 }
 
 model ArticleLike {
@@ -64,5 +66,16 @@ model ArticleLike {
   user      User     @relation(fields: [userId], references: [id])
   articleId String   @db.Uuid
   article   Article  @relation(fields: [articleId], references: [id])
+  like      Int
+}
+
+model CommentLike {
+  id        String   @id @default(uuid()) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id])
+  commentId String   @db.Uuid
+  comment   Comment  @relation(fields: [commentId], references: [id])
   like      Int
 }

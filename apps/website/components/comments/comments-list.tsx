@@ -1,25 +1,42 @@
 import Comment from './comment';
 import { useGetComments } from '../../hooks/useComments';
+import { useGetCommentLikes } from '../../hooks/useCommentsLikes';
 
 interface CommentsListProps {
   articleId: string;
 }
 
 const CommentsList = ({ articleId }: CommentsListProps) => {
-  const getReplies = (commentId) => {
-    return comments.filter((comment) => comment.parentCommentId === commentId);
-  };
-
   const { data: comments, isLoading, error } = useGetComments({ articleId });
+  const {
+    data: commentLikes,
+    isLoading: isLoadingLikes,
+    error: errorLikes,
+  } = useGetCommentLikes();
 
-  if (isLoading) {
+  if (isLoading || isLoadingLikes) {
     return <div>Loading...</div>;
   }
 
+  const commentWithLikes = comments.map((comment) => {
+    const commentLike = commentLikes.find(
+      (commentLike) => commentLike.commentId === comment.id
+    );
+    return { ...comment, commentLike };
+  });
+
+  const getReplies = (commentId) => {
+    return commentWithLikes.filter(
+      (comment) => comment.parentCommentId === commentId
+    );
+  };
+
+  console.log(commentWithLikes);
+
   return (
     <div className="flex flex-col space-y-4">
-      {comments.length > 0 ? (
-        comments
+      {commentWithLikes.length > 0 ? (
+        commentWithLikes
           .filter((comment) => {
             return comment.parentCommentId === null;
           })

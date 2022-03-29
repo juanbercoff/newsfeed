@@ -1,12 +1,27 @@
 import Actions from '../common/actions';
-import { CommentWithAuthorDto } from '@newsfeed/data';
+import { CommentWithAuthorAndLikes } from '@newsfeed/data';
+import { CommentLike } from '@prisma/client';
+import useLikes from '../../hooks/useLikes';
+import {
+  getUserCommentLike,
+  deleteCommentLike,
+  postCommentLike,
+} from '../../services/comment-likes-api';
 
 interface CommentProps {
-  comment: CommentWithAuthorDto;
-  commentChildren?: CommentWithAuthorDto[];
+  comment: CommentWithAuthorAndLikes;
+  commentChildren?: CommentWithAuthorAndLikes[];
 }
 
 const Comment = ({ comment, commentChildren }: CommentProps) => {
+  const { uiLikes, hasBeenLiked, handleLike } = useLikes<CommentLike>(
+    comment.id,
+    comment.commentLike?._sum.like,
+    getUserCommentLike,
+    deleteCommentLike,
+    postCommentLike
+  );
+
   return (
     <div>
       <div className="flex flex-col space-y-2">
@@ -20,7 +35,12 @@ const Comment = ({ comment, commentChildren }: CommentProps) => {
         <div className="space-y-2">
           <div className="ml-3">{comment.content}</div>
           <div className="ml-2">
-            <Actions isArticle={false} />
+            <Actions
+              isArticle={false}
+              uiLikes={uiLikes}
+              like={hasBeenLiked?.like}
+              handleLike={handleLike}
+            />
           </div>
         </div>
       </div>

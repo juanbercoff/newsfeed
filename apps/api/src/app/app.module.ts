@@ -10,6 +10,7 @@ import { AuthorizationModule } from '../authorization/authorization.module';
 import { Auth0ManagementApiService } from '../auth0-management-api/auth0-management-api.service';
 import { UserProfilesModule } from '../user-profiles/user-profiles.module';
 import { ArticleLikesModule } from '../article-likes/article-likes.module';
+import { CommentLikesModule } from '../comment-likes/comment-likes.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ArticleLikesModule } from '../article-likes/article-likes.module';
     AuthorizationModule,
     UserProfilesModule,
     ArticleLikesModule,
+    CommentLikesModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService, Auth0ManagementApiService],
