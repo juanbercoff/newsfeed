@@ -31,8 +31,6 @@ const CommentsList = ({ articleId }: CommentsListProps) => {
     );
   };
 
-  console.log(commentWithLikes);
-
   return (
     <div className="flex flex-col space-y-4">
       {commentWithLikes.length > 0 ? (

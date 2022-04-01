@@ -38,7 +38,7 @@ const Actions = ({
         className="cursor-pointer hover:bg-slate-300 rounded"
       />
       {isArticle ? (
-        <div className="pl-4 flex justify-center space-x-1 items-center">
+        <div className="ml-4 flex justify-center space-x-1 items-center hover:bg-slate-300 rounded px-1">
           <FaRegCommentAlt size={17} />
           <p className="font-medium">{countOfComments}</p>
         </div>

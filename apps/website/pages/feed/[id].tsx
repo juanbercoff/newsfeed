@@ -27,7 +27,7 @@ const Article = ({ article }: ArticleProps) => {
         showSecondLevel={showSecondLevel}
         setShowSecondLevel={setShowSecondLevel}
       />
-      <CommentForm />
+      <CommentForm articleId={article.id} />
       <CommentsList articleId={article.id} />
     </div>
   );

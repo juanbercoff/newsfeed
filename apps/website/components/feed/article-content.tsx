@@ -38,7 +38,7 @@ const ArticleContent = ({
       <div>
         <p
           onClick={() => setShowSecondLevel(!showSecondLevel)}
-          className={`text-sm rounded cursor-pointer hover:bg-slate-200 transition-all ease-linear duration-100  text-gray-500  ${
+          className={`overflow-hidden text-sm rounded cursor-pointer hover:bg-slate-200 transition-all ease-linear duration-100  text-gray-500  ${
             showFirstLevel
               ? 'opacity-100 max-h-60 p-2 mx-2'
               : ' opacity-0 max-h-0'
@@ -53,7 +53,7 @@ const ArticleContent = ({
           culpa qui officia deserunt mollit anim id est laborum
         </p>
         <p
-          className={`text-sm text-gray-600  ${
+          className={`overflow-hidden text-sm text-gray-600  ${
             showSecondLevel
               ? `opacity-100 max-h-60 p-2 mx-4`
               : 'opacity-0 max-h-0'

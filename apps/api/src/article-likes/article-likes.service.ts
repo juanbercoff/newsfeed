@@ -56,9 +56,9 @@ export class ArticleLikesService {
     });
 
     if (articleAlreadyLiked) {
-      return this.update({ id: articleAlreadyLiked.id, like });
+      return await this.update({ id: articleAlreadyLiked.id, like });
     }
-    return this.create({ articleId, like, userId: user.id });
+    return await this.create({ articleId, like, userId: user.id });
   }
 
   async getAllLikesByArticle(articleId: string) {
