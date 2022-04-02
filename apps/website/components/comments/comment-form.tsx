@@ -4,18 +4,20 @@ import { useUserProfileContext } from '../../contexts/user-context';
 import { CreateCommentDto } from '@newsfeed/data';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useArticleContext } from '../../contexts/article-context';
 
 type CommentFormData = {
   comment: string;
 };
 
 type CommentFormProps = {
-  articleId: string;
-  parentCommentId?: string;
+  commentId?: string;
+  setShowForm?: (showForm: boolean) => void;
 };
 
-const CommentForm = ({ articleId, parentCommentId }: CommentFormProps) => {
+const CommentForm = ({ commentId, setShowForm }: CommentFormProps) => {
   const { authToken } = useUserProfileContext();
+  const article = useArticleContext();
 
   const {
     register,
@@ -26,8 +28,8 @@ const CommentForm = ({ articleId, parentCommentId }: CommentFormProps) => {
   } = useForm<CommentFormData>();
   const onSubmit = (formData: CommentFormData) => {
     const data: CreateCommentDto = {
-      articleId,
-      parentCommentId,
+      articleId: article.id,
+      parentCommentId: commentId,
       content: formData.comment,
     };
     postComment(data, authToken);
@@ -45,7 +47,15 @@ const CommentForm = ({ articleId, parentCommentId }: CommentFormProps) => {
             className="w-full h-[108px] bg-transparent pt-2 px-4 block rounded min-h-[108px]"
           ></textarea>
 
-          <div className="flex justify-end p-4 bg-slate-400">
+          <div className="flex justify-end p-4 bg-slate-400 gap-2">
+            {commentId && (
+              <button
+                className="text-white font-semibold py-1 px-3 rounded bg-blue-500 hover:bg-blue-700  active:bg-blue-800"
+                onClick={() => setShowForm(false)}
+              >
+                Cancelar
+              </button>
+            )}
             <button
               type="submit"
               disabled={!!errors.comment || !watch('comment')}

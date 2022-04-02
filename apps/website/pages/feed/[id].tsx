@@ -4,6 +4,7 @@ import { getArticlesList, getOneArticle } from '../../services/articles-api';
 import { ArticleResponseDto } from '@newsfeed/data';
 import ArticleContent from '../../components/feed/article-content';
 import { useState } from 'react';
+import { ArticleContext } from '../../contexts/article-context';
 
 interface ArticleProps {
   article: ArticleResponseDto;
@@ -13,23 +14,25 @@ const Article = ({ article }: ArticleProps) => {
   const [showFirstLevel, setShowFirstLevel] = useState<boolean>(false);
   const [showSecondLevel, setShowSecondLevel] = useState(false);
   return (
-    <div className="space-y-3">
-      <h1 className="font-bold text-center text-4xl">{article.title}</h1>
-      <ArticleContent
-        showFirstLevel={showFirstLevel}
-        setShowFirstLevel={setShowFirstLevel}
-        showSecondLevel={showSecondLevel}
-        setShowSecondLevel={setShowSecondLevel}
-      />
-      <ArticleContent
-        showFirstLevel={showFirstLevel}
-        setShowFirstLevel={setShowFirstLevel}
-        showSecondLevel={showSecondLevel}
-        setShowSecondLevel={setShowSecondLevel}
-      />
-      <CommentForm articleId={article.id} />
-      <CommentsList articleId={article.id} />
-    </div>
+    <ArticleContext.Provider value={article}>
+      <div className="space-y-3">
+        <h1 className="font-bold text-center text-4xl">{article.title}</h1>
+        <ArticleContent
+          showFirstLevel={showFirstLevel}
+          setShowFirstLevel={setShowFirstLevel}
+          showSecondLevel={showSecondLevel}
+          setShowSecondLevel={setShowSecondLevel}
+        />
+        <ArticleContent
+          showFirstLevel={showFirstLevel}
+          setShowFirstLevel={setShowFirstLevel}
+          showSecondLevel={showSecondLevel}
+          setShowSecondLevel={setShowSecondLevel}
+        />
+        <CommentForm />
+        <CommentsList />
+      </div>
+    </ArticleContext.Provider>
   );
 };
 

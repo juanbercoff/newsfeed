@@ -1,13 +1,15 @@
 import Comment from './comment';
 import { useGetComments } from '../../hooks/useComments';
 import { useGetCommentLikes } from '../../hooks/useCommentsLikes';
+import { useArticleContext } from '../../contexts/article-context';
 
-interface CommentsListProps {
-  articleId: string;
-}
-
-const CommentsList = ({ articleId }: CommentsListProps) => {
-  const { data: comments, isLoading, error } = useGetComments({ articleId });
+const CommentsList = () => {
+  const { id } = useArticleContext();
+  const {
+    data: comments,
+    isLoading,
+    error,
+  } = useGetComments({ articleId: id });
   const {
     data: commentLikes,
     isLoading: isLoadingLikes,
@@ -25,12 +27,6 @@ const CommentsList = ({ articleId }: CommentsListProps) => {
     return { ...comment, commentLike };
   });
 
-  const getReplies = (commentId) => {
-    return commentWithLikes.filter(
-      (comment) => comment.parentCommentId === commentId
-    );
-  };
-
   return (
     <div className="flex flex-col space-y-4">
       {commentWithLikes.length > 0 ? (
@@ -42,7 +38,7 @@ const CommentsList = ({ articleId }: CommentsListProps) => {
             <Comment
               key={comment.id}
               comment={comment}
-              commentChildren={getReplies(comment.id)}
+              commentWithLikes={commentWithLikes}
             />
           ))
       ) : (
