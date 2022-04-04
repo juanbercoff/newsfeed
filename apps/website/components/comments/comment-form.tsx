@@ -1,10 +1,9 @@
 import { useForm } from 'react-hook-form';
-import { postComment } from '../../services/comments-api';
-import { useUserProfileContext } from '../../contexts/user-context';
 import { CreateCommentDto } from '@newsfeed/data';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useArticleContext } from '../../contexts/article-context';
+import { useCreateComment } from '../../hooks/useComments';
 
 type CommentFormData = {
   comment: string;
@@ -16,9 +15,7 @@ type CommentFormProps = {
 };
 
 const CommentForm = ({ commentId, setShowForm }: CommentFormProps) => {
-  const { authToken } = useUserProfileContext();
   const article = useArticleContext();
-
   const {
     register,
     handleSubmit,
@@ -26,16 +23,16 @@ const CommentForm = ({ commentId, setShowForm }: CommentFormProps) => {
     watch,
     reset,
   } = useForm<CommentFormData>();
+
+  const { mutate } = useCreateComment(reset);
+
   const onSubmit = (formData: CommentFormData) => {
     const data: CreateCommentDto = {
       articleId: article.id,
       parentCommentId: commentId,
       content: formData.comment,
     };
-    postComment(data, authToken);
-    //TODO: Error handling
-    toast('Comentario posteado');
-    reset();
+    mutate(data);
   };
 
   return (

@@ -9,6 +9,7 @@ import {
 } from '../../services/article-likes-api';
 import { ArticleLike } from '@prisma/client';
 import useLikes from '../../hooks/useLikes';
+import { DateTime } from 'luxon';
 
 interface CardProps {
   article: ArticleResponseDto & { articleLike: AllArticlesLikesDto };
@@ -37,7 +38,11 @@ const Card = ({ article }: CardProps) => {
         <div className="p-4 space-y-2">
           <p className="text-3xl font-medium hover:text">{article.title}</p>
 
-          <p className="text-sm text-gray-500 mt-2">15/04/2022</p>
+          <p className="text-sm text-gray-500 mt-2">
+            {DateTime.fromISO(article.createdAt).toLocaleString(
+              DateTime.DATETIME_MED
+            )}
+          </p>
 
           <p className="text-lg">{article.author.profile.userName}</p>
           <Actions

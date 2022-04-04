@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useUserProfileContext } from '../contexts/user-context';
+import useAuthToken from './useAuthToken';
 
 const useLikes = <T extends { id: string; like: number }>(
   entityId: string,
@@ -11,7 +11,7 @@ const useLikes = <T extends { id: string; like: number }>(
     authToken: string
   ) => Promise<T>
 ) => {
-  const { authToken } = useUserProfileContext();
+  const { authToken } = useAuthToken();
   const [uiLikes, setUiLikes] = useState(countOfLikes || 0);
   const [hasBeenLiked, setHasBeenLiked] = useState<T | null>(null);
 

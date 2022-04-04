@@ -4,15 +4,22 @@ import Layout from '../components/layout/layout';
 import type { AppProps } from 'next/app';
 import { UserProvider } from '@auth0/nextjs-auth0';
 import { UserProfileContainer } from '../contexts/user-context';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
+
 import App from 'next/app';
 
+const queryClient = new QueryClient();
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <UserProvider>
       <UserProfileContainer>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <QueryClientProvider client={queryClient}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+          <ReactQueryDevtools />
+        </QueryClientProvider>
       </UserProfileContainer>
     </UserProvider>
   );

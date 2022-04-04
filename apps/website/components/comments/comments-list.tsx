@@ -5,16 +5,9 @@ import { useArticleContext } from '../../contexts/article-context';
 
 const CommentsList = () => {
   const { id } = useArticleContext();
-  const {
-    data: comments,
-    isLoading,
-    error,
-  } = useGetComments({ articleId: id });
-  const {
-    data: commentLikes,
-    isLoading: isLoadingLikes,
-    error: errorLikes,
-  } = useGetCommentLikes();
+  const { data: comments, isLoading } = useGetComments({ articleId: id });
+  const { data: commentLikes, isLoading: isLoadingLikes } =
+    useGetCommentLikes();
 
   if (isLoading || isLoadingLikes) {
     return <div>Loading...</div>;

@@ -1,7 +1,6 @@
-import { useFetch } from './useFetch';
-import { AllCommentsLikesDto } from '@newsfeed/data';
 import { getAllCommentsLikes } from '../services/comment-likes-api';
+import { useQuery } from 'react-query';
 
 export function useGetCommentLikes() {
-  return useFetch<AllCommentsLikesDto[]>(getAllCommentsLikes, {});
+  return useQuery('commentLikes', getAllCommentsLikes);
 }

@@ -32,15 +32,16 @@ model UserProfile {
 }
 
 model Article {
-  id        String        @id @default(uuid()) @db.Uuid
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  title     String
-  content   String
-  authorId  String        @db.Uuid
-  author    User          @relation(fields: [authorId], references: [id])
-  comments  Comment[]
-  likes     ArticleLike[]
+  id             String           @id @default(uuid()) @db.Uuid
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  title          String
+  content        String
+  authorId       String           @db.Uuid
+  author         User             @relation(fields: [authorId], references: [id])
+  comments       Comment[]
+  likes          ArticleLike[]
+  articleContent ArticleContent[]
 }
 
 model Comment {
@@ -78,4 +79,15 @@ model CommentLike {
   commentId String   @db.Uuid
   comment   Comment  @relation(fields: [commentId], references: [id])
   like      Int
+}
+
+model ArticleContent {
+  id        String   @id @default(uuid()) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  level1    String   @db.VarChar()
+  level2    String   @db.VarChar()
+  level3    String   @db.VarChar()
+  articleId String   @db.Uuid
+  article   Article  @relation(fields: [articleId], references: [id])
 }

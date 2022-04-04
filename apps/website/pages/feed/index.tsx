@@ -3,6 +3,8 @@ import { getArticlesList } from '../../services/articles-api';
 import { ArticleResponseDto, AllArticlesLikesDto } from '@newsfeed/data';
 import { useUserProfileContext } from '../../contexts/user-context';
 import { getAllArticlesLikes } from '../../services//article-likes-api';
+import { useGetArticles } from '../../hooks/useArticles';
+import { useGetAllArticlesLikes } from '../../hooks/useArticleLikes';
 
 interface FeedProps {
   articles: ArticleResponseDto[];
@@ -11,10 +13,11 @@ interface FeedProps {
 
 const Feed = ({ articles, articlesLikes }: FeedProps) => {
   const { authToken } = useUserProfileContext();
-  console.log(authToken);
+  const { data: articlesData } = useGetArticles(articles);
+  const { data: likesData } = useGetAllArticlesLikes(articlesLikes);
 
-  const articlesWithLikes = articles.map((article) => {
-    const articleLike = articlesLikes.find(
+  const articlesWithLikes = articlesData.map((article) => {
+    const articleLike = likesData.find(
       (articleLike) => articleLike.articleId === article.id
     );
     return { ...article, articleLike };

@@ -5,6 +5,7 @@ import { ArticleResponseDto } from '@newsfeed/data';
 import ArticleContent from '../../components/feed/article-content';
 import { useState } from 'react';
 import { ArticleContext } from '../../contexts/article-context';
+import { useGetOneArticle } from '../../hooks/useArticles';
 
 interface ArticleProps {
   article: ArticleResponseDto;
@@ -13,10 +14,12 @@ interface ArticleProps {
 const Article = ({ article }: ArticleProps) => {
   const [showFirstLevel, setShowFirstLevel] = useState<boolean>(false);
   const [showSecondLevel, setShowSecondLevel] = useState(false);
+  const { data: articleData } = useGetOneArticle({ id: article.id }, article);
+
   return (
-    <ArticleContext.Provider value={article}>
+    <ArticleContext.Provider value={articleData}>
       <div className="space-y-3">
-        <h1 className="font-bold text-center text-4xl">{article.title}</h1>
+        <h1 className="font-bold text-center text-4xl">{articleData.title}</h1>
         <ArticleContent
           showFirstLevel={showFirstLevel}
           setShowFirstLevel={setShowFirstLevel}
@@ -47,7 +50,6 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const article = await getOneArticle({ id: params.id });
-
   return {
     props: {
       article,

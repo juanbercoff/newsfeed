@@ -48,17 +48,15 @@ const Actions = ({
           }}
           className="cursor-pointer hover:bg-slate-300 rounded"
         />
-        {!isArticle && commentId ? (
-          <div
-            className="ml-4 flex justify-center space-x-1 items-center hover:bg-slate-300 rounded px-1 cursor-pointer"
-            onClick={() => handleClick()}
-          >
-            <FaRegCommentAlt size={17} />
-            <p className="font-medium text-sm">
-              {isArticle ? countOfComments : 'Responder'}
-            </p>
-          </div>
-        ) : null}
+        <div
+          className="ml-4 flex justify-center space-x-1 items-center hover:bg-slate-300 rounded px-1 cursor-pointer"
+          onClick={() => handleClick()}
+        >
+          <FaRegCommentAlt size={17} />
+          <p className="font-medium text-sm">
+            {isArticle ? countOfComments : 'Responder'}
+          </p>
+        </div>
       </div>
       {showForm && (
         <CommentForm commentId={commentId} setShowForm={setShowForm} />
