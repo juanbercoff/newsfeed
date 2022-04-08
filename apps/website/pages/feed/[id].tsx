@@ -40,7 +40,7 @@ const Article = ({ article }: ArticleProps) => {
 };
 
 export async function getStaticPaths() {
-  const articles = await getArticlesList();
+  const articles = await getArticlesList({});
 
   return {
     paths: articles.map((article) => ({ params: { id: article.id } })),

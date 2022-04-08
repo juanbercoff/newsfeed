@@ -42,131 +42,74 @@ const seed = async () => {
     {
       id: 'e432f468-1bd1-4ea4-84f0-11865080d6c6',
       title: 'Las fotos de Kiev y la guerra',
-      content:
-        'La fotoperiodista Lynsey Addario de The New York Times tomó y ' +
-        'difundió la espeluznante imagen que sirve como evidencia contundente e irrefutable de' +
-        'que las tropas rusas están masacrando civiles que sólo buscaban escapar de la violencia. ' +
-        'En la foto se ven cuatro cuerpos, maletas listas para huir y sangre. Tendidos están los restos' +
-        'sin vida de una madre, su hijo adolescente y su hija pequeña. El padre, aún con vida pero gravemente' +
-        'herido, apenas respira. Los mató un ataque ruso cuando intentaban huir de Irpen, a 20 kilómetros de Kiev' +
-        '. Los tres miembros de esta familia ucraniana fueron asesinados este domingo en medio de una ráfaga de ' +
-        'proyectiles de mortero contra un puente maltrecho utilizado por quienes huyen de los combates.' +
-        'Allí, centenares de personas se habían agrupado sobre el río Irpin desde el sábado pasado buscando' +
-        'una salida al horror. Addario cuenta que para cruzar, los civiles lo intentaban en pequeños grupos.' +
-        'Mientras una decena de soldados ucranianos los asistía… Todos iban cargados con lo poco que se animaron' +
-        'a transportar en la huida. Pero el ataque comenzó. Las granadas de mortero cayeron primero a unos 100 metros' +
-        'del puente, y luego se desplazaron en una serie de estruendosas explosiones hacia una sección de la calle' +
-        'donde la gente huía. A medida que los morteros se acercaban a la columna de civiles, la gente corría,' +
-        'arrastrando niños, tratando de encontrar un lugar seguro. Pero no había nada para protegerse. No había' +
-        'ningún lugar donde esconderse… Y esta familia de cuatro quedó atrapada. Los soldados se apresuraron a ayudar,' +
-        'pero la mujer y los niños estaban muertos. El padre aún tenía pulso pero estaba inconsciente y gravemente' +
-        'herido. Su equipaje, una maleta plateada con ruedas y algunas mochilas estaba desperdigadas en el asfalto, ' +
-        'junto con un maletín verde para un pequeño perro que ladraba.',
+      content: [
+        {
+          level1:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a euismod tortor, quis faucibus tellus. Nunc a risus faucibus, eleifend turpis eu, varius mauris. Nullam efficitur magna non ipsum hendrerit convallis. Quisque elit est, malesuada et consectetur blandit, efficitur sit.',
+          level2:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+          level3:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        },
+        {
+          level1:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a euismod tortor, quis faucibus tellus. Nunc a risus faucibus, eleifend turpis eu, varius mauris. Nullam efficitur magna non ipsum hendrerit convallis. Quisque elit est, malesuada et consectetur blandit, efficitur sit.',
+          level2:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+          level3:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        },
+      ],
       authorId: 'e332f468-1bd1-4ea4-84f0-11865080d6c6',
     },
     {
       id: 'e532f468-1bd1-4ea4-84f0-11865080d6c6',
       title: 'Los peligros de la pobreza en tiempos de guerra',
-      content:
-        'La fotoperiodista Lynsey Addario de The New York Times tomó y ' +
-        'difundió la espeluznante imagen que sirve como evidencia contundente e irrefutable de' +
-        'que las tropas rusas están masacrando civiles que sólo buscaban escapar de la violencia. ' +
-        'En la foto se ven cuatro cuerpos, maletas listas para huir y sangre. Tendidos están los restos' +
-        'sin vida de una madre, su hijo adolescente y su hija pequeña. El padre, aún con vida pero gravemente' +
-        'herido, apenas respira. Los mató un ataque ruso cuando intentaban huir de Irpen, a 20 kilómetros de Kiev' +
-        '. Los tres miembros de esta familia ucraniana fueron asesinados este domingo en medio de una ráfaga de ' +
-        'proyectiles de mortero contra un puente maltrecho utilizado por quienes huyen de los combates.' +
-        'Allí, centenares de personas se habían agrupado sobre el río Irpin desde el sábado pasado buscando' +
-        'una salida al horror. Addario cuenta que para cruzar, los civiles lo intentaban en pequeños grupos.' +
-        'Mientras una decena de soldados ucranianos los asistía… Todos iban cargados con lo poco que se animaron' +
-        'a transportar en la huida. Pero el ataque comenzó. Las granadas de mortero cayeron primero a unos 100 metros' +
-        'del puente, y luego se desplazaron en una serie de estruendosas explosiones hacia una sección de la calle' +
-        'donde la gente huía. A medida que los morteros se acercaban a la columna de civiles, la gente corría,' +
-        'arrastrando niños, tratando de encontrar un lugar seguro. Pero no había nada para protegerse. No había' +
-        'ningún lugar donde esconderse… Y esta familia de cuatro quedó atrapada. Los soldados se apresuraron a ayudar,' +
-        'pero la mujer y los niños estaban muertos. El padre aún tenía pulso pero estaba inconsciente y gravemente' +
-        'herido. Su equipaje, una maleta plateada con ruedas y algunas mochilas estaba desperdigadas en el asfalto, ' +
-        'junto con un maletín verde para un pequeño perro que ladraba.',
-      authorId: 'e332f468-1bd1-4ea4-84f0-11865080d6c6',
-    },
-    {
-      id: 'e632f468-1bd1-4ea4-84f0-11865080d6c6',
-      title: 'Generalizando los problemas de la pobreza',
-      content:
-        'La fotoperiodista Lynsey Addario de The New York Times tomó y ' +
-        'difundió la espeluznante imagen que sirve como evidencia contundente e irrefutable de' +
-        'que las tropas rusas están masacrando civiles que sólo buscaban escapar de la violencia. ' +
-        'En la foto se ven cuatro cuerpos, maletas listas para huir y sangre. Tendidos están los restos' +
-        'sin vida de una madre, su hijo adolescente y su hija pequeña. El padre, aún con vida pero gravemente' +
-        'herido, apenas respira. Los mató un ataque ruso cuando intentaban huir de Irpen, a 20 kilómetros de Kiev' +
-        '. Los tres miembros de esta familia ucraniana fueron asesinados este domingo en medio de una ráfaga de ' +
-        'proyectiles de mortero contra un puente maltrecho utilizado por quienes huyen de los combates.' +
-        'Allí, centenares de personas se habían agrupado sobre el río Irpin desde el sábado pasado buscando' +
-        'una salida al horror. Addario cuenta que para cruzar, los civiles lo intentaban en pequeños grupos.' +
-        'Mientras una decena de soldados ucranianos los asistía… Todos iban cargados con lo poco que se animaron' +
-        'a transportar en la huida. Pero el ataque comenzó. Las granadas de mortero cayeron primero a unos 100 metros' +
-        'del puente, y luego se desplazaron en una serie de estruendosas explosiones hacia una sección de la calle' +
-        'donde la gente huía. A medida que los morteros se acercaban a la columna de civiles, la gente corría,' +
-        'arrastrando niños, tratando de encontrar un lugar seguro. Pero no había nada para protegerse. No había' +
-        'ningún lugar donde esconderse… Y esta familia de cuatro quedó atrapada. Los soldados se apresuraron a ayudar,' +
-        'pero la mujer y los niños estaban muertos. El padre aún tenía pulso pero estaba inconsciente y gravemente' +
-        'herido. Su equipaje, una maleta plateada con ruedas y algunas mochilas estaba desperdigadas en el asfalto, ' +
-        'junto con un maletín verde para un pequeño perro que ladraba.',
-      authorId: 'e332f468-1bd1-4ea4-84f0-11865080d6c6',
-    },
-    {
-      id: 'e732f468-1bd1-4ea4-84f0-11865080d6c6',
-      title: 'Los mejores maletines por menos de 100 pesos',
-      content:
-        'La fotoperiodista Lynsey Addario de The New York Times tomó y ' +
-        'difundió la espeluznante imagen que sirve como evidencia contundente e irrefutable de' +
-        'que las tropas rusas están masacrando civiles que sólo buscaban escapar de la violencia. ' +
-        'En la foto se ven cuatro cuerpos, maletas listas para huir y sangre. Tendidos están los restos' +
-        'sin vida de una madre, su hijo adolescente y su hija pequeña. El padre, aún con vida pero gravemente' +
-        'herido, apenas respira. Los mató un ataque ruso cuando intentaban huir de Irpen, a 20 kilómetros de Kiev' +
-        '. Los tres miembros de esta familia ucraniana fueron asesinados este domingo en medio de una ráfaga de ' +
-        'proyectiles de mortero contra un puente maltrecho utilizado por quienes huyen de los combates.' +
-        'Allí, centenares de personas se habían agrupado sobre el río Irpin desde el sábado pasado buscando' +
-        'una salida al horror. Addario cuenta que para cruzar, los civiles lo intentaban en pequeños grupos.' +
-        'Mientras una decena de soldados ucranianos los asistía… Todos iban cargados con lo poco que se animaron' +
-        'a transportar en la huida. Pero el ataque comenzó. Las granadas de mortero cayeron primero a unos 100 metros' +
-        'del puente, y luego se desplazaron en una serie de estruendosas explosiones hacia una sección de la calle' +
-        'donde la gente huía. A medida que los morteros se acercaban a la columna de civiles, la gente corría,' +
-        'arrastrando niños, tratando de encontrar un lugar seguro. Pero no había nada para protegerse. No había' +
-        'ningún lugar donde esconderse… Y esta familia de cuatro quedó atrapada. Los soldados se apresuraron a ayudar,' +
-        'pero la mujer y los niños estaban muertos. El padre aún tenía pulso pero estaba inconsciente y gravemente' +
-        'herido. Su equipaje, una maleta plateada con ruedas y algunas mochilas estaba desperdigadas en el asfalto, ' +
-        'junto con un maletín verde para un pequeño perro que ladraba.',
-      authorId: 'e332f468-1bd1-4ea4-84f0-11865080d6c6',
-    },
-    {
-      id: 'e832f468-1bd1-4ea4-84f0-11865080d6c6',
-      title: 'Implementando un sistema de seguridad para 40.000 personas',
-      content:
-        'La fotoperiodista Lynsey Addario de The New York Times tomó y ' +
-        'difundió la espeluznante imagen que sirve como evidencia contundente e irrefutable de' +
-        'que las tropas rusas están masacrando civiles que sólo buscaban escapar de la violencia. ' +
-        'En la foto se ven cuatro cuerpos, maletas listas para huir y sangre. Tendidos están los restos' +
-        'sin vida de una madre, su hijo adolescente y su hija pequeña. El padre, aún con vida pero gravemente' +
-        'herido, apenas respira. Los mató un ataque ruso cuando intentaban huir de Irpen, a 20 kilómetros de Kiev' +
-        '. Los tres miembros de esta familia ucraniana fueron asesinados este domingo en medio de una ráfaga de ' +
-        'proyectiles de mortero contra un puente maltrecho utilizado por quienes huyen de los combates.' +
-        'Allí, centenares de personas se habían agrupado sobre el río Irpin desde el sábado pasado buscando' +
-        'una salida al horror. Addario cuenta que para cruzar, los civiles lo intentaban en pequeños grupos.' +
-        'Mientras una decena de soldados ucranianos los asistía… Todos iban cargados con lo poco que se animaron' +
-        'a transportar en la huida. Pero el ataque comenzó. Las granadas de mortero cayeron primero a unos 100 metros' +
-        'del puente, y luego se desplazaron en una serie de estruendosas explosiones hacia una sección de la calle' +
-        'donde la gente huía. A medida que los morteros se acercaban a la columna de civiles, la gente corría,' +
-        'arrastrando niños, tratando de encontrar un lugar seguro. Pero no había nada para protegerse. No había' +
-        'ningún lugar donde esconderse… Y esta familia de cuatro quedó atrapada. Los soldados se apresuraron a ayudar,' +
-        'pero la mujer y los niños estaban muertos. El padre aún tenía pulso pero estaba inconsciente y gravemente' +
-        'herido. Su equipaje, una maleta plateada con ruedas y algunas mochilas estaba desperdigadas en el asfalto, ' +
-        'junto con un maletín verde para un pequeño perro que ladraba.',
+      content: [
+        {
+          level1:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a euismod tortor, quis faucibus tellus. Nunc a risus faucibus, eleifend turpis eu, varius mauris. Nullam efficitur magna non ipsum hendrerit convallis. Quisque elit est, malesuada et consectetur blandit, efficitur sit.',
+          level2:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+          level3:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        },
+        {
+          level1:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a euismod tortor, quis faucibus tellus. Nunc a risus faucibus, eleifend turpis eu, varius mauris. Nullam efficitur magna non ipsum hendrerit convallis. Quisque elit est, malesuada et consectetur blandit, efficitur sit.',
+          level2:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+          level3:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        },
+      ],
       authorId: 'e332f468-1bd1-4ea4-84f0-11865080d6c6',
     },
   ];
 
-  await prisma.article.createMany({ data: articles });
+  await prisma.article.create({
+    data: {
+      id: articles[0].id,
+      title: 'Los peligros de la pobreza en tiempos de guerra',
+      authorId: 'e332f468-1bd1-4ea4-84f0-11865080d6c6',
+      articleContent: {
+        createMany: {
+          data: [
+            {
+              level1: articles[0].content[0].level1,
+              level2: articles[0].content[0].level2,
+              level3: articles[0].content[0].level3,
+            },
+            {
+              level1: articles[0].content[1].level1,
+              level2: articles[0].content[1].level2,
+              level3: articles[0].content[1].level3,
+            },
+          ],
+        },
+      },
+    },
+  });
 
   await prisma.comment.createMany({
     data: [

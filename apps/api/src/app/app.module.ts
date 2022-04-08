@@ -11,6 +11,7 @@ import { Auth0ManagementApiService } from '../auth0-management-api/auth0-managem
 import { UserProfilesModule } from '../user-profiles/user-profiles.module';
 import { ArticleLikesModule } from '../article-likes/article-likes.module';
 import { CommentLikesModule } from '../comment-likes/comment-likes.module';
+import { ArticleContentModule } from '../article-content/article-content.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { CommentLikesModule } from '../comment-likes/comment-likes.module';
     UserProfilesModule,
     ArticleLikesModule,
     CommentLikesModule,
+    ArticleContentModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService, Auth0ManagementApiService],

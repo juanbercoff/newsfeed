@@ -5,6 +5,13 @@ export function getEndpoint(path = '/') {
   return `${process.env.NEXT_PUBLIC_NEWSFEED_API}/${path}`;
 }
 
+export function getEndpointWithPagination(path = '/', cursor: string) {
+  if (cursor) {
+    return `${getEndpoint(path)}?cursor=${cursor}`;
+  }
+  return getEndpoint(path);
+}
+
 export function getCommonHeaders(
   authToken?: string | null
 ): AxiosRequestHeaders {
