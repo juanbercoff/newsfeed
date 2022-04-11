@@ -41,6 +41,7 @@ model Article {
   comments       Comment[]
   likes          ArticleLike[]
   articleContent ArticleContent[]
+  articleVisit   ArticleVisit[]
 }
 
 model Comment {
@@ -89,4 +90,13 @@ model ArticleContent {
   level3    String   @db.VarChar()
   articleId String   @db.Uuid
   article   Article  @relation(fields: [articleId], references: [id])
+}
+
+model ArticleVisit {
+  id        String   @id @default(uuid()) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  articleId String   @db.Uuid
+  article   Article  @relation(fields: [articleId], references: [id])
+  cookie    String   @db.VarChar(255)
 }

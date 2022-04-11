@@ -6,7 +6,6 @@ import {
 
 import {
   GetOneArticlePayload,
-  ArticleResponseDto,
   GetManyArticlesDto,
   ArticlesWithLikesResponseDto,
 } from '@newsfeed/data';
@@ -23,9 +22,18 @@ export async function getArticlesList({
 
 export async function getOneArticle(
   payload: GetOneArticlePayload
-): Promise<ArticleResponseDto> {
-  return callApiService<ArticleResponseDto>({
+): Promise<ArticlesWithLikesResponseDto> {
+  return callApiService<ArticlesWithLikesResponseDto>({
     url: getEndpoint(`articles/${payload.id}`),
+    method: 'GET',
+  });
+}
+
+export async function getOneArticleStatic(
+  payload: GetOneArticlePayload
+): Promise<ArticlesWithLikesResponseDto> {
+  return callApiService<ArticlesWithLikesResponseDto>({
+    url: getEndpoint(`articles/static/${payload.id}`),
     method: 'GET',
   });
 }

@@ -38,6 +38,7 @@ export async function callApiService<Data>(
     const response = await axios({
       headers: { ...getCommonHeaders(authToken), ...(headers || {}) },
       ...others,
+      withCredentials: true,
     });
     return response.data as Data;
   } catch (e) {

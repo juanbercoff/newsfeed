@@ -7,9 +7,10 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
+import * as cookieParser from 'cookie-parser';
 
 const corsOptions = {
-  origin: '*', // TODO: Define production CORS hosts
+  origin: 'http://localhost:4200', // TODO: Define production CORS hosts
   credentials: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 };
@@ -17,6 +18,7 @@ const corsOptions = {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors(corsOptions);
+  app.use(cookieParser());
   const globalPrefix = 'api';
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix(globalPrefix);

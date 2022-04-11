@@ -1,14 +1,20 @@
 import CommentsList from '../../components/comments/comments-list';
 import CommentForm from '../..//components/comments/comment-form';
-import { getArticlesList, getOneArticle } from '../../services/articles-api';
-import { ArticleResponseDto } from '@newsfeed/data';
+import {
+  getArticlesList,
+  getOneArticleStatic,
+} from '../../services/articles-api';
+import {
+  ArticleResponseDto,
+  ArticlesWithLikesResponseDto,
+} from '@newsfeed/data';
 import ArticleContent from '../../components/feed/article-content';
 import { useState } from 'react';
 import { ArticleContext } from '../../contexts/article-context';
 import { useGetOneArticle } from '../../hooks/useArticles';
 
 interface ArticleProps {
-  article: ArticleResponseDto;
+  article: ArticlesWithLikesResponseDto;
 }
 
 const Article = ({ article }: ArticleProps) => {
@@ -20,18 +26,18 @@ const Article = ({ article }: ArticleProps) => {
     <ArticleContext.Provider value={articleData}>
       <div className="space-y-3">
         <h1 className="font-bold text-center text-4xl">{articleData.title}</h1>
-        <ArticleContent
-          showFirstLevel={showFirstLevel}
-          setShowFirstLevel={setShowFirstLevel}
-          showSecondLevel={showSecondLevel}
-          setShowSecondLevel={setShowSecondLevel}
-        />
-        <ArticleContent
-          showFirstLevel={showFirstLevel}
-          setShowFirstLevel={setShowFirstLevel}
-          showSecondLevel={showSecondLevel}
-          setShowSecondLevel={setShowSecondLevel}
-        />
+        {articleData.articleContent.map((articleContent) => (
+          <ArticleContent
+            key={articleContent.id}
+            showFirstLevel={showFirstLevel}
+            setShowFirstLevel={setShowFirstLevel}
+            firstLevelContent={articleContent.level1}
+            showSecondLevel={showSecondLevel}
+            setShowSecondLevel={setShowSecondLevel}
+            secondLevelContent={articleContent.level2}
+            thirdLevelContent={articleContent.level3}
+          />
+        ))}
         <CommentForm />
         <CommentsList />
       </div>
@@ -49,7 +55,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const article = await getOneArticle({ id: params.id });
+  const article = await getOneArticleStatic({ id: params.id });
   return {
     props: {
       article,

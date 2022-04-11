@@ -54,3 +54,7 @@ export type Auth0User = {
   given_name: string;
   family_name: string;
 };
+
+export type RequestWithCookie = Request & {
+  cookies: { [key: string]: string };
+};

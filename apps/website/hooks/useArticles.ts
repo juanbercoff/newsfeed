@@ -1,12 +1,11 @@
 import {
-  ArticleResponseDto,
   GetOneArticlePayload,
-  ArticleWithLikesResponseDto,
+  ArticlesWithLikesResponseDto,
 } from '@newsfeed/data';
 import { getOneArticle, getArticlesList } from '../services/articles-api';
 import { useQuery, useInfiniteQuery } from 'react-query';
 
-export function useGetArticles(initialData: ArticleWithLikesResponseDto[]) {
+export function useGetArticles() {
   return useInfiniteQuery(
     'articles',
     ({ pageParam = '' }) => getArticlesList({ cursor: pageParam }),
@@ -23,7 +22,7 @@ export function useGetArticles(initialData: ArticleWithLikesResponseDto[]) {
 
 export function useGetOneArticle(
   articleId: GetOneArticlePayload,
-  initialData: ArticleResponseDto
+  initialData: ArticlesWithLikesResponseDto
 ) {
   return useQuery(['article', articleId], () => getOneArticle(articleId), {
     initialData,

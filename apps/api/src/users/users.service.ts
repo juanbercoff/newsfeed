@@ -1,6 +1,5 @@
 import { Injectable, UseGuards } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from '@prisma/client';
 import { Auth0ManagementApiService } from '../auth0-management-api/auth0-management-api.service';
 import {
@@ -75,22 +74,5 @@ export class UsersService {
 
   async getUsers(): Promise<User[]> {
     return this.prisma.user.findMany();
-  }
-
-  async updateUser(userId: string, userUpdates: UpdateUserDto): Promise<User> {
-    const user = await this.getUserById(userId);
-
-    if (!user) {
-      throw new Error('User not found');
-    }
-
-    return this.prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        ...userUpdates,
-      },
-    });
   }
 }

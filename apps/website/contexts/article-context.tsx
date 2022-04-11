@@ -1,6 +1,10 @@
 import { useContext, createContext } from 'react';
-import { ArticleResponseDto } from '@newsfeed/data';
+import {
+  ArticleResponseDto,
+  ArticlesWithLikesResponseDto,
+} from '@newsfeed/data';
 
-export const ArticleContext = createContext<ArticleResponseDto>(undefined);
+export const ArticleContext =
+  createContext<ArticlesWithLikesResponseDto>(undefined);
 
 export const useArticleContext = () => useContext(ArticleContext);

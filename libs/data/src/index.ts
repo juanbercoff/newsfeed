@@ -10,3 +10,4 @@ export * from './lib/dtos/comment.dto';
 export * from './lib/dtos/user.dto';
 export * from './lib/dtos/article-likes.dto';
 export * from './lib/dtos/comment-likes.dto';
+export * from './lib/dtos/article-visits.dto';

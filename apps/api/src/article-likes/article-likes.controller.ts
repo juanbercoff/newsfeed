@@ -26,6 +26,7 @@ export class ArticleLikesController {
     @Body() createOrUpdateArticleLikeDto: CreateOrUpdateArticleLikeDto,
     @Req() req: AuthenticatedRequest
   ) {
+    //eslint-disable-next-line
     const user = req.user as AuthenticatedUser;
     return this.articleLikesService.createOrUpdate(
       createOrUpdateArticleLikeDto,
