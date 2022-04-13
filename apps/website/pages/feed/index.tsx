@@ -29,6 +29,10 @@ const Feed = ({ articles }: FeedProps) => {
   const { ref, inView } = useInView();
 
   useEffect(() => {
+    console.log({
+      inView,
+      hasNextPage,
+    });
     if (inView && hasNextPage) {
       fetchNextPage();
     }

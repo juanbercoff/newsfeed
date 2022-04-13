@@ -28,12 +28,3 @@ export async function getOneArticle(
     method: 'GET',
   });
 }
-
-export async function getOneArticleStatic(
-  payload: GetOneArticlePayload
-): Promise<ArticlesWithLikesResponseDto> {
-  return callApiService<ArticlesWithLikesResponseDto>({
-    url: getEndpoint(`articles/static/${payload.id}`),
-    method: 'GET',
-  });
-}

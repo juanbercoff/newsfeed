@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Req, Param, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Req, Param } from '@nestjs/common';
 import { ArticleVisitService } from './article-visit.service';
 import { CreateArticleVisitDto, RequestWithCookie } from '@newsfeed/data';
 
@@ -11,7 +11,7 @@ export class ArticleVisitController {
     @Body() data: CreateArticleVisitDto,
     @Req() { cookies }: RequestWithCookie
   ) {
-    return this.articleVisitService.create(data, cookies.visit);
+    return this.articleVisitService.create(data, cookies.visits);
   }
 
   @Get(':articleId')

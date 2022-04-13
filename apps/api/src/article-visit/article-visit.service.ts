@@ -7,7 +7,6 @@ export class ArticleVisitService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: CreateArticleVisitDto, cookie: string) {
-    console.log(cookie);
     const articleVisit = await this.findOne(cookie, data);
 
     if (!articleVisit) {
