@@ -9,12 +9,7 @@ export class CreateArticleDto {
   title: string;
 
   @IsNotEmpty()
-  @IsString()
   content: Prisma.ArticleContentUncheckedCreateWithoutArticleInput[];
-
-  @IsNotEmpty()
-  @IsUUID()
-  userId: string;
 }
 
 export class UpdateArticleDto extends PartialType(CreateArticleDto) {}

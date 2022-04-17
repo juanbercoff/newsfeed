@@ -8,7 +8,6 @@ import { v4 as uuidv4 } from 'uuid';
 export class CookiesMiddleware implements NestMiddleware {
   use(req: RequestWithCookie, res: Response, next: NextFunction) {
     if (!req.cookies?.visits) {
-      console.log('creando cookie', req.cookies);
       const cookieValue = uuidv4();
       res.cookie('visits', cookieValue, {
         expires: DateTime.now().plus({ years: 5 }).toJSDate(),

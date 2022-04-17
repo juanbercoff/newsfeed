@@ -5,9 +5,7 @@ import {
   AllArticlesLikesDto,
 } from '@newsfeed/data';
 import { useUserProfileContext } from '../../contexts/user-context';
-import { getAllArticlesLikes } from '../../services//article-likes-api';
 import { useGetArticles } from '../../hooks/useArticles';
-import { useGetAllArticlesLikes } from '../../hooks/useArticleLikes';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
 import Spinner from '../../components/common/spinner';

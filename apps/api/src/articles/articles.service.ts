@@ -6,6 +6,7 @@ import {
   ArticleResponseDto,
   GetManyArticlesDto,
   ArticlesWithLikesResponseDto,
+  AuthenticatedUser,
 } from '@newsfeed/data';
 import { UsersService } from '../users/users.service';
 import { Article } from '@prisma/client';
@@ -19,9 +20,12 @@ export class ArticlesService {
     private readonly articleLikesService: ArticleLikesService
   ) {}
 
-  async create(data: CreateArticleDto): Promise<Article> {
-    const { userId, title, content } = data;
-    const user = await this.usersService.getUserById(userId);
+  async create(
+    data: CreateArticleDto,
+    authenticatedUser: AuthenticatedUser
+  ): Promise<Article> {
+    const { title, content } = data;
+    const user = await this.usersService.getUserAccount(authenticatedUser);
 
     if (!user) {
       throw new Error('User not found');
@@ -32,7 +36,7 @@ export class ArticlesService {
         title,
         author: {
           connect: {
-            id: userId,
+            id: user.id,
           },
         },
         articleContent: {
@@ -72,7 +76,10 @@ export class ArticlesService {
       take: 4,
       skip: cursor ? 1 : 0,
     };
-    cursor ? (paginationObject['cursor'] = { id: cursor }) : null;
+
+    if (cursor) {
+      paginationObject['cursor'] = { id: cursor };
+    }
 
     const articles = await this.prisma.article.findMany({
       ...paginationObject,
@@ -101,5 +108,21 @@ export class ArticlesService {
     });
 
     return articlesWithLikes;
+  }
+
+  async getArticlesByUser(
+    authenticatedUser: AuthenticatedUser
+  ): Promise<Article[]> {
+    const user = await this.usersService.getUserAccount(authenticatedUser);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    return this.prisma.article.findMany({
+      where: {
+        authorId: user.id,
+      },
+    });
   }
 }

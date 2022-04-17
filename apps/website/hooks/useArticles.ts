@@ -1,9 +1,22 @@
 import {
   GetOneArticlePayload,
   ArticlesWithLikesResponseDto,
+  CreateArticleDto,
 } from '@newsfeed/data';
-import { getOneArticle, getArticlesList } from '../services/articles-api';
-import { useQuery, useInfiniteQuery } from 'react-query';
+import {
+  getOneArticle,
+  getArticlesList,
+  createArticle,
+  getUserArticles,
+} from '../services/articles-api';
+import {
+  useQuery,
+  useInfiniteQuery,
+  useQueryClient,
+  useMutation,
+} from 'react-query';
+import useAuthToken from '../hooks/useAuthToken';
+import { toast } from 'react-toastify';
 
 export function useGetArticles(initialData: ArticlesWithLikesResponseDto[]) {
   return useInfiniteQuery(
@@ -23,9 +36,31 @@ export function useGetArticles(initialData: ArticlesWithLikesResponseDto[]) {
 
 export function useGetOneArticle(
   articleId: GetOneArticlePayload,
-  initialData: ArticlesWithLikesResponseDto
+  initialData?: ArticlesWithLikesResponseDto
 ) {
   return useQuery(['article', articleId], () => getOneArticle(articleId), {
     initialData,
   });
+}
+
+export function useCreateArticle(onSuccess: () => void) {
+  const queryClient = useQueryClient();
+  const { authToken } = useAuthToken();
+  return useMutation(
+    (data: CreateArticleDto) => createArticle(data, authToken),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('articles');
+        toast.success('Articulo creado con exito');
+        onSuccess();
+      },
+    }
+  );
+}
+
+export function useGetUserArticles() {
+  const { authToken } = useAuthToken();
+  return useQuery(['articlesByUser', authToken], () =>
+    getUserArticles(authToken)
+  );
 }

@@ -88,7 +88,7 @@ export async function getStaticPaths() {
 
   return {
     paths: articles.map((article) => ({ params: { id: article.id } })),
-    fallback: false,
+    fallback: 'blocking',
   };
 }
 
