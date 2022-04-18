@@ -27,6 +27,7 @@ const articlesResponseDto = Prisma.validator<Prisma.ArticleArgs>()({
     author: { include: { profile: true } },
     _count: { select: { comments: true } },
     articleContent: true,
+    articleHistory: true,
   },
 });
 

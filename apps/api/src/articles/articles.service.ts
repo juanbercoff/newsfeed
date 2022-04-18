@@ -7,17 +7,20 @@ import {
   GetManyArticlesDto,
   ArticlesWithLikesResponseDto,
   AuthenticatedUser,
+  UpdateArticleDto,
 } from '@newsfeed/data';
 import { UsersService } from '../users/users.service';
 import { Article } from '@prisma/client';
 import { ArticleLikesService } from '../article-likes/article-likes.service';
+import { ArticleHistoryService } from '../article-history/article-history.service';
 
 @Injectable()
 export class ArticlesService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly usersService: UsersService,
-    private readonly articleLikesService: ArticleLikesService
+    private readonly articleLikesService: ArticleLikesService,
+    private readonly articleHistoryService: ArticleHistoryService
   ) {}
 
   async create(
@@ -65,6 +68,7 @@ export class ArticlesService {
           },
         },
         articleContent: true,
+        articleHistory: true,
       },
     });
   }
@@ -95,6 +99,7 @@ export class ArticlesService {
           },
         },
         articleContent: true,
+        articleHistory: true,
       },
     });
 
@@ -124,5 +129,66 @@ export class ArticlesService {
         authorId: user.id,
       },
     });
+  }
+
+  findOneToUpdate(articleId: string) {
+    return this.prisma.article.findFirst({
+      where: {
+        id: articleId,
+      },
+      include: {
+        articleContent: true,
+        comments: true,
+      },
+    });
+  }
+
+  async update(
+    data: UpdateArticleDto,
+    authenticatedUser: AuthenticatedUser,
+    articleId: string
+  ) {
+    const user = await this.usersService.getUserAccount(authenticatedUser);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const article = await this.findOneToUpdate(articleId);
+
+    if (!article) {
+      throw new Error('Article not found');
+    }
+
+    const articleHistoryData = {
+      articleId,
+      content: article.articleContent,
+      comments: article.comments,
+    };
+
+    const createArticleHistory =
+      this.articleHistoryService.create(articleHistoryData);
+
+    const updateArticleRecord = this.prisma.article.update({
+      where: {
+        id: articleId,
+      },
+      data: {
+        articleContent: {
+          set: [],
+          create: data.content.map((articleContent) => ({
+            ...articleContent,
+          })),
+        },
+        comments: {
+          set: [],
+        },
+      },
+    });
+
+    return await this.prisma.$transaction([
+      createArticleHistory,
+      updateArticleRecord,
+    ]);
   }
 }

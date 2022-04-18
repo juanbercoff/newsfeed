@@ -36,7 +36,9 @@ const Comment = ({ comment, commentWithLikes }: CommentProps) => {
     <div className="space-y-2">
       <div className="flex flex-row justify-start space-x-2 items-center">
         <div className="rounded-full border-2 p-3"></div>
-        <p className="font-medium text-sm">{comment.author.profile.userName}</p>
+        <p className="font-medium text-sm">
+          {comment?.author?.profile.userName}
+        </p>
         <p className="text-gray-400 text-sm">
           {isoStringToRelativeTime(comment.createdAt)}
         </p>

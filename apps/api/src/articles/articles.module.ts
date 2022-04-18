@@ -5,6 +5,7 @@ import { UsersService } from '../users/users.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { Auth0ManagementApiService } from '../auth0-management-api/auth0-management-api.service';
 import { ArticleLikesService } from '../article-likes/article-likes.service';
+import { ArticleHistoryService } from '../article-history/article-history.service';
 @Module({
   controllers: [ArticlesController],
   providers: [
@@ -13,6 +14,7 @@ import { ArticleLikesService } from '../article-likes/article-likes.service';
     UsersService,
     Auth0ManagementApiService,
     ArticleLikesService,
+    ArticleHistoryService,
   ],
 })
 export class ArticlesModule {}

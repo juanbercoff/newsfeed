@@ -1,12 +1,12 @@
 import { IconType } from 'react-icons';
 
-interface LevelNumberIconProps {
+interface DepthNumberIconProps {
   onClick: () => void;
   Icon: IconType;
   isActive: boolean;
 }
 
-const LevelNumberIcon = ({ onClick, Icon, isActive }: LevelNumberIconProps) => {
+const DepthNumberIcon = ({ onClick, Icon, isActive }: DepthNumberIconProps) => {
   return (
     <div
       className={`hover:bg-amber-300 cursor-pointer p-1 ${
@@ -19,4 +19,4 @@ const LevelNumberIcon = ({ onClick, Icon, isActive }: LevelNumberIconProps) => {
   );
 };
 
-export default LevelNumberIcon;
+export default DepthNumberIcon;

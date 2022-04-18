@@ -7,6 +7,7 @@ import {
   Query,
   UseGuards,
   Req,
+  Patch,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import {
@@ -14,6 +15,7 @@ import {
   GetManyArticlesDto,
   AuthenticatedRequest,
   AuthenticatedUser,
+  UpdateArticleDto,
 } from '@newsfeed/data';
 import { AuthorizationGuard } from '../authorization/authorization.guard';
 
@@ -29,7 +31,7 @@ export class ArticlesController {
   }
 
   @Get()
-  findAll(@Query() data?: GetManyArticlesDto) {
+  findAllCurrent(@Query() data?: GetManyArticlesDto) {
     return this.articlesService.findAll(data);
   }
 
@@ -43,5 +45,16 @@ export class ArticlesController {
   @Get(':articleId')
   findOne(@Param('articleId') id: string) {
     return this.articlesService.findOne(id);
+  }
+
+  @UseGuards(AuthorizationGuard)
+  @Patch(':articleId')
+  update(
+    @Param('articleId') articleId: string,
+    @Body() data: UpdateArticleDto,
+    @Req() req: AuthenticatedRequest
+  ) {
+    const user = req.user as AuthenticatedUser;
+    return this.articlesService.update(data, user, articleId);
   }
 }

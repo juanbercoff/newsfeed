@@ -1,13 +1,16 @@
 import CommentsList from '../../components/comments/comments-list';
 import CommentForm from '../..//components/comments/comment-form';
 import { getArticlesList, getOneArticle } from '../../services/articles-api';
-import { ArticlesWithLikesResponseDto } from '@newsfeed/data';
-import ArticleContent from '../../components/feed/article-content';
+import {
+  ArticlesWithLikesResponseDto,
+  ArticleHistoryDto,
+} from '@newsfeed/data';
+import ArticleContent from '../../components/article/article-content';
 import { useEffect, useState } from 'react';
 import { ArticleContext } from '../../contexts/article-context';
 import { usePostArticleVisit } from '../../hooks/useArticleVisits';
-import { RiNumber0, RiNumber1, RiNumber2 } from 'react-icons/ri';
-import LevelNumberIcon from '../../components/feed/LevelNumberIcon';
+import DepthSelector from '../../components/article/depth-selector';
+import { useGetArticleHistory } from '../../hooks/useArticleHistory';
 
 interface ArticleProps {
   article: ArticlesWithLikesResponseDto;
@@ -18,6 +21,12 @@ const Article = ({ article }: ArticleProps) => {
   const [showSecondLevel, setShowSecondLevel] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const { mutate } = usePostArticleVisit();
+  const [articleVersionToDisplay, setArticleVersionToDisplay] = useState<
+    ArticlesWithLikesResponseDto | ArticleHistoryDto
+  >(article);
+  //FIXME
+  const [oldArticle, setOldArticle] = useState<ArticleHistoryDto | null>(null);
+  const { data } = useGetArticleHistory(article.id);
 
   useEffect(() => {
     mutate({ articleId: article.id });
@@ -32,37 +41,46 @@ const Article = ({ article }: ArticleProps) => {
     <ArticleContext.Provider value={article}>
       <div className="space-y-3">
         <h1 className="font-bold text-center text-4xl">{article.title}</h1>
-        <div className="flex space-x-2 px-2">
-          <p>Seleccionar complejidad</p>
-          <LevelNumberIcon
-            onClick={() => {
-              setActiveIndex(0);
-              handleLevels(false);
-            }}
-            Icon={RiNumber0}
-            isActive={activeIndex === 0}
+        <div className="flex justify-between">
+          <DepthSelector
+            setActiveIndex={setActiveIndex}
+            setShowFirstLevel={setShowFirstLevel}
+            setShowSecondLevel={setShowSecondLevel}
+            handleLevels={handleLevels}
+            activeIndex={activeIndex}
           />
-          <LevelNumberIcon
-            onClick={() => {
-              setActiveIndex(1);
-              setShowFirstLevel(true);
-              setShowSecondLevel(false);
-            }}
-            Icon={RiNumber1}
-            isActive={activeIndex === 1}
-          />
-          <LevelNumberIcon
-            onClick={() => {
-              setActiveIndex(2);
-              handleLevels(true);
-            }}
-            Icon={RiNumber2}
-            isActive={activeIndex === 2}
-          />
+          <div className="flex space-x-2">
+            <p>Versiones anteriores</p>
+            <p
+              className="cursor-pointer"
+              onClick={() => {
+                setOldArticle(null);
+                setArticleVersionToDisplay(article);
+              }}
+            >
+              Version Actual
+            </p>
+            {article.articleHistory.length > 0
+              ? article.articleHistory.map((history, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className="flex items-center cursor-pointer"
+                      onClick={() => {
+                        setOldArticle(data[index]);
+                        setArticleVersionToDisplay(data[index]);
+                      }}
+                    >
+                      {`Version ${index + 1}`}
+                    </div>
+                  );
+                })
+              : null}
+          </div>
         </div>
         <div className="flex flex-row">
           <div>
-            {article.articleContent.map((articleContent) => (
+            {articleVersionToDisplay.articleContent.map((articleContent) => (
               <ArticleContent
                 key={articleContent.id}
                 showFirstLevel={showFirstLevel}
@@ -77,7 +95,7 @@ const Article = ({ article }: ArticleProps) => {
           </div>
         </div>
         <CommentForm />
-        <CommentsList />
+        <CommentsList oldComments={oldArticle?.comments} />
       </div>
     </ArticleContext.Provider>
   );

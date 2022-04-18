@@ -13,6 +13,7 @@ import { ArticleLikesModule } from '../article-likes/article-likes.module';
 import { CommentLikesModule } from '../comment-likes/comment-likes.module';
 import { ArticleContentModule } from '../article-content/article-content.module';
 import { ArticleVisitModule } from '../article-visit/article-visit.module';
+import { ArticleHistoryModule } from '../article-history/article-history.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ArticleVisitModule } from '../article-visit/article-visit.module';
     CommentLikesModule,
     ArticleContentModule,
     ArticleVisitModule,
+    ArticleHistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService, Auth0ManagementApiService],
