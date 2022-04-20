@@ -34,54 +34,67 @@ const AccountMenu = () => {
           <div>
             <Menu.Item>
               {({ active }) => (
-                <button
+                <LinkWrapper
+                  href="/profile"
                   className={`${
                     active ? ' text-gray-900' : 'text-gray-500'
                   } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                 >
-                  <Link href="/profile">Tu perfil</Link>
-                </button>
+                  Tu perfil
+                </LinkWrapper>
               )}
             </Menu.Item>
             <Menu.Item>
               {({ active }) => (
-                <button
+                <LinkWrapper
+                  href="/your-articles"
                   className={`${
                     active ? ' text-gray-900' : 'text-gray-500'
                   } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                 >
-                  <Link href="/your-articles">Tus articulos</Link>
-                </button>
+                  Tus articulos
+                </LinkWrapper>
               )}
             </Menu.Item>
           </div>
           <div>
             <Menu.Item>
               {({ active }) => (
-                <button
+                <LinkWrapper
+                  href="/faq"
                   className={`${
                     active ? ' text-gray-900' : 'text-gray-500'
                   } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                 >
-                  <Link href="/faq">Ayuda</Link>
-                </button>
+                  Ayuda
+                </LinkWrapper>
               )}
             </Menu.Item>
             <Menu.Item>
               {({ active }) => (
-                <button
+                <LinkWrapper
+                  href="/api/auth/logout?returnTo=/"
                   className={`${
                     active ? ' text-gray-900' : 'text-gray-500'
                   } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                 >
-                  <Link href="/api/auth/logout?returnTo=/">Salir</Link>
-                </button>
+                  Salir
+                </LinkWrapper>
               )}
             </Menu.Item>
           </div>
         </Menu.Items>
       </Transition>
     </Menu>
+  );
+};
+
+//TODO add types
+const LinkWrapper = ({ href, children, ...rest }) => {
+  return (
+    <Link href={href} passHref>
+      <a {...rest}>{children}</a>
+    </Link>
   );
 };
 

@@ -2,12 +2,14 @@ import {
   GetOneArticlePayload,
   ArticlesWithLikesResponseDto,
   CreateArticleDto,
+  UpdateArticleDto,
 } from '@newsfeed/data';
 import {
   getOneArticle,
   getArticlesList,
   createArticle,
   getUserArticles,
+  updateArticle,
 } from '../services/articles-api';
 import {
   useQuery,
@@ -36,14 +38,16 @@ export function useGetArticles(initialData: ArticlesWithLikesResponseDto[]) {
 
 export function useGetOneArticle(
   articleId: GetOneArticlePayload,
-  initialData?: ArticlesWithLikesResponseDto
+  initialData?: ArticlesWithLikesResponseDto,
+  enabled?: boolean
 ) {
   return useQuery(['article', articleId], () => getOneArticle(articleId), {
     initialData,
+    enabled: enabled,
   });
 }
 
-export function useCreateArticle(onSuccess: () => void) {
+export function useCreateArticle() {
   const queryClient = useQueryClient();
   const { authToken } = useAuthToken();
   return useMutation(
@@ -52,7 +56,6 @@ export function useCreateArticle(onSuccess: () => void) {
       onSuccess: () => {
         queryClient.invalidateQueries('articles');
         toast.success('Articulo creado con exito');
-        onSuccess();
       },
     }
   );
@@ -60,7 +63,25 @@ export function useCreateArticle(onSuccess: () => void) {
 
 export function useGetUserArticles() {
   const { authToken } = useAuthToken();
-  return useQuery(['articlesByUser', authToken], () =>
-    getUserArticles(authToken)
+  return useQuery(
+    ['articlesByUser', authToken],
+    () => getUserArticles(authToken),
+    {
+      enabled: !!authToken,
+    }
+  );
+}
+
+export function useUpdateArticle(articleId: string) {
+  const queryClient = useQueryClient();
+  const { authToken } = useAuthToken();
+  return useMutation(
+    (data: UpdateArticleDto) => updateArticle(articleId, data, authToken),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('articles');
+        toast.success('Articulo modificado con exito');
+      },
+    }
   );
 }

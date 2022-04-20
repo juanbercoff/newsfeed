@@ -1,13 +1,18 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { CreateArticleDto } from '@newsfeed/data';
+import {
+  CreateArticleDto,
+  ArticlesWithLikesResponseDto,
+  UpdateArticleDto,
+} from '@newsfeed/data';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useCreateArticle } from '../hooks/useArticles';
 import styles from './article-form-style.module.css';
 import { useEffect } from 'react';
 import ArticleFormContent from './article-form-content';
-import { ArticlesWithLikesResponseDto } from '@newsfeed/data';
+import Button from '../components/common/button';
+import { UseMutationResult } from 'react-query';
+import { Article } from '@prisma/client';
 
 export type ArticleFormData = {
   title: string;
@@ -22,11 +27,13 @@ type ArticleContentFormData = {
 };
 
 type ArticleFormProps = {
-  article: ArticlesWithLikesResponseDto
+  article?: ArticlesWithLikesResponseDto;
+  queryHook: (
+    articleId?: string
+  ) => UseMutationResult<Article, unknown, CreateArticleDto | UpdateArticleDto>;
 };
 
-const ArticleForm = ({ article }: ArticleFormProps) => {
-  article.articleContent[0].
+const ArticleForm = ({ article, queryHook }: ArticleFormProps) => {
   const {
     register,
     handleSubmit,
@@ -35,24 +42,10 @@ const ArticleForm = ({ article }: ArticleFormProps) => {
     reset,
   } = useForm<ArticleFormData>();
 
-  const { mutate } = useCreateArticle(reset);
+  const { mutate } = queryHook(article?.id);
+
   const [numberOfContentSections, setNumberOfContentSections] = useState(1);
-  const [articleContent, setArticleContent] = useState<JSX.Element[]>([
-    <ArticleFormContent register={register} contentSectionNumber={0} />,
-  ]);
 
-  const onSubmit = (formData: ArticleFormData) => {
-    const data: CreateArticleDto = {
-      title: formData.title,
-      content: formData.content.map((content) => ({
-        ...content,
-        version,
-      })),
-    };
-    console.log(formData);
-
-    mutate(data);
-  };
   useEffect(() => {
     document.querySelectorAll('textarea').forEach((element) => {
       element.addEventListener('paste', function (e) {
@@ -63,45 +56,64 @@ const ArticleForm = ({ article }: ArticleFormProps) => {
     });
   }, []);
 
+  const onSubmit = (formData: ArticleFormData) => {
+    const data: CreateArticleDto = {
+      title: formData.title,
+      content: formData.content.map((content) => ({
+        ...content,
+      })),
+    };
+    console.log(data);
+
+    mutate(data);
+  };
+
   return (
     <div className="pt-5">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <input
-            {...register('title', { required: true, maxLength: 80 })}
+            {...register('title', {
+              required: true,
+              maxLength: 80,
+              value: article?.title || '',
+            })}
             className={[
               'bg-transparent p-2 rounded min-h-[108px] text-3xl w-full',
               styles.input,
             ].join(' ')}
             placeholder="Titulo del articulo"
           ></input>
-          {articleContent.map((content, index) => {
-            return content;
-          })}
+          {article?.articleContent.length > 0
+            ? article.articleContent.map((content, index) => (
+                <ArticleFormContent
+                  key={content.id}
+                  register={register}
+                  contentSectionNumber={index}
+                  articleContent={content}
+                />
+              ))
+            : [...Array(numberOfContentSections).keys()].map(
+                (content, index) => (
+                  <ArticleFormContent
+                    key={index}
+                    register={register}
+                    contentSectionNumber={index}
+                  />
+                )
+              )}
         </div>
         {errors.title?.type === 'required' && 'Escribi algo para comentar'}
         {errors.title?.type === 'maxLength' &&
           'Superaste el limite de 2000 caracteres'}
-        <button
-          className={`text-white font-semibold py-1 px-3 rounded ${
-            !watch('title') || errors.title
-              ? 'bg-slate-200 cursor-not-allowed'
-              : 'bg-blue-500 hover:bg-blue-700  active:bg-blue-800'
-          } `}
+        <Button
+          type="button"
+          text="Agregar otra seccion"
           onClick={(e) => {
             e.preventDefault();
-            setArticleContent([
-              ...articleContent,
-              <ArticleFormContent
-                register={register}
-                contentSectionNumber={numberOfContentSections}
-              />,
-            ]);
             setNumberOfContentSections(numberOfContentSections + 1);
           }}
-        >
-          Agregar otra seccion
-        </button>
+        />
         <button
           type="submit"
           disabled={!!errors.title || !watch('title')}

@@ -5,9 +5,9 @@ import Button from '../../components/common/button';
 import Link from 'next/link';
 
 const YourArticles = () => {
-  const { data: articles, isError, isLoading } = useGetUserArticles();
+  const { data: articles, isError, isLoading, status } = useGetUserArticles();
 
-  if (isLoading) {
+  if (isLoading || status === 'idle') {
     <Spinner />;
   }
 
@@ -32,8 +32,7 @@ const YourArticles = () => {
             <div className="flex space-x-2 items-center">
               <Link
                 href={{
-                  pathname: 'articles/edit/[id]',
-                  query: { id: article.id },
+                  pathname: `articles/edit/${article.id}`,
                 }}
                 passHref={true}
               >

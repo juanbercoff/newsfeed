@@ -9,6 +9,7 @@ import {
   GetManyArticlesDto,
   ArticlesWithLikesResponseDto,
   CreateArticleDto,
+  UpdateArticleDto,
 } from '@newsfeed/data';
 import { Article } from '@prisma/client';
 
@@ -53,6 +54,21 @@ export async function getUserArticles(authToken: string): Promise<Article[]> {
     {
       url: getEndpoint('articles/user'),
       method: 'GET',
+    },
+    authToken
+  );
+}
+
+export async function updateArticle(
+  articleId: string,
+  data: UpdateArticleDto,
+  authToken
+): Promise<Article> {
+  return callApiService<Article>(
+    {
+      url: getEndpoint(`articles/${articleId}`),
+      method: 'PATCH',
+      data,
     },
     authToken
   );
