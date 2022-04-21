@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { SortOptions } from './comments-list';
 import { Fragment } from 'react';

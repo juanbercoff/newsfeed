@@ -9,10 +9,10 @@ import { Comment } from '@prisma/client';
 
 export async function getCommentsWithLikesList({
   articleId,
+  orderBy,
 }: GetCommentsListPayload): Promise<CommentWithAuthorAndLikes[]> {
-  // TODO: Apply payload once it has pagination, order by, etc.
   return callApiService<CommentWithAuthorAndLikes[]>({
-    url: getEndpoint(`comments/${articleId}`),
+    url: getEndpoint(`comments/${articleId}?${orderBy}`),
     method: 'GET',
   });
 }

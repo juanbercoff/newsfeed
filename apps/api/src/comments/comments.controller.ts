@@ -6,6 +6,7 @@ import {
   UseGuards,
   Body,
   Req,
+  Query,
 } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { AuthorizationGuard } from '../authorization/authorization.guard';
@@ -13,16 +14,21 @@ import {
   CreateCommentDto,
   AuthenticatedRequest,
   AuthenticatedUser,
+  CommentOrderByInput,
 } from '@newsfeed/data';
-import { Comment } from '@prisma/client';
+import { Comment, Prisma } from '@prisma/client';
 
 @Controller('comments')
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
   @Get(':articleId')
-  findAll(@Param('articleId') articleId: string) {
-    return this.commentsService.findAll(articleId);
+  findAll(
+    @Param('articleId') articleId: string,
+    @Query()
+    orderBy: CommentOrderByInput
+  ): Promise<Comment[]> {
+    return this.commentsService.findAll(articleId, orderBy);
   }
 
   @UseGuards(AuthorizationGuard)

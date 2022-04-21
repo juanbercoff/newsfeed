@@ -5,8 +5,9 @@ import {
   CommentWithAuthorDto,
   AuthenticatedUser,
   CreateCommentDto,
+  CommentOrderByInput,
 } from '@newsfeed/data';
-import { Comment } from '@prisma/client';
+import { Comment, Prisma } from '@prisma/client';
 import { CommentLikesService } from '../comment-likes/comment-likes.service';
 
 @Injectable()
@@ -17,7 +18,10 @@ export class CommentsService {
     private readonly commentLikesService: CommentLikesService
   ) {}
 
-  async findAll(articleId: string): Promise<CommentWithAuthorDto[]> {
+  async findAll(
+    articleId: string,
+    orderBy: CommentOrderByInput
+  ): Promise<CommentWithAuthorDto[]> {
     const comments = await this.prisma.comment.findMany({
       include: {
         author: {
@@ -29,6 +33,9 @@ export class CommentsService {
       where: {
         articleId,
       },
+      orderBy: orderBy?.createdAt
+        ? { createdAt: orderBy.createdAt }
+        : undefined,
     });
 
     const commentsIds = comments.map((comment) => comment.id);
@@ -44,7 +51,20 @@ export class CommentsService {
       return { ...comment, commentLike };
     });
 
-    return commentsWithLikes;
+    if (orderBy?.createdAt || !orderBy) {
+      return commentsWithLikes;
+    }
+
+    return commentsWithLikes.sort((a, b) => {
+      if (orderBy?.likes === 'desc') {
+        return (
+          (b?.commentLike?._sum?.like || 0) - (a?.commentLike?._sum?.like || 0)
+        );
+      }
+      return (
+        (a?.commentLike?._sum?.like || 0) - (b?.commentLike?._sum?.like || 0)
+      );
+    });
   }
 
   async create(

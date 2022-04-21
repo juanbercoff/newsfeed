@@ -3,6 +3,7 @@ import Comment from './comment';
 import { useGetComments } from '../../hooks/useComments';
 import { useArticleContext } from '../../contexts/article-context';
 import CommentSortionMenu from '../comments/comment-sorting-menu';
+import { CommentOrderBy } from '@newsfeed/data';
 
 //FIX ME
 type CommentProps = {
@@ -16,11 +17,23 @@ export enum SortOptions {
   LeastVoted = 'Menos votados',
 }
 
+const CommentSortingQueryParams: { [key in SortOptions]: CommentOrderBy } = {
+  [SortOptions.Newest]: 'createdAt=desc',
+  [SortOptions.Oldest]: 'createdAt=asc',
+  [SortOptions.MostVoted]: 'likes=desc',
+  [SortOptions.LeastVoted]: 'likes=asc',
+};
+
 const CommentsList = ({ oldComments }: CommentProps) => {
   const { id } = useArticleContext();
   const [selectedOption, setSelectedOption] = useState(SortOptions.Newest);
 
-  const { data: comments, isLoading } = useGetComments({ articleId: id });
+  const { data: comments, isLoading } = useGetComments({
+    articleId: id,
+    orderBy: CommentSortingQueryParams[selectedOption],
+  });
+
+  console.log(comments);
 
   if (isLoading) {
     return <div>Loading...</div>;

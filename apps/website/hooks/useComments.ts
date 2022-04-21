@@ -7,9 +7,9 @@ import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import useAuthToken from './useAuthToken';
 
-export function useGetComments(articleId: GetCommentsListPayload) {
-  return useQuery(['comments', articleId], () =>
-    getCommentsWithLikesList(articleId)
+export function useGetComments(payload: GetCommentsListPayload) {
+  return useQuery(['comments', payload], () =>
+    getCommentsWithLikesList(payload)
   );
 }
 
