@@ -13,6 +13,7 @@ import ArticleFormContent from './article-form-content';
 import Button from '../components/common/button';
 import { UseMutationResult } from 'react-query';
 import { Article } from '@prisma/client';
+import { useRouter } from 'next/router';
 
 export type ArticleFormData = {
   title: string;
@@ -23,7 +24,6 @@ type ArticleContentFormData = {
   level1: string;
   level2: string;
   level3: string;
-  version: number;
 };
 
 type ArticleFormProps = {
@@ -41,6 +41,7 @@ const ArticleForm = ({ article, queryHook }: ArticleFormProps) => {
     watch,
     reset,
   } = useForm<ArticleFormData>();
+  const { push } = useRouter();
 
   const { mutate } = queryHook(article?.id);
 
@@ -91,6 +92,7 @@ const ArticleForm = ({ article, queryHook }: ArticleFormProps) => {
                   register={register}
                   contentSectionNumber={index}
                   articleContent={content}
+                  errors={errors}
                 />
               ))
             : [...Array(numberOfContentSections).keys()].map(
@@ -99,6 +101,7 @@ const ArticleForm = ({ article, queryHook }: ArticleFormProps) => {
                     key={index}
                     register={register}
                     contentSectionNumber={index}
+                    errors={errors}
                   />
                 )
               )}
@@ -122,6 +125,7 @@ const ArticleForm = ({ article, queryHook }: ArticleFormProps) => {
               ? 'bg-slate-200 cursor-not-allowed'
               : 'bg-blue-500 hover:bg-blue-700  active:bg-blue-800'
           } `}
+          onClick={() => console.log(errors)}
         >
           Comentar
         </button>

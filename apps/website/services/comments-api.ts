@@ -1,17 +1,17 @@
 import { callApiService, getEndpoint } from './api-service-utilities';
 
 import {
-  CommentWithAuthorDto,
   CreateCommentDto,
   GetCommentsListPayload,
+  CommentWithAuthorAndLikes,
 } from '@newsfeed/data';
 import { Comment } from '@prisma/client';
 
-export async function getCommentsList({
+export async function getCommentsWithLikesList({
   articleId,
-}: GetCommentsListPayload): Promise<CommentWithAuthorDto[]> {
+}: GetCommentsListPayload): Promise<CommentWithAuthorAndLikes[]> {
   // TODO: Apply payload once it has pagination, order by, etc.
-  return callApiService<CommentWithAuthorDto[]>({
+  return callApiService<CommentWithAuthorAndLikes[]>({
     url: getEndpoint(`comments/${articleId}`),
     method: 'GET',
   });

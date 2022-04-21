@@ -6,7 +6,7 @@ import Link from 'next/link';
 const AccountMenu = () => {
   return (
     <Menu as="div" className="relative">
-      <Menu.Button>
+      <Menu.Button className="flex">
         <Image
           className="rounded-full cursor-pointer"
           alt="profile picture"

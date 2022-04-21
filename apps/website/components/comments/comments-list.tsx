@@ -11,20 +11,12 @@ type CommentProps = {
 
 const CommentsList = ({ oldComments }: CommentProps) => {
   const { id } = useArticleContext();
-  const { data: comments, isLoading } = useGetComments({ articleId: id });
-  const { data: commentLikes, isLoading: isLoadingLikes } =
-    useGetCommentLikes();
 
-  if (isLoading || isLoadingLikes) {
+  const { data: comments, isLoading } = useGetComments({ articleId: id });
+
+  if (isLoading) {
     return <div>Loading...</div>;
   }
-
-  const commentWithLikes = comments.map((comment) => {
-    const commentLike = commentLikes.find(
-      (commentLike) => commentLike.commentId === comment.id
-    );
-    return { ...comment, commentLike };
-  });
 
   if (oldComments) {
     return (
@@ -38,7 +30,7 @@ const CommentsList = ({ oldComments }: CommentProps) => {
               <Comment
                 key={comment.id}
                 comment={comment}
-                commentWithLikes={commentWithLikes}
+                commentWithLikes={comments}
               />
             ))
         ) : (
@@ -50,8 +42,8 @@ const CommentsList = ({ oldComments }: CommentProps) => {
 
   return (
     <div className="flex flex-col space-y-4">
-      {commentWithLikes.length > 0 ? (
-        commentWithLikes
+      {comments.length > 0 ? (
+        comments
           .filter((comment) => {
             return comment.parentCommentId === null;
           })
@@ -59,7 +51,7 @@ const CommentsList = ({ oldComments }: CommentProps) => {
             <Comment
               key={comment.id}
               comment={comment}
-              commentWithLikes={commentWithLikes}
+              commentWithLikes={comments}
             />
           ))
       ) : (

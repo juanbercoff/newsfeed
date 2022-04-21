@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreateArticleHistoryDto } from '@newsfeed/data';
+import { CreateArticleHistoryDto, ArticleHistoryDto } from '@newsfeed/data';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma } from '@prisma/client';
+import { CommentLikesService } from '../comment-likes/comment-likes.service';
 
 @Injectable()
 export class ArticleHistoryService {
@@ -25,15 +25,39 @@ export class ArticleHistoryService {
     });
   }
 
-  getArticleHistory(articleId: string) {
+  async asyncgetArticleHistory(articleId: string) {
     return this.prisma.articleHistory.findMany({
       where: {
         articleId,
       },
       include: {
         articleContent: true,
-        comments: true,
+        comments: {
+          include: {
+            likes: true,
+          },
+        },
       },
     });
+
+    /* const articleHistoryWithCommentLikes = articleHistory.map((article) => {
+      const articleComments = article.comments.map((comment) => {
+        const _sum = comment.likes.reduce((sum, like) => sum + like.like, 0);
+        return {
+          ...comment,
+          commentLike: {
+            _sum: {
+              like: _sum,
+            },
+          },
+        };
+      });
+      return {
+        ...article,
+        comment
+      }
+    });
+    console.log(articleHistoryWithCommentLikes);
+    return articleHistoryWithCommentLikes; */
   }
 }

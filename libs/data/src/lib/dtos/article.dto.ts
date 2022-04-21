@@ -12,6 +12,8 @@ export class CreateArticleDto {
   content: Prisma.ArticleContentUncheckedCreateWithoutArticleInput[];
 }
 
+//TODO content DTo
+
 export class UpdateArticleDto extends PartialType(CreateArticleDto) {}
 
 export class GetManyArticlesDto {

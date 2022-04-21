@@ -24,8 +24,7 @@ const Article = ({ article }: ArticleProps) => {
   const [articleVersionToDisplay, setArticleVersionToDisplay] = useState<
     ArticlesWithLikesResponseDto | ArticleHistoryDto
   >(article);
-  //FIXME
-  const [oldArticle, setOldArticle] = useState<ArticleHistoryDto | null>(null);
+
   const { data } = useGetArticleHistory(article.id);
 
   useEffect(() => {
@@ -53,10 +52,7 @@ const Article = ({ article }: ArticleProps) => {
             <p>Versiones anteriores</p>
             <p
               className="cursor-pointer"
-              onClick={() => {
-                setOldArticle(null);
-                setArticleVersionToDisplay(article);
-              }}
+              onClick={() => setArticleVersionToDisplay(article)}
             >
               Version Actual
             </p>
@@ -66,10 +62,7 @@ const Article = ({ article }: ArticleProps) => {
                     <div
                       key={index}
                       className="flex items-center cursor-pointer"
-                      onClick={() => {
-                        setOldArticle(data[index]);
-                        setArticleVersionToDisplay(data[index]);
-                      }}
+                      onClick={() => setArticleVersionToDisplay(data[index])}
                     >
                       {`Version ${index + 1}`}
                     </div>
@@ -95,7 +88,13 @@ const Article = ({ article }: ArticleProps) => {
           </div>
         </div>
         <CommentForm />
-        <CommentsList oldComments={oldArticle?.comments} />
+        <CommentsList
+          oldComments={
+            'comments' in articleVersionToDisplay
+              ? articleVersionToDisplay?.comments
+              : null
+          }
+        />
       </div>
     </ArticleContext.Provider>
   );

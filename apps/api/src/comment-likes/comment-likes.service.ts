@@ -79,11 +79,16 @@ export class CommentLikesService {
     });
   }
 
-  async getAllCommentsLikes() {
-    return await this.prisma.commentLike.groupBy({
+  getAllCommentsLikes(comments?: string[]) {
+    return this.prisma.commentLike.groupBy({
       by: ['commentId'],
       _sum: {
         like: true,
+      },
+      where: {
+        commentId: {
+          in: comments,
+        },
       },
     });
   }

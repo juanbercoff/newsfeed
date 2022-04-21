@@ -169,7 +169,6 @@ export class ArticlesService {
     const createArticleHistory =
       this.articleHistoryService.create(articleHistoryData);
 
-    console.log(data);
     const updateArticleRecord = this.prisma.article.update({
       where: {
         id: articleId,

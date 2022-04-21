@@ -7,16 +7,18 @@ import {
   CreateCommentDto,
 } from '@newsfeed/data';
 import { Comment } from '@prisma/client';
+import { CommentLikesService } from '../comment-likes/comment-likes.service';
 
 @Injectable()
 export class CommentsService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
+    private readonly commentLikesService: CommentLikesService
   ) {}
 
-  findAll(articleId: string): Promise<CommentWithAuthorDto[]> {
-    return this.prisma.comment.findMany({
+  async findAll(articleId: string): Promise<CommentWithAuthorDto[]> {
+    const comments = await this.prisma.comment.findMany({
       include: {
         author: {
           include: {
@@ -28,6 +30,21 @@ export class CommentsService {
         articleId,
       },
     });
+
+    const commentsIds = comments.map((comment) => comment.id);
+
+    const commentLikes = await this.commentLikesService.getAllCommentsLikes(
+      commentsIds
+    );
+
+    const commentsWithLikes = comments.map((comment) => {
+      const commentLike = commentLikes.find(
+        (commentLike) => commentLike.commentId === comment.id
+      );
+      return { ...comment, commentLike };
+    });
+
+    return commentsWithLikes;
   }
 
   async create(
