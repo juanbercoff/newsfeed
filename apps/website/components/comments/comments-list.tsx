@@ -1,16 +1,24 @@
+import { useState } from 'react';
 import Comment from './comment';
 import { useGetComments } from '../../hooks/useComments';
-import { useGetCommentLikes } from '../../hooks/useCommentsLikes';
 import { useArticleContext } from '../../contexts/article-context';
-import { CommentWithAuthorAndLikes } from '@newsfeed/data';
+import CommentSortionMenu from '../comments/comment-sorting-menu';
 
 //FIX ME
 type CommentProps = {
   oldComments?: any;
 };
 
+export enum SortOptions {
+  Newest = 'Más nuevos',
+  Oldest = 'Más antiguos',
+  MostVoted = 'Mas votados',
+  LeastVoted = 'Menos votados',
+}
+
 const CommentsList = ({ oldComments }: CommentProps) => {
   const { id } = useArticleContext();
+  const [selectedOption, setSelectedOption] = useState(SortOptions.Newest);
 
   const { data: comments, isLoading } = useGetComments({ articleId: id });
 
@@ -41,22 +49,28 @@ const CommentsList = ({ oldComments }: CommentProps) => {
   }
 
   return (
-    <div className="flex flex-col space-y-4">
-      {comments.length > 0 ? (
-        comments
-          .filter((comment) => {
-            return comment.parentCommentId === null;
-          })
-          .map((comment) => (
-            <Comment
-              key={comment.id}
-              comment={comment}
-              commentWithLikes={comments}
-            />
-          ))
-      ) : (
-        <div>No hay comentarios</div>
-      )}
+    <div className="divide-y">
+      <CommentSortionMenu
+        selectedOption={selectedOption}
+        setSelectedOption={setSelectedOption}
+      />
+      <div className="flex flex-col space-y-4 pt-6">
+        {comments.length > 0 ? (
+          comments
+            .filter((comment) => {
+              return comment.parentCommentId === null;
+            })
+            .map((comment) => (
+              <Comment
+                key={comment.id}
+                comment={comment}
+                commentWithLikes={comments}
+              />
+            ))
+        ) : (
+          <div>No hay comentarios</div>
+        )}
+      </div>
     </div>
   );
 };

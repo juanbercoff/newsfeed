@@ -25,7 +25,7 @@ export class ArticleHistoryService {
     });
   }
 
-  async asyncgetArticleHistory(articleId: string) {
+  getArticleHistory(articleId: string) {
     return this.prisma.articleHistory.findMany({
       where: {
         articleId,
