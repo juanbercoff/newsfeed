@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 
-type ButtonUse = `primary` | `secondary` | `destructive`;
+type ButtonUse = `primary` | `secondary` | `destructive` | `disabled`;
 type ButtonSize = `xs` | `sm` | `md`;
 type ButtonType = `button` | `submit`;
 
@@ -8,9 +8,10 @@ type ButtonProps = {
   size?: ButtonSize;
   type?: ButtonType;
   use?: ButtonUse;
-  onClick?: (e: any) => void;
-  text: string;
+  onClick?: (e) => void;
+  children: React.ReactNode;
   className?: string;
+  disabled?: boolean;
 };
 
 const BUTTON_SIZE: { [key in ButtonSize]: string } = {
@@ -23,29 +24,38 @@ const BUTTON_COLOR: { [key in ButtonUse]: string } = {
   destructive: `text-white bg-red-600 hover:bg-red-700`,
   primary: `text-white bg-indigo-600 hover:bg-indigo-700`,
   secondary: ``,
+  disabled: `text-gray-500 bg-gray-200 cursor-not-allowed`,
 };
 
 const Button = forwardRef<HTMLInputElement, ButtonProps>(
   (
     {
       className = ``,
-      text,
+      children,
       use = `primary`,
-      size = `xs`,
+      size = `sm`,
       type = `button`,
       onClick = () => ({}),
+      disabled = false,
     }: ButtonProps,
     ref
   ) => {
+    const handleDisabledClass = () =>
+      disabled ? BUTTON_COLOR['disabled'] : BUTTON_COLOR[use];
+
+    const buttonClass = `${
+      BUTTON_SIZE[size]
+    } ${handleDisabledClass()} ${className}`;
     return (
       <button
         ref={ref}
         {...{ onClick, type }}
+        disabled={disabled}
         className={`inline-flex items-center border border-transparent
         font-medium rounded shadow-sm focus:outline-none focus:ring-2
-        focus:ring-offset-2 focus:ring-indigo-500 justify-center ${BUTTON_SIZE[size]} ${BUTTON_COLOR[use]} ${className}`}
+        focus:ring-offset-2 focus:ring-indigo-500 justify-center ${buttonClass}`}
       >
-        {text}
+        {children}
       </button>
     );
   }

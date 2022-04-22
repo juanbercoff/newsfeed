@@ -36,9 +36,13 @@ const YourArticles = () => {
                 }}
                 passHref={true}
               >
-                <Button use="primary" size="sm" text="Editar" />
+                <Button use="primary" size="sm">
+                  Editar
+                </Button>
               </Link>
-              <Button use="secondary" size="sm" text="Eliminar" />
+              <Button use="secondary" size="sm">
+                Eliminar
+              </Button>
             </div>
           </div>
         ))}

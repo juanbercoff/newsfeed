@@ -47,7 +47,7 @@ export function useGetOneArticle(
   });
 }
 
-export function useCreateArticle() {
+export function useCreateArticle(onSuccess: (url: string) => Promise<boolean>) {
   const queryClient = useQueryClient();
   const { authToken } = useAuthToken();
   return useMutation(
@@ -56,6 +56,7 @@ export function useCreateArticle() {
       onSuccess: () => {
         queryClient.invalidateQueries('articles');
         toast.success('Articulo creado con exito');
+        onSuccess('/feed');
       },
     }
   );
@@ -72,7 +73,10 @@ export function useGetUserArticles() {
   );
 }
 
-export function useUpdateArticle(articleId: string) {
+export function useUpdateArticle(
+  articleId: string,
+  onSuccess: (url: string) => Promise<boolean>
+) {
   const queryClient = useQueryClient();
   const { authToken } = useAuthToken();
   return useMutation(

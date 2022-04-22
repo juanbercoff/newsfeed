@@ -1,7 +1,7 @@
 import React from 'react';
-import ArticleForm from '../../../screens/article-form';
+import EditArticleForm from '../../../screens/edit-article-form';
 import { useRouter } from 'next/router';
-import { useGetOneArticle, useUpdateArticle } from '../../../hooks/useArticles';
+import { useGetOneArticle } from '../../../hooks/useArticles';
 import Spinner from '../../../components/common/spinner';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { getWithPageRequiredDefaultOptions } from '../../../utils/auth';
@@ -25,7 +25,7 @@ const EditArticle = () => {
 
   return (
     <div className="p-5">
-      <ArticleForm article={article} queryHook={useUpdateArticle} />
+      <EditArticleForm article={article} />
     </div>
   );
 };

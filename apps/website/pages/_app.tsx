@@ -6,6 +6,7 @@ import { UserProvider } from '@auth0/nextjs-auth0';
 import { UserProfileContainer } from '../contexts/user-context';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import { ToastContainer } from 'react-toastify';
 
 import App from 'next/app';
 
@@ -17,6 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <QueryClientProvider client={queryClient}>
           <Layout>
             <Component {...pageProps} />
+            <ToastContainer position="bottom-center" />
           </Layout>
           <ReactQueryDevtools />
         </QueryClientProvider>

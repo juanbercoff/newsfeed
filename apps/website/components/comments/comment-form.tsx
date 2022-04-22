@@ -70,7 +70,6 @@ const CommentForm = ({ commentId, setShowForm }: CommentFormProps) => {
         {errors.comment?.type === 'maxLength' &&
           'Superaste el limite de 2000 caracteres'}
       </form>
-      <ToastContainer position="bottom-center" />
     </>
   );
 };
