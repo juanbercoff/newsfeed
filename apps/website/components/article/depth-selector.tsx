@@ -1,5 +1,8 @@
-import { RiNumber0, RiNumber1, RiNumber2 } from 'react-icons/ri';
-import LevelNumberIcon from './depth-number-icon';
+import { Tab } from '@headlessui/react';
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ');
+}
 
 type DepthSelectorProps = {
   setActiveIndex: (index: number) => void;
@@ -17,9 +20,73 @@ const DepthSelector = ({
   activeIndex,
 }: DepthSelectorProps) => {
   return (
-    <div className="flex space-x-2 px-2">
-      <p>Profundidad</p>
-      <LevelNumberIcon
+    <div className="w-full max-w-md px-2 py-16 sm:px-0">
+      <Tab.Group
+        selectedIndex={activeIndex}
+        onChange={(index) => {
+          setActiveIndex(index);
+          switch (index) {
+            case 0:
+              handleLevels(false);
+              break;
+            case 1:
+              setShowFirstLevel(true);
+              setShowSecondLevel(false);
+              break;
+            case 2:
+              handleLevels(true);
+          }
+        }}
+      >
+        <Tab.List className="flex p-1 space-x-1 bg-white rounded-xl">
+          <Tab
+            value={0}
+            className={({ selected }) =>
+              classNames(
+                'w-full py-2.5 text-sm leading-5 font-medium rounded-lg px-1',
+                'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60',
+                selected
+                  ? 'bg-sky-900 text-white'
+                  : 'text-blue-700 hover:bg-white/[0.12] hover:text-sky-900'
+              )
+            }
+          >
+            Easy
+          </Tab>
+          <Tab
+            value={1}
+            className={({ selected }) =>
+              classNames(
+                'w-full py-2.5 text-sm leading-5 font-medium rounded-lg px-1',
+                'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60',
+                selected
+                  ? 'bg-sky-900 text-white'
+                  : 'text-blue-700 hover:bg-white/[0.12] hover:text-sky-900'
+              )
+            }
+          >
+            Medium
+          </Tab>
+          <Tab
+            value={2}
+            className={({ selected }) =>
+              classNames(
+                'w-full py-2.5 text-sm leading-5 font-medium rounded-lg px-1',
+                'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60',
+                selected
+                  ? 'bg-sky-900 text-white'
+                  : 'text-blue-700 hover:bg-white/[0.12] hover:text-sky-900'
+              )
+            }
+          >
+            Hard
+          </Tab>
+        </Tab.List>
+      </Tab.Group>
+    </div>
+  );
+  {
+    /*       <LevelNumberIcon
         onClick={() => {
           setActiveIndex(0);
           handleLevels(false);
@@ -44,8 +111,8 @@ const DepthSelector = ({
         Icon={RiNumber2}
         isActive={activeIndex === 2}
       />
-    </div>
-  );
+     */
+  }
 };
 
 export default DepthSelector;

@@ -9,8 +9,9 @@ import ArticleContent from '../../components/article/article-content';
 import { useEffect, useState } from 'react';
 import { ArticleContext } from '../../contexts/article-context';
 import { usePostArticleVisit } from '../../hooks/useArticleVisits';
-import DepthSelector from '../../components/article/depth-selector';
 import { useGetArticleHistory } from '../../hooks/useArticleHistory';
+import DepthSelector from '../../components/article/depth-selector';
+import VersionControl from '../../components/article/version-control';
 
 interface ArticleProps {
   article: ArticlesWithLikesResponseDto;
@@ -38,9 +39,8 @@ const Article = ({ article }: ArticleProps) => {
 
   return (
     <ArticleContext.Provider value={article}>
-      <div className="space-y-3">
-        <h1 className="font-bold text-center text-4xl">{article.title}</h1>
-        <div className="flex justify-between">
+      <div className="relative space-y-3 ">
+        <div className="absolute top-0 right-[-240px]">
           <DepthSelector
             setActiveIndex={setActiveIndex}
             setShowFirstLevel={setShowFirstLevel}
@@ -48,29 +48,15 @@ const Article = ({ article }: ArticleProps) => {
             handleLevels={handleLevels}
             activeIndex={activeIndex}
           />
-          <div className="flex space-x-2">
-            <p>Versiones anteriores</p>
-            <p
-              className="cursor-pointer"
-              onClick={() => setArticleVersionToDisplay(article)}
-            >
-              Version Actual
-            </p>
-            {article.articleHistory.length > 0
-              ? article.articleHistory.map((history, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="flex items-center cursor-pointer"
-                      onClick={() => setArticleVersionToDisplay(data[index])}
-                    >
-                      {`Version ${index + 1}`}
-                    </div>
-                  );
-                })
-              : null}
-          </div>
+          <VersionControl
+            article={article}
+            articleHistory={data}
+            articleVersionToDisplay={articleVersionToDisplay}
+            setArticleVersionToDisplay={setArticleVersionToDisplay}
+          />
         </div>
+
+        <h1 className="font-bold text-center text-4xl">{article.title}</h1>
         <div className="flex flex-row">
           <div>
             {articleVersionToDisplay.articleContent.map((articleContent) => (

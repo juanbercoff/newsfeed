@@ -1,6 +1,5 @@
 import { useForm } from 'react-hook-form';
 import { CreateCommentDto } from '@newsfeed/data';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useArticleContext } from '../../contexts/article-context';
 import { useCreateComment } from '../../hooks/useComments';
@@ -41,7 +40,7 @@ const CommentForm = ({ commentId, setShowForm }: CommentFormProps) => {
         <div className="border">
           <textarea
             {...register('comment', { required: true, maxLength: 2000 })}
-            className="w-full h-[108px] bg-transparent pt-2 px-4 block rounded min-h-[108px]"
+            className="w-full h-[108px] bg-transparent pt-2 px-4 block rounded min-h-[108px] outline-none"
           ></textarea>
 
           <div className="flex justify-end p-4 bg-slate-400 gap-2">

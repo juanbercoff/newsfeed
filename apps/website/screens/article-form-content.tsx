@@ -33,7 +33,7 @@ const ArticleFormContent = ({
           maxLength: 800,
           value: articleContent?.level1 || '',
         })}
-        className="bg-transparent p-2 rounded min-h-[108px] text-lg w-full overflow-hidden border-2 resize-none focus:outline-none "
+        className="bg-transparent p-2 rounded min-h-[108px] text-lg w-full overflow-hidden border-2 !resize-none outline-none"
       />
       <FormError>
         {errors.content?.[contentSectionNumber]?.level1?.type === 'maxLength' &&

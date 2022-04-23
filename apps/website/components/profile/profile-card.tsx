@@ -23,18 +23,16 @@ const ProfileCard = ({ title, value }: ProfileCardProps) => {
         <Button
           use="primary"
           size="sm"
-          text={isEditing ? 'Guardar' : 'Editar'}
           onClick={() => {
             setIsEditing(true);
           }}
-        />
+        >
+          {isEditing ? 'Guardar' : 'Editar'}
+        </Button>
         {isEditing ? (
-          <Button
-            use="secondary"
-            size="sm"
-            text="Cancelar"
-            onClick={() => setIsEditing(false)}
-          />
+          <Button use="secondary" size="sm" onClick={() => setIsEditing(false)}>
+            Cancelar
+          </Button>
         ) : null}
       </div>
     </div>

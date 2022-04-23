@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import useAuthToken from './useAuthToken';
 
 export function useGetComments(payload: GetCommentsListPayload) {
-  return useQuery(['comments', payload], () =>
+  return useQuery(['comments', payload.articleId, payload.orderBy], () =>
     getCommentsWithLikesList(payload)
   );
 }

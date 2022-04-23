@@ -99,7 +99,11 @@ export class ArticlesService {
           },
         },
         articleContent: true,
-        articleHistory: true,
+        articleHistory: {
+          orderBy: {
+            createdAt: 'asc',
+          },
+        },
       },
     });
 
