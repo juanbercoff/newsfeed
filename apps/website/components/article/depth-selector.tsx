@@ -20,7 +20,7 @@ const DepthSelector = ({
   activeIndex,
 }: DepthSelectorProps) => {
   return (
-    <div className="w-full max-w-md px-2 py-16 sm:px-0">
+    <div>
       <Tab.Group
         selectedIndex={activeIndex}
         onChange={(index) => {
@@ -85,34 +85,6 @@ const DepthSelector = ({
       </Tab.Group>
     </div>
   );
-  {
-    /*       <LevelNumberIcon
-        onClick={() => {
-          setActiveIndex(0);
-          handleLevels(false);
-        }}
-        Icon={RiNumber0}
-        isActive={activeIndex === 0}
-      />
-      <LevelNumberIcon
-        onClick={() => {
-          setActiveIndex(1);
-          setShowFirstLevel(true);
-          setShowSecondLevel(false);
-        }}
-        Icon={RiNumber1}
-        isActive={activeIndex === 1}
-      />
-      <LevelNumberIcon
-        onClick={() => {
-          setActiveIndex(2);
-          handleLevels(true);
-        }}
-        Icon={RiNumber2}
-        isActive={activeIndex === 2}
-      />
-     */
-  }
 };
 
 export default DepthSelector;

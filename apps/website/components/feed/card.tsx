@@ -25,8 +25,8 @@ const Card = ({ article }: CardProps) => {
   );
   return (
     <Link href={`/feed/${article.id}`} passHref={true}>
-      <div className="border flex justify-center flex-col items-start max-h-lg bg-white hover:cursor-pointer">
-        <div className="relative w-full h-[350px]">
+      <div className="border flex justify-center flex-col items-start max-h-lg bg-white cursor-pointer">
+        <div className="relative w-full h-[310px]">
           <Image
             src="/image.webp"
             layout="fill"
@@ -34,14 +34,14 @@ const Card = ({ article }: CardProps) => {
             alt="news picture"
           />
         </div>
-
         <div className="p-4 space-y-2">
-          <p className="text-3xl font-medium hover:text">{article.title}</p>
-
+          <p className="text-3xl font-medium">{article.title}</p>
+          <p className="text-md">
+            {article.articleContent[0].level1.slice(0, 220) + '...'}
+          </p>
           <p className="text-sm text-gray-500 mt-2">
             {Utils.formatDateRelative(article.createdAt)}
           </p>
-
           <p className="text-lg">{article.author.profile.userName}</p>
           <Actions
             countOfComments={article._count.comments}

@@ -9,6 +9,8 @@ import { useGetArticles } from '../../hooks/useArticles';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
 import Spinner from '../../components/common/spinner';
+import useBreakpoints from '../../hooks/useBreakpoints';
+import CardMobile from '../../components/feed/card-mobile';
 
 interface FeedProps {
   articles: ArticlesWithLikesResponseDto[];
@@ -25,6 +27,7 @@ const Feed = ({ articles }: FeedProps) => {
     isLoading,
   } = useGetArticles(articles);
   const { ref, inView } = useInView();
+  const { isLg } = useBreakpoints();
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -39,7 +42,7 @@ const Feed = ({ articles }: FeedProps) => {
   return (
     <div className="flex flex-col space-y-4">
       {articlesData?.pages.map((page) =>
-        page.map((article) => <Card key={article.id} article={article} />)
+        page.map((article) => <CardMobile key={article.id} article={article} />)
       )}
       <span className="invisible" ref={ref}>
         Intersection observer marker

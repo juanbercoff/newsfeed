@@ -11,7 +11,9 @@ import { ArticleContext } from '../../contexts/article-context';
 import { usePostArticleVisit } from '../../hooks/useArticleVisits';
 import { useGetArticleHistory } from '../../hooks/useArticleHistory';
 import DepthSelector from '../../components/article/depth-selector';
+import VersionControlMobile from '../../components/article/version-control-mobile';
 import VersionControl from '../../components/article/version-control';
+import useBreakpoints from '../../hooks/useBreakpoints';
 
 interface ArticleProps {
   article: ArticlesWithLikesResponseDto;
@@ -37,10 +39,12 @@ const Article = ({ article }: ArticleProps) => {
     setShowSecondLevel(shouldOpen);
   };
 
+  const { isLg } = useBreakpoints();
+
   return (
     <ArticleContext.Provider value={article}>
       <div className="relative space-y-3 ">
-        <div className="absolute top-0 right-[-240px]">
+        <div className="static top-0 right-[-240px] lg:absolute lg:block flex justify-center space-x-2 space-y-2 items-baseline">
           <DepthSelector
             setActiveIndex={setActiveIndex}
             setShowFirstLevel={setShowFirstLevel}
@@ -48,15 +52,25 @@ const Article = ({ article }: ArticleProps) => {
             handleLevels={handleLevels}
             activeIndex={activeIndex}
           />
-          <VersionControl
-            article={article}
-            articleHistory={data}
-            articleVersionToDisplay={articleVersionToDisplay}
-            setArticleVersionToDisplay={setArticleVersionToDisplay}
-          />
+          {isLg ? (
+            <VersionControl
+              article={article}
+              articleHistory={data}
+              articleVersionToDisplay={articleVersionToDisplay}
+              setArticleVersionToDisplay={setArticleVersionToDisplay}
+            />
+          ) : (
+            <VersionControlMobile
+              article={article}
+              articleHistory={data}
+              articleVersionToDisplay={articleVersionToDisplay}
+              setArticleVersionToDisplay={setArticleVersionToDisplay}
+            />
+          )}
         </div>
-
-        <h1 className="font-bold text-center text-4xl">{article.title}</h1>
+        <h1 className="font-bold text-center lg:text-4xl text-2xl">
+          {article.title}
+        </h1>
         <div className="flex flex-row">
           <div>
             {articleVersionToDisplay.articleContent.map((articleContent) => (

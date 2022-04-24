@@ -5,7 +5,7 @@ import {
 } from '@newsfeed/data';
 import VersionControlItem from './version-control-item';
 
-type VersionControlItemProps = {
+export type VersionControlItemProps = {
   article: ArticlesWithLikesResponseDto;
   articleHistory: ArticleHistoryDto[];
   articleVersionToDisplay: ArticlesWithLikesResponseDto | ArticleHistoryDto;
