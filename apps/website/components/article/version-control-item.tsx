@@ -42,7 +42,7 @@ const VersionControlItem = ({
                     checked ? 'text-sky-100' : 'text-gray-500'
                   }`}
                 >
-                  {Utils.formatDateRelative(createdDate)}
+                  {Utils.formatDateTimeRelative(createdDate)}
                 </RadioGroup.Description>
               </div>
             </div>

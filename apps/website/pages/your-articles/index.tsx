@@ -24,7 +24,7 @@ const YourArticles = () => {
             <div>
               <p className="text-lg font-bold">{article.title}</p>
               <p className="text-sm">
-                {`Modificado por ultima vez el ${Utils.formatDateRelative(
+                {`Modificado por ultima vez el ${Utils.formatDateTimeRelative(
                   article.updatedAt
                 )}`}
               </p>

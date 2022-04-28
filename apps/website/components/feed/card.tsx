@@ -40,7 +40,7 @@ const Card = ({ article }: CardProps) => {
             {article.articleContent[0].level1.slice(0, 220) + '...'}
           </p>
           <p className="text-sm text-gray-500 mt-2">
-            {Utils.formatDateRelative(article.createdAt)}
+            {Utils.formatDateTimeRelative(article.createdAt)}
           </p>
           <p className="text-lg">{article.author.profile.userName}</p>
           <Actions

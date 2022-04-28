@@ -14,6 +14,8 @@ import DepthSelector from '../../components/article/depth-selector';
 import VersionControlMobile from '../../components/article/version-control-mobile';
 import VersionControl from '../../components/article/version-control';
 import useBreakpoints from '../../hooks/useBreakpoints';
+import Image from 'next/image';
+import ArticleAuthorInformation from '../../components/common/article-author-information';
 
 interface ArticleProps {
   article: ArticlesWithLikesResponseDto;
@@ -43,8 +45,8 @@ const Article = ({ article }: ArticleProps) => {
 
   return (
     <ArticleContext.Provider value={article}>
-      <div className="relative space-y-3 ">
-        <div className="static top-0 right-[-240px] lg:absolute lg:block flex justify-center space-x-2 space-y-2 items-baseline">
+      <div className="relative space-y-3 px-6">
+        <div className="static top-0 right-[-200px] lg:absolute lg:block flex justify-center space-x-2 space-y-2 items-baseline">
           <DepthSelector
             setActiveIndex={setActiveIndex}
             setShowFirstLevel={setShowFirstLevel}
@@ -68,9 +70,11 @@ const Article = ({ article }: ArticleProps) => {
             />
           )}
         </div>
-        <h1 className="font-bold text-center lg:text-4xl text-2xl">
-          {article.title}
-        </h1>
+        <ArticleAuthorInformation
+          userProfile={article.author.profile}
+          profileImageSize={30}
+        />
+        <h1 className="font-bold lg:text-4xl text-2xl">{article.title}</h1>
         <div className="flex flex-row">
           <div>
             {articleVersionToDisplay.articleContent.map((articleContent) => (

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { CreateArticleDto } from '@newsfeed/data';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './article-form-style.module.css';
 import { useEffect } from 'react';
@@ -9,10 +8,12 @@ import ArticleFormContent from './article-form-content';
 import Button from '../components/common/button';
 import { useRouter } from 'next/router';
 import { useCreateArticle } from '../hooks/useArticles';
+import UnsplashSearch from '../components/common/unsplash-search';
 
 export type ArticleFormData = {
   title: string;
   content: ArticleContentFormData[];
+  imageUrl: string | null;
 };
 
 type ArticleContentFormData = {
@@ -26,7 +27,6 @@ const NewArticleForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-    unregister,
   } = useForm<ArticleFormData>({
     shouldUnregister: true,
   });
@@ -35,6 +35,7 @@ const NewArticleForm = () => {
   const { mutate } = useCreateArticle(push);
 
   const [numberOfContentSections, setNumberOfContentSections] = useState(1);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     document.querySelectorAll('textarea').forEach((element) => {
@@ -52,8 +53,10 @@ const NewArticleForm = () => {
       content: formData.content.map((content) => ({
         ...content,
       })),
+      imageUrl: selectedImage,
     };
-    mutate(data);
+    console.log(data);
+    //mutate(data);
   };
 
   return (
@@ -72,6 +75,10 @@ const NewArticleForm = () => {
             ].join(' ')}
             placeholder="Titulo del articulo"
           ></input>
+          <UnsplashSearch
+            setSelectedImage={setSelectedImage}
+            selectedImage={selectedImage}
+          />
           {[...Array(numberOfContentSections).keys()].map((content, index) => (
             <ArticleFormContent
               key={index}

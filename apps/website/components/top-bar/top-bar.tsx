@@ -4,6 +4,7 @@ import AccountMenu from './account-menu';
 
 const TopBar = () => {
   const { user } = useUser();
+  console.log('userrer', user);
 
   return (
     <div className="flex fixed top-0 w-full justify-center border-b border-gray-300 bg-white z-10 px-4">

@@ -12,3 +12,4 @@ export * from './lib/dtos/article-likes.dto';
 export * from './lib/dtos/comment-likes.dto';
 export * from './lib/dtos/article-visits.dto';
 export * from './lib/dtos/article-history.dto';
+export * from './lib/dtos/article-tags.dto';

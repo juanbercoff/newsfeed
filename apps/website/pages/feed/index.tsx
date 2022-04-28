@@ -27,7 +27,6 @@ const Feed = ({ articles }: FeedProps) => {
     isLoading,
   } = useGetArticles(articles);
   const { ref, inView } = useInView();
-  const { isLg } = useBreakpoints();
 
   useEffect(() => {
     if (inView && hasNextPage) {
