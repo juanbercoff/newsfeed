@@ -1,4 +1,3 @@
-import Card from '../../components/feed/card';
 import { getArticlesList } from '../../services/articles-api';
 import {
   ArticlesWithLikesResponseDto,
@@ -9,8 +8,11 @@ import { useGetArticles } from '../../hooks/useArticles';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
 import Spinner from '../../components/common/spinner';
-import useBreakpoints from '../../hooks/useBreakpoints';
 import CardMobile from '../../components/feed/card-mobile';
+import FilterBar from '../../components/feed/filter-bar';
+import { useGetTags } from '../../hooks/useTags';
+import { useState } from 'react';
+import { Tag } from '@prisma/client';
 
 interface FeedProps {
   articles: ArticlesWithLikesResponseDto[];
@@ -19,14 +21,20 @@ interface FeedProps {
 
 const Feed = ({ articles }: FeedProps) => {
   useUserProfileContext();
+  const [selectedTags, setSelectedTags] = useState<Tag[]>();
+  const formatFilterTags = () => {
+    return selectedTags?.map((tag) => `tags=${tag.name}`).join('&');
+  };
+
   const {
     data: articlesData,
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
     isLoading,
-  } = useGetArticles(articles);
+  } = useGetArticles(articles, formatFilterTags());
   const { ref, inView } = useInView();
+  const { data: allTags, isLoading: allTagsIsLoading } = useGetTags();
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -34,21 +42,30 @@ const Feed = ({ articles }: FeedProps) => {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  if (isLoading) {
+  if (isLoading || allTagsIsLoading) {
     return <Spinner />;
   }
 
   return (
-    <div className="flex flex-col space-y-4">
-      {articlesData?.pages.map((page) =>
-        page.map((article) => <CardMobile key={article.id} article={article} />)
-      )}
-      <span className="invisible" ref={ref}>
-        Intersection observer marker
-      </span>
-      {isFetchingNextPage && <Spinner />}
-      {!hasNextPage && <div>No hay mas articulos</div>}
-    </div>
+    <>
+      <FilterBar
+        allTags={allTags}
+        selectedTags={selectedTags}
+        setSelectedTags={setSelectedTags}
+      />
+      <div className="relative flex flex-col space-y-4">
+        {articlesData?.pages.map((page) =>
+          page.map((article) => (
+            <CardMobile key={article.id} article={article} />
+          ))
+        )}
+        <span className="invisible" ref={ref}>
+          Intersection observer marker
+        </span>
+        {isFetchingNextPage && <Spinner />}
+        {!hasNextPage && <div>No hay mas articulos</div>}
+      </div>
+    </>
   );
 };
 

@@ -10,16 +10,19 @@ import {
   ArticlesWithLikesResponseDto,
   CreateArticleDto,
   UpdateArticleDto,
+  GetArticlesPayload,
 } from '@newsfeed/data';
 import { Article } from '@prisma/client';
 
 export async function getArticlesList({
   cursor,
-}: GetManyArticlesDto): Promise<ArticlesWithLikesResponseDto[]> {
+  tags,
+}: GetArticlesPayload): Promise<ArticlesWithLikesResponseDto[]> {
   // TODO: Apply payload once it has pagination, order by, etc.
-  const url = cursor
-    ? getEndpointWithPagination('articles', cursor)
-    : getEndpoint('articles');
+  const url =
+    cursor || tags
+      ? getEndpointWithPagination('articles', cursor, tags)
+      : getEndpoint('articles');
   return callApiService<ArticlesWithLikesResponseDto[]>({
     url,
     method: 'GET',

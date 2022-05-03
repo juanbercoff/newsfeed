@@ -5,3 +5,10 @@ export class CreateArticleVisitDto {
   @IsUUID()
   articleId: string;
 }
+
+export type ArticleVisitDto = {
+  articleId: string;
+  _count: {
+    id: number;
+  };
+};

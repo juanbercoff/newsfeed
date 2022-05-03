@@ -19,6 +19,7 @@ model User {
   comments     Comment[]
   articleLikes ArticleLike[]
   commentLikes CommentLike[]
+  userTag      UserTag[]
 }
 
 model UserProfile {
@@ -32,17 +33,19 @@ model UserProfile {
 }
 
 model Article {
-  id             String           @id @default(uuid()) @db.Uuid
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  title          String
-  authorId       String           @db.Uuid
-  author         User             @relation(fields: [authorId], references: [id])
-  comments       Comment[]
-  likes          ArticleLike[]
-  articleContent ArticleContent[]
-  articleVisit   ArticleVisit[]
-  articleHistory ArticleHistory[]
+  id               String           @id @default(uuid()) @db.Uuid
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  title            String
+  authorId         String           @db.Uuid
+  author           User             @relation(fields: [authorId], references: [id])
+  portraitImageUrl String           @db.VarChar(255)
+  comments         Comment[]
+  likes            ArticleLike[]
+  articleContent   ArticleContent[]
+  articleVisit     ArticleVisit[]
+  articleHistory   ArticleHistory[]
+  articleTag       ArticleTag[]
 }
 
 model Comment {
@@ -114,4 +117,33 @@ model ArticleHistory {
   article        Article          @relation(fields: [articleId], references: [id])
   articleContent ArticleContent[]
   comments       Comment[]
+}
+
+model Tag {
+  id         String       @id @default(uuid()) @db.Uuid
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  name       String       @db.VarChar(50)
+  articleTag ArticleTag[]
+  userTag    UserTag[]
+}
+
+model ArticleTag {
+  id        String   @id @default(uuid()) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  articleId String   @db.Uuid
+  tagId     String   @db.Uuid
+  article   Article  @relation(fields: [articleId], references: [id])
+  tag       Tag      @relation(fields: [tagId], references: [id])
+}
+
+model UserTag {
+  id        String   @id @default(uuid()) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @db.Uuid
+  tagId     String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id])
+  tag       Tag      @relation(fields: [tagId], references: [id])
 }

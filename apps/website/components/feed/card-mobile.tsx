@@ -12,6 +12,7 @@ import useLikes from '../../hooks/useLikes';
 import useBreakpoints from '../../hooks/useBreakpoints';
 import ArticleTags from '../common/article-tags';
 import ArticleAuthorInformation from '../common/article-author-information';
+import { useGetCountOfComments } from '../../hooks/useComments';
 
 interface CardProps {
   article: ArticleResponseDto & { articleLike: AllArticlesLikesDto };
@@ -25,6 +26,8 @@ const CardMobile = ({ article }: CardProps) => {
     deleteArticleLike,
     postArticleLike
   );
+  const { data, isLoading } = useGetCountOfComments(article.id);
+
   const { isXs } = useBreakpoints();
   return (
     <Link href={`/feed/${article.id}`} passHref>
@@ -38,16 +41,16 @@ const CardMobile = ({ article }: CardProps) => {
               {article.title}
             </p>
             <ArticleAuthorInformation
-              userProfile={article.author.profile}
+              userProfile={article?.author?.profile}
               profileImageSize={20}
             />
             {!isXs ? (
               <p className="text-md line-clamp-4">
-                {article.articleContent[0].level1}
+                {article?.articleContent[0]?.level1}
               </p>
             ) : null}
             <Actions
-              countOfComments={article._count.comments}
+              countOfComments={!isLoading ? data : 0}
               isArticle={true}
               uiLikes={uiLikes}
               like={hasBeenLiked?.like}
@@ -56,7 +59,7 @@ const CardMobile = ({ article }: CardProps) => {
           </div>
           <div className="relative w-[80px] h-[80px] sm:w-[160px] sm:h-[160px]">
             <Image
-              src="/image.webp"
+              src={article.portraitImageUrl}
               layout="fill"
               objectFit="cover"
               alt="article picture"

@@ -1,5 +1,4 @@
-import styles from './article-form-style.module.css';
-import { UseFormRegister, FieldValues, FieldError } from 'react-hook-form';
+import { UseFormRegister, FieldError } from 'react-hook-form';
 import { ArticleFormData } from './new-article-form';
 import { ArticleContent } from '@prisma/client';
 import FormError from '../components/common/form-error';

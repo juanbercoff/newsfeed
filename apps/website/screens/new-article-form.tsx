@@ -13,7 +13,7 @@ import UnsplashSearch from '../components/common/unsplash-search';
 export type ArticleFormData = {
   title: string;
   content: ArticleContentFormData[];
-  imageUrl: string | null;
+  portraitImageUrl?: string | null;
 };
 
 type ArticleContentFormData = {
@@ -53,10 +53,9 @@ const NewArticleForm = () => {
       content: formData.content.map((content) => ({
         ...content,
       })),
-      imageUrl: selectedImage,
+      portraitImageUrl: selectedImage,
     };
-    console.log(data);
-    //mutate(data);
+    mutate(data);
   };
 
   return (

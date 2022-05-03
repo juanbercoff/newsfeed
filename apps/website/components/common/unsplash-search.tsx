@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { useGetImages } from '../../hooks/useUnsplash';
 import useDebounce from '../../hooks/useDebounce';
 import Spinner from './spinner';
+import Image from 'next/image';
+import ImageOptions from '../article-form/image-options';
 
 type UnsplashSearchProps = {
   selectedImage: string;
-  setSelectedImage: (image: string) => void;
+  setSelectedImage: (image: string | null) => void;
 };
 
 const UnsplashSearch = ({
@@ -21,44 +23,67 @@ const UnsplashSearch = ({
     pageNumber
   );
 
+  console.log(images);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPageNumber(1);
     setSearchTerm(e.target.value);
   };
 
-  console.log(images);
+  const handleImageAspectRatio = (image) => {
+    if (image.width > image.height) {
+      return 'horizontal';
+    }
+    return 'vertical';
+  };
 
   if (selectedImage) {
-    return <img src={selectedImage} alt="" className="py-2"></img>;
+    return (
+      <div className="relative flex justify-center py-2">
+        <ImageOptions setSelectedImage={setSelectedImage} />
+        <div className="hover:opacity-60">
+          <Image
+            src={selectedImage}
+            objectFit="cover"
+            alt="article picture"
+            width={842}
+            height={615}
+          />
+        </div>
+      </div>
+    );
   }
 
   return (
     <div>
       <div className="flex flex-col">
         <input
-          className="outline-none border-b-2 bg-transparent w-full"
+          className="outline-none border-b-2 bg-transparent w-full my-2"
           onChange={handleChange}
           value={searchTerm}
+          placeholder="Busca la imagen que vas a usar de portada"
         ></input>
-        <div className="flex justify-between p-2">
-          <p
-            className={`cursor-pointer ${
-              pageNumber === 1 ? 'text-gray-500 cursor-not-allowed' : ''
-            }`}
-            onClick={() => {
-              if (pageNumber === 1) return;
-              setPageNumber(pageNumber - 1);
-            }}
-          >
-            Pagina anterior
-          </p>
-          <p
-            className="cursor-pointer"
-            onClick={() => setPageNumber(pageNumber + 1)}
-          >
-            Pagina siguiente
-          </p>
-        </div>
+        {searchTerm ? (
+          <div className="flex justify-between p-2">
+            <p
+              className={`cursor-pointer ${
+                pageNumber === 1 ? 'text-gray-500 cursor-not-allowed' : ''
+              }`}
+              onClick={() => {
+                if (pageNumber === 1) return;
+                setPageNumber(pageNumber - 1);
+              }}
+            >
+              Pagina anterior
+            </p>
+            <p
+              className="cursor-pointer"
+              onClick={() => setPageNumber(pageNumber + 1)}
+            >
+              Pagina siguiente
+            </p>
+          </div>
+        ) : null}
       </div>
 
       {isLoading ? (

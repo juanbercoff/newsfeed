@@ -1,6 +1,6 @@
 import { callApiService, getEndpoint } from './api-service-utilities';
 
-import { CreateArticleVisitDto } from '@newsfeed/data';
+import { CreateArticleVisitDto, ArticleVisitDto } from '@newsfeed/data';
 import { ArticleVisit } from '@prisma/client';
 
 export async function postArticleVisit(
@@ -10,5 +10,14 @@ export async function postArticleVisit(
     url: getEndpoint('article-visit'),
     method: 'POST',
     data,
+  });
+}
+
+export async function getArticleVisits(
+  articleId: string
+): Promise<ArticleVisitDto[]> {
+  return callApiService({
+    url: getEndpoint(`article-visit/${articleId}`),
+    method: 'GET',
   });
 }

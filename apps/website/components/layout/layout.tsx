@@ -10,8 +10,8 @@ const Layout = ({ children }: AccountLayoutProps) => {
   return (
     <>
       <TopBar />
-      <div className="mt-[65px] py-8 w-full justify-center flex bg-slate-50 h-full">
-        <div className="max-w-2xl sm:max-w-4xl w-full">{children}</div>
+      <div className="mt-[71px] w-full justify-center flex bg-slate-50 h-full">
+        <div className="max-w-2xl sm:max-w-3xl w-full">{children}</div>
       </div>
     </>
   );

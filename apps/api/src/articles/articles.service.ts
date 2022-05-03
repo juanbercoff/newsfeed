@@ -27,7 +27,7 @@ export class ArticlesService {
     data: CreateArticleDto,
     authenticatedUser: AuthenticatedUser
   ): Promise<Article> {
-    const { title, content } = data;
+    const { title, content, portraitImageUrl } = data;
     const user = await this.usersService.getUserAccount(authenticatedUser);
 
     if (!user) {
@@ -47,6 +47,7 @@ export class ArticlesService {
             ...articleContent,
           })),
         },
+        portraitImageUrl,
       },
     });
   }
@@ -69,12 +70,18 @@ export class ArticlesService {
         },
         articleContent: true,
         articleHistory: true,
+        articleTag: {
+          include: {
+            tag: true,
+          },
+        },
       },
     });
   }
 
   async findAll({
     cursor,
+    tags,
   }: GetManyArticlesDto): Promise<ArticlesWithLikesResponseDto[]> {
     const paginationObject = {
       take: 4,
@@ -84,6 +91,24 @@ export class ArticlesService {
     if (cursor) {
       paginationObject['cursor'] = { id: cursor };
     }
+
+    if (typeof tags === 'string') {
+      tags = [tags];
+    }
+
+    const tagsFilter = tags?.map((tag) => {
+      return {
+        articleTag: {
+          some: {
+            tag: {
+              name: {
+                contains: tag,
+              },
+            },
+          },
+        },
+      };
+    });
 
     const articles = await this.prisma.article.findMany({
       ...paginationObject,
@@ -104,6 +129,14 @@ export class ArticlesService {
             createdAt: 'asc',
           },
         },
+        articleTag: {
+          include: {
+            tag: true,
+          },
+        },
+      },
+      where: {
+        OR: tagsFilter,
       },
     });
 

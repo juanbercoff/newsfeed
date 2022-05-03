@@ -28,7 +28,7 @@ const Card = ({ article }: CardProps) => {
       <div className="border flex justify-center flex-col items-start max-h-lg bg-white cursor-pointer">
         <div className="relative w-full h-[310px]">
           <Image
-            src="/image.webp"
+            src={article.portraitImageUrl}
             layout="fill"
             objectFit="cover"
             alt="news picture"

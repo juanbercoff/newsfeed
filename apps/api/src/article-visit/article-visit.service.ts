@@ -29,12 +29,13 @@ export class ArticleVisitService {
   }
 
   countOfVisits(articleId: string) {
-    return this.prisma.articleVisit.aggregate({
+    return this.prisma.articleVisit.groupBy({
+      by: ['articleId'],
       _count: {
         id: true,
       },
       where: {
-        articleId,
+        articleId: articleId,
       },
     });
   }

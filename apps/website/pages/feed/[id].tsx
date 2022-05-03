@@ -8,7 +8,10 @@ import {
 import ArticleContent from '../../components/article/article-content';
 import { useEffect, useState } from 'react';
 import { ArticleContext } from '../../contexts/article-context';
-import { usePostArticleVisit } from '../../hooks/useArticleVisits';
+import {
+  usePostArticleVisit,
+  useGetArticleVisits,
+} from '../../hooks/useArticleVisits';
 import { useGetArticleHistory } from '../../hooks/useArticleHistory';
 import DepthSelector from '../../components/article/depth-selector';
 import VersionControlMobile from '../../components/article/version-control-mobile';
@@ -16,6 +19,8 @@ import VersionControl from '../../components/article/version-control';
 import useBreakpoints from '../../hooks/useBreakpoints';
 import Image from 'next/image';
 import ArticleAuthorInformation from '../../components/common/article-author-information';
+import { AiOutlineEye } from 'react-icons/ai';
+import Spinner from '../../components/common/spinner';
 
 interface ArticleProps {
   article: ArticlesWithLikesResponseDto;
@@ -29,7 +34,10 @@ const Article = ({ article }: ArticleProps) => {
   const [articleVersionToDisplay, setArticleVersionToDisplay] = useState<
     ArticlesWithLikesResponseDto | ArticleHistoryDto
   >(article);
-
+  const { data: visits, isLoading: visitsLoading } = useGetArticleVisits(
+    article.id
+  );
+  console.log('visits', visits);
   const { data } = useGetArticleHistory(article.id);
 
   useEffect(() => {
@@ -45,8 +53,8 @@ const Article = ({ article }: ArticleProps) => {
 
   return (
     <ArticleContext.Provider value={article}>
-      <div className="relative space-y-3 px-6">
-        <div className="static top-0 right-[-200px] lg:absolute lg:block flex justify-center space-x-2 space-y-2 items-baseline">
+      <div className="relative space-y-3 p-6">
+        <div className="static top-6 right-[-200px] lg:absolute lg:block flex justify-center space-x-2 space-y-2 items-baseline">
           <DepthSelector
             setActiveIndex={setActiveIndex}
             setShowFirstLevel={setShowFirstLevel}
@@ -70,11 +78,26 @@ const Article = ({ article }: ArticleProps) => {
             />
           )}
         </div>
-        <ArticleAuthorInformation
-          userProfile={article.author.profile}
-          profileImageSize={30}
-        />
+        <div className="flex justify-between items-center">
+          <ArticleAuthorInformation
+            userProfile={article.author.profile}
+            profileImageSize={30}
+          />
+          <div className="flex justify-between items-center gap-1">
+            {visitsLoading ? <Spinner /> : visits?.[0]?._count?.id}
+            <AiOutlineEye size={25} />
+          </div>
+        </div>
         <h1 className="font-bold lg:text-4xl text-2xl">{article.title}</h1>
+        <div className="flex justify-center">
+          <Image
+            src={article.portraitImageUrl}
+            objectFit="cover"
+            alt="article picture"
+            width={842}
+            height={615}
+          />
+        </div>
         <div className="flex flex-row">
           <div>
             {articleVersionToDisplay.articleContent.map((articleContent) => (

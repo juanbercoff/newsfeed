@@ -40,4 +40,9 @@ export class CommentsController {
     const user = req.user as AuthenticatedUser;
     return this.commentsService.create(data, user);
   }
+
+  @Get('count/:articleId')
+  countOfComments(@Param('articleId') articleId: string): Promise<number> {
+    return this.commentsService.countOfComments(articleId);
+  }
 }

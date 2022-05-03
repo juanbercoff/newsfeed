@@ -83,4 +83,28 @@ export class CommentsService {
       },
     });
   }
+
+  async countOfComments(articleId: string): Promise<number> {
+    const articleHistory = await this.prisma.articleHistory.findMany({
+      where: {
+        articleId,
+      },
+    });
+
+    const articleComments = await this.prisma.comment.count({
+      where: {
+        articleId,
+      },
+    });
+
+    const articleHistoryCommentsCount = await this.prisma.comment.count({
+      where: {
+        articleHistoryId: {
+          in: articleHistory.map((articleHistory) => articleHistory.id),
+        },
+      },
+    });
+
+    return articleComments + articleHistoryCommentsCount;
+  }
 }

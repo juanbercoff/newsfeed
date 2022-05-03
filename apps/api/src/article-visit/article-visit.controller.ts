@@ -15,7 +15,7 @@ export class ArticleVisitController {
   }
 
   @Get(':articleId')
-  getCountOfVisits(@Param(':articleId') articleId: string) {
+  getCountOfVisits(@Param('articleId') articleId: string) {
     return this.articleVisitService.countOfVisits(articleId);
   }
 }

@@ -92,6 +92,8 @@ const seed = async () => {
       id: articles[0].id,
       title: 'Los peligros de la pobreza en tiempos de guerra',
       authorId: 'e332f468-1bd1-4ea4-84f0-11865080d6c6',
+      portraitImageUrl:
+        'https://images.unsplash.com/photo-1648737965255-e1e6f33f0937?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
       articleContent: {
         createMany: {
           data: [

@@ -1,15 +1,16 @@
 import { CreateCommentDto, GetCommentsListPayload } from '@newsfeed/data';
 import {
-  getCommentsWithLikesList,
+  getCommentsWithLikes,
   postComment,
+  getCountOfComments,
 } from '../services/comments-api';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import useAuthToken from './useAuthToken';
 
-export function useGetComments(payload: GetCommentsListPayload) {
+export function useGetComments<T>(payload: GetCommentsListPayload) {
   return useQuery(['comments', payload.articleId, payload.orderBy], () =>
-    getCommentsWithLikesList(payload)
+    getCommentsWithLikes(payload)
   );
 }
 
@@ -23,4 +24,10 @@ export function useCreateComment(onSuccess: () => void) {
       onSuccess();
     },
   });
+}
+
+export function useGetCountOfComments(articleId: string) {
+  return useQuery(['commentsCount', articleId], () =>
+    getCountOfComments(articleId)
+  );
 }

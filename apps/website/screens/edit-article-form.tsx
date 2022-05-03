@@ -1,6 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { CreateArticleDto, ArticlesWithLikesResponseDto } from '@newsfeed/data';
-import { ToastContainer } from 'react-toastify';
+import { UpdateArticleDto, ArticlesWithLikesResponseDto } from '@newsfeed/data';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './article-form-style.module.css';
 import { useEffect } from 'react';
@@ -45,7 +44,7 @@ const EditArticleForm = ({ article }: ArticleFormProps) => {
   }, []);
 
   const onSubmit = (formData: ArticleFormData) => {
-    const data: CreateArticleDto = {
+    const data: UpdateArticleDto = {
       title: formData.title,
       content: formData.content.map((content) => ({
         ...content,

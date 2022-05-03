@@ -7,7 +7,7 @@ import {
 } from '@newsfeed/data';
 import { Comment } from '@prisma/client';
 
-export async function getCommentsWithLikesList({
+export async function getCommentsWithLikes({
   articleId,
   orderBy,
 }: GetCommentsListPayload): Promise<CommentWithAuthorAndLikes[]> {
@@ -26,4 +26,11 @@ export async function postComment(data: CreateCommentDto, authToken: string) {
     },
     authToken
   );
+}
+
+export async function getCountOfComments(articleId: string) {
+  return callApiService<number>({
+    url: getEndpoint(`comments/count/${articleId}`),
+    method: 'GET',
+  });
 }

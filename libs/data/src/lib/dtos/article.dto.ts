@@ -1,4 +1,10 @@
-import { IsString, IsUUID, IsNotEmpty, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsUUID,
+  IsNotEmpty,
+  IsOptional,
+  IsUrl,
+} from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 import { Prisma, ArticleContent } from '@prisma/client';
 import { AllArticlesLikesDto } from './article-likes.dto';
@@ -10,6 +16,10 @@ export class CreateArticleDto {
 
   @IsNotEmpty()
   content: Prisma.ArticleContentUncheckedCreateWithoutArticleInput[];
+
+  @IsNotEmpty()
+  @IsUrl()
+  portraitImageUrl: string;
 }
 
 //TODO content DTo
@@ -20,6 +30,9 @@ export class GetManyArticlesDto {
   @IsUUID()
   @IsOptional()
   cursor?: string;
+
+  @IsOptional()
+  tags?: string[];
 }
 
 //https://stackoverflow.com/questions/68366105/get-full-type-on-prisma-client

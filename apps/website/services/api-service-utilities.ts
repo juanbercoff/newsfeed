@@ -5,11 +5,15 @@ export function getEndpoint(path = '/') {
   return `${process.env.NEXT_PUBLIC_NEWSFEED_API}/${path}`;
 }
 
-export function getEndpointWithPagination(path = '/', cursor: string) {
+export function getEndpointWithPagination(
+  path = '/',
+  cursor: string,
+  filter = ''
+) {
   if (cursor) {
-    return `${getEndpoint(path)}?cursor=${cursor}`;
+    return `${getEndpoint(path)}?cursor=${cursor}&${filter}`;
   }
-  return getEndpoint(path);
+  return `${getEndpoint(path)}?${filter}`;
 }
 
 export function getCommonHeaders(

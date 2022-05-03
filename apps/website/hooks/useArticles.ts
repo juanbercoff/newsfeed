@@ -20,10 +20,14 @@ import {
 import useAuthToken from '../hooks/useAuthToken';
 import { toast } from 'react-toastify';
 
-export function useGetArticles(initialData: ArticlesWithLikesResponseDto[]) {
+export function useGetArticles(
+  initialData: ArticlesWithLikesResponseDto[],
+  tagsFilter?: string
+) {
   return useInfiniteQuery(
-    'articles',
-    ({ pageParam = '' }) => getArticlesList({ cursor: pageParam }),
+    ['articles', tagsFilter],
+    ({ pageParam = '' }) =>
+      getArticlesList({ cursor: pageParam, tags: tagsFilter }),
     {
       getNextPageParam: (lastPage) =>
         lastPage[lastPage.length - 1]?.id ?? undefined,
@@ -85,6 +89,7 @@ export function useUpdateArticle(
       onSuccess: () => {
         queryClient.invalidateQueries('articles');
         toast.success('Articulo modificado con exito');
+        onSuccess('/feed');
       },
     }
   );
