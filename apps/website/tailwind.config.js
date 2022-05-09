@@ -17,7 +17,8 @@ module.exports = {
       // => @media (min-width: 768px) { ... }
 
       lg: '1254px',
-      // => @media (min-width: 1254px) { ... }
+      // => @media (min-width: 1254px) { ... },
+      xl: '1480px',
     },
   },
   plugins: [require('@tailwindcss/line-clamp')],

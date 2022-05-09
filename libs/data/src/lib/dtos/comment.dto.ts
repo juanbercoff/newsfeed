@@ -5,7 +5,8 @@ import {
   MaxLength,
   IsOptional,
 } from 'class-validator';
-import { Prisma } from '@prisma/client';
+import { Prisma, Comment } from '@prisma/client';
+import { PartialType } from '@nestjs/mapped-types';
 
 export class CreateCommentDto {
   @IsNotEmpty()
@@ -29,3 +30,15 @@ const commentsWithAuthor = Prisma.validator<Prisma.CommentArgs>()({
 export type CommentWithAuthorDto = Prisma.CommentGetPayload<
   typeof commentsWithAuthor
 >;
+
+export type CommentsResponseDto = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  content: string;
+  parentCommentId: string;
+  articleId: string;
+  articleHistoryId: string;
+  userName: string;
+  likes: number;
+};
