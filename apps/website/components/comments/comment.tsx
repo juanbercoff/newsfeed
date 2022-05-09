@@ -1,5 +1,5 @@
 import Actions from '../common/actions';
-import { CommentWithAuthorAndLikes } from '@newsfeed/data';
+import { CommentsResponseDto } from '@newsfeed/data';
 import { CommentLike } from '@prisma/client';
 import useLikes from '../../hooks/useLikes';
 import {
@@ -10,23 +10,21 @@ import {
 import { DateTime } from 'luxon';
 
 interface CommentProps {
-  comment: CommentWithAuthorAndLikes;
-  commentWithLikes: CommentWithAuthorAndLikes[];
+  comment: CommentsResponseDto;
+  comments: CommentsResponseDto[];
 }
 
-const Comment = ({ comment, commentWithLikes }: CommentProps) => {
+const Comment = ({ comment, comments }: CommentProps) => {
   const { uiLikes, hasBeenLiked, handleLike } = useLikes<CommentLike>(
     comment.id,
-    comment.commentLike?._sum.like,
+    comment.likes,
     getUserCommentLike,
     deleteCommentLike,
     postCommentLike
   );
 
   const getReplies = (commentId) => {
-    return commentWithLikes.filter(
-      (comment) => comment.parentCommentId === commentId
-    );
+    return comments.filter((comment) => comment.parentCommentId === commentId);
   };
 
   const isoStringToRelativeTime = (isoString) =>
@@ -36,9 +34,7 @@ const Comment = ({ comment, commentWithLikes }: CommentProps) => {
     <div className="space-y-2">
       <div className="flex flex-row justify-start space-x-2 items-center">
         <div className="rounded-full border-2 p-3"></div>
-        <p className="font-medium text-sm">
-          {comment?.author?.profile.userName}
-        </p>
+        <p className="font-medium text-sm">{comment?.userName}</p>
         <p className="text-gray-400 text-sm">
           {isoStringToRelativeTime(comment.createdAt)}
         </p>
@@ -62,7 +58,7 @@ const Comment = ({ comment, commentWithLikes }: CommentProps) => {
                 <Comment
                   key={newComment.id}
                   comment={newComment}
-                  commentWithLikes={commentWithLikes}
+                  comments={comments}
                 />
               ))
             : null}

@@ -1,6 +1,12 @@
-import { CreateCommentDto, GetCommentsListPayload } from '@newsfeed/data';
 import {
-  getCommentsWithLikes,
+  CreateCommentDto,
+  GetCommentsListPayload,
+  ArticlesWithLikesResponseDto,
+  ArticleHistoryDto,
+} from '@newsfeed/data';
+import {
+  getCommentsOfArticle,
+  getCommentsOfArticleHistory,
   postComment,
   getCountOfComments,
 } from '../services/comments-api';
@@ -8,9 +14,16 @@ import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import useAuthToken from './useAuthToken';
 
-export function useGetComments<T>(payload: GetCommentsListPayload) {
-  return useQuery(['comments', payload.articleId, payload.orderBy], () =>
-    getCommentsWithLikes(payload)
+export function useGetComments(
+  payload: GetCommentsListPayload,
+  articleType: ArticlesWithLikesResponseDto | ArticleHistoryDto
+) {
+  const queryFunction =
+    'comments' in articleType
+      ? getCommentsOfArticleHistory
+      : getCommentsOfArticle;
+  return useQuery(['comments', payload.id, payload.orderBy], () =>
+    queryFunction(payload)
   );
 }
 

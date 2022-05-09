@@ -15,20 +15,34 @@ import {
   AuthenticatedRequest,
   AuthenticatedUser,
   CommentOrderByInput,
+  CommentsResponseDto,
 } from '@newsfeed/data';
-import { Comment, Prisma } from '@prisma/client';
+import { Comment } from '@prisma/client';
 
 @Controller('comments')
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
-  @Get(':articleId')
-  findAll(
+  @Get('article/:articleId')
+  findAllByArticle(
     @Param('articleId') articleId: string,
     @Query()
     orderBy: CommentOrderByInput
-  ): Promise<Comment[]> {
-    return this.commentsService.findAll(articleId, orderBy);
+  ): Promise<CommentsResponseDto[]> {
+    return this.commentsService.findAll('articleId', articleId, orderBy);
+  }
+
+  @Get('articleHistory/:articleHistoryId')
+  findAllByArticleHistory(
+    @Param('articleHistoryId') articleHistoryId: string,
+    @Query()
+    orderBy: CommentOrderByInput
+  ): Promise<CommentsResponseDto[]> {
+    return this.commentsService.findAll(
+      'articleHistoryId',
+      articleHistoryId,
+      orderBy
+    );
   }
 
   @UseGuards(AuthorizationGuard)

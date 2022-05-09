@@ -3,7 +3,7 @@ import { AllCommentsLikesDto } from '../dtos/comment-likes.dto';
 import { Prisma } from '@prisma/client';
 
 export type GetCommentsListPayload = {
-  articleId: string;
+  id: string;
   orderBy?: CommentOrderBy;
 };
 

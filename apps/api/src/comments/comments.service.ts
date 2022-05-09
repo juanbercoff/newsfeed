@@ -2,69 +2,38 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { UsersService } from '../users/users.service';
 import {
-  CommentWithAuthorDto,
   AuthenticatedUser,
   CreateCommentDto,
   CommentOrderByInput,
+  CommentsResponseDto,
 } from '@newsfeed/data';
 import { Comment, Prisma } from '@prisma/client';
-import { CommentLikesService } from '../comment-likes/comment-likes.service';
+import { allCommentWithLikesQuery } from './queries/allCommentsWithLikesQuery';
+
+type FindAllBy = 'articleId' | 'articleHistoryId';
 
 @Injectable()
 export class CommentsService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly usersService: UsersService,
-    private readonly commentLikesService: CommentLikesService
+    private readonly usersService: UsersService
   ) {}
 
   async findAll(
-    articleId: string,
-    orderBy: CommentOrderByInput
-  ): Promise<CommentWithAuthorDto[]> {
-    const comments = await this.prisma.comment.findMany({
-      include: {
-        author: {
-          include: {
-            profile: true,
-          },
-        },
-      },
-      where: {
-        articleId,
-      },
-      orderBy: orderBy?.createdAt
-        ? { createdAt: orderBy.createdAt }
-        : undefined,
-    });
+    whereColumn: FindAllBy,
+    id: string,
+    orderBy?: CommentOrderByInput
+  ): Promise<CommentsResponseDto[]> {
+    const whereCondition = `WHERE c."${whereColumn}" = '${id}'`;
+    const orderByCondition =
+      Object.keys(orderBy).length !== 0
+        ? `ORDER BY "${Object.keys(orderBy)[0]}" ${Object.values(orderBy)[0]}`
+        : null;
+    const query = allCommentWithLikesQuery(whereCondition, orderByCondition);
 
-    const commentsIds = comments.map((comment) => comment.id);
-
-    const commentLikes = await this.commentLikesService.getAllCommentsLikes(
-      commentsIds
+    return await this.prisma.$queryRaw<CommentsResponseDto[]>(
+      Prisma.raw(query)
     );
-
-    const commentsWithLikes = comments.map((comment) => {
-      const commentLike = commentLikes.find(
-        (commentLike) => commentLike.commentId === comment.id
-      );
-      return { ...comment, commentLike };
-    });
-
-    if (orderBy?.createdAt || !orderBy) {
-      return commentsWithLikes;
-    }
-
-    return commentsWithLikes.sort((a, b) => {
-      if (orderBy?.likes === 'desc') {
-        return (
-          (b?.commentLike?._sum?.like || 0) - (a?.commentLike?._sum?.like || 0)
-        );
-      }
-      return (
-        (a?.commentLike?._sum?.like || 0) - (b?.commentLike?._sum?.like || 0)
-      );
-    });
   }
 
   async create(

@@ -2,6 +2,7 @@ import { GoArrowUp, GoArrowDown } from 'react-icons/go';
 import { FaRegCommentAlt } from 'react-icons/fa';
 import CommentForm from '../comments/comment-form';
 import { useState } from 'react';
+import { useArticleContext } from '../../contexts/article-context';
 
 interface ActionsProps {
   countOfComments?: number;
@@ -21,6 +22,7 @@ const Actions = ({
   commentId,
 }: ActionsProps) => {
   const [showForm, setShowForm] = useState(false);
+  const articleVersionToDisplay = useArticleContext();
 
   const handleClick = () => {
     isArticle ? setShowForm(false) : setShowForm(!showForm);
@@ -48,15 +50,18 @@ const Actions = ({
           }}
           className="cursor-pointer hover:bg-slate-300 rounded"
         />
-        <div
-          className="ml-4 flex justify-center space-x-1 items-center hover:bg-slate-300 rounded px-1 cursor-pointer"
-          onClick={() => handleClick()}
-        >
-          <FaRegCommentAlt size={17} />
-          <p className="font-medium text-sm">
-            {isArticle ? countOfComments : 'Responder'}
-          </p>
-        </div>
+        {!!articleVersionToDisplay &&
+        'comments' in articleVersionToDisplay ? null : (
+          <div
+            className="ml-4 flex justify-center space-x-1 items-center hover:bg-slate-300 rounded px-1 cursor-pointer"
+            onClick={() => handleClick()}
+          >
+            <FaRegCommentAlt size={17} />
+            <p className="font-medium text-sm">
+              {isArticle ? countOfComments : 'Responder'}
+            </p>
+          </div>
+        )}
       </div>
       {showForm && (
         <CommentForm commentId={commentId} setShowForm={setShowForm} />

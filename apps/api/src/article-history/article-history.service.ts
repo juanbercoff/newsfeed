@@ -39,25 +39,5 @@ export class ArticleHistoryService {
         },
       },
     });
-
-    /* const articleHistoryWithCommentLikes = articleHistory.map((article) => {
-      const articleComments = article.comments.map((comment) => {
-        const _sum = comment.likes.reduce((sum, like) => sum + like.like, 0);
-        return {
-          ...comment,
-          commentLike: {
-            _sum: {
-              like: _sum,
-            },
-          },
-        };
-      });
-      return {
-        ...article,
-        comment
-      }
-    });
-    console.log(articleHistoryWithCommentLikes);
-    return articleHistoryWithCommentLikes; */
   }
 }

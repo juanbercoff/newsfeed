@@ -4,7 +4,7 @@ import { CreateArticleTagDto } from '@newsfeed/data';
 import { ArticleTag } from '@prisma/client';
 
 export async function tagArticle(
-  { articleId, tags: tag }: CreateArticleTagDto,
+  { articleId }: CreateArticleTagDto,
   authToken: string
 ): Promise<ArticleTag> {
   return callApiService(
@@ -13,7 +13,6 @@ export async function tagArticle(
       method: 'POST',
       data: {
         articleId,
-        tag,
       },
     },
     authToken

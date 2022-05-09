@@ -5,11 +5,6 @@ import { useArticleContext } from '../../contexts/article-context';
 import CommentSortionMenu from '../comments/comment-sorting-menu';
 import { CommentOrderBy } from '@newsfeed/data';
 
-//FIX ME
-type CommentProps = {
-  oldComments?: any;
-};
-
 export enum SortOptions {
   Newest = 'Más nuevos',
   Oldest = 'Más antiguos',
@@ -24,41 +19,20 @@ const CommentSortingQueryParams: { [key in SortOptions]: CommentOrderBy } = {
   [SortOptions.LeastVoted]: 'likes=asc',
 };
 
-const CommentsList = ({ oldComments }: CommentProps) => {
-  const { id } = useArticleContext();
+const CommentsList = () => {
+  const articleVersionToDisplay = useArticleContext();
   const [selectedOption, setSelectedOption] = useState(SortOptions.Newest);
 
-  const { data: comments, isLoading } = useGetComments({
-    articleId: id,
-    orderBy: CommentSortingQueryParams[selectedOption],
-  });
-
-  console.log(comments);
+  const { data: comments, isLoading } = useGetComments(
+    {
+      id: articleVersionToDisplay.id,
+      orderBy: CommentSortingQueryParams[selectedOption],
+    },
+    articleVersionToDisplay
+  );
 
   if (isLoading) {
     return <div>Loading...</div>;
-  }
-
-  if (oldComments) {
-    return (
-      <div className="flex flex-col space-y-4">
-        {oldComments.length > 0 ? (
-          oldComments
-            .filter((comment) => {
-              return comment.parentCommentId === null;
-            })
-            .map((comment) => (
-              <Comment
-                key={comment.id}
-                comment={comment}
-                commentWithLikes={comments}
-              />
-            ))
-        ) : (
-          <div>No hay comentarios</div>
-        )}
-      </div>
-    );
   }
 
   return (
@@ -68,17 +42,13 @@ const CommentsList = ({ oldComments }: CommentProps) => {
         setSelectedOption={setSelectedOption}
       />
       <div className="flex flex-col space-y-4 pt-6">
-        {comments.length > 0 ? (
+        {comments?.length > 0 ? (
           comments
             .filter((comment) => {
               return comment.parentCommentId === null;
             })
             .map((comment) => (
-              <Comment
-                key={comment.id}
-                comment={comment}
-                commentWithLikes={comments}
-              />
+              <Comment key={comment.id} comment={comment} comments={comments} />
             ))
         ) : (
           <div>No hay comentarios</div>

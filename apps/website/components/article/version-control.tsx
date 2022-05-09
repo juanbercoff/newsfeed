@@ -21,7 +21,7 @@ const VersionControl = ({
   setArticleVersionToDisplay,
 }: VersionControlItemProps) => {
   return (
-    <div className="max-w-md shadow hover:shadow-md bg-white">
+    <div className="shadow hover:shadow-md bg-white">
       <RadioGroup
         value={articleVersionToDisplay}
         onChange={setArticleVersionToDisplay}

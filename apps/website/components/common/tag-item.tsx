@@ -18,7 +18,7 @@ const TagItem = ({
         isSelected ? 'bg-gray-400' : 'bg-gray-200'
       } rounded-lg px-1.5 py-0.5 w-fit text-black select-none`}
     >
-      {tag.tag}
+      {tag.name}
     </div>
   );
 };

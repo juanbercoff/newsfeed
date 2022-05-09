@@ -37,7 +37,7 @@ const Article = ({ article }: ArticleProps) => {
   const { data: visits, isLoading: visitsLoading } = useGetArticleVisits(
     article.id
   );
-  console.log('visits', visits);
+
   const { data } = useGetArticleHistory(article.id);
 
   useEffect(() => {
@@ -49,12 +49,12 @@ const Article = ({ article }: ArticleProps) => {
     setShowSecondLevel(shouldOpen);
   };
 
-  const { isLg } = useBreakpoints();
+  const { isXl } = useBreakpoints();
 
   return (
-    <ArticleContext.Provider value={article}>
+    <ArticleContext.Provider value={articleVersionToDisplay}>
       <div className="relative space-y-3 p-6">
-        <div className="static top-6 right-[-200px] lg:absolute lg:block flex justify-center space-x-2 space-y-2 items-baseline">
+        <div className="static xl:fixed xl:block flex justify-center gap-2 items-baseline xl:top-[6.5rem] xl:right-44 xl:flex-col xl:items-baseline flex-wrap xl:space-y-2">
           <DepthSelector
             setActiveIndex={setActiveIndex}
             setShowFirstLevel={setShowFirstLevel}
@@ -62,7 +62,7 @@ const Article = ({ article }: ArticleProps) => {
             handleLevels={handleLevels}
             activeIndex={activeIndex}
           />
-          {isLg ? (
+          {isXl ? (
             <VersionControl
               article={article}
               articleHistory={data}
@@ -114,14 +114,8 @@ const Article = ({ article }: ArticleProps) => {
             ))}
           </div>
         </div>
-        <CommentForm />
-        <CommentsList
-          oldComments={
-            'comments' in articleVersionToDisplay
-              ? articleVersionToDisplay?.comments
-              : null
-          }
-        />
+        {'comments' in articleVersionToDisplay ? null : <CommentForm />}
+        <CommentsList />
       </div>
     </ArticleContext.Provider>
   );
