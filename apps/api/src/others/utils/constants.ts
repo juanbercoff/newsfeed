@@ -6,3 +6,9 @@ export enum CUSTOM_EXCEPTION_CODES {
   RELATED_ENTITY_MISSING = 'RELATED_ENTITY_MISSING',
   PAYLOAD_COLLISION = 'PAYLOAD_COLLISION',
 }
+
+export enum AUTHORIZATION_PERMISSIONS {
+  ACCOUNT_RESOURCES_WRITE = 'write:account:resources', // Permission to write to your own resources
+}
+
+export const AUTHORIZATION_PERMISSIONS_KEY = 'permissions';

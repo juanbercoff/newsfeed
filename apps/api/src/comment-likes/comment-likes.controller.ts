@@ -12,21 +12,24 @@ import { CommentLikesService } from './comment-likes.service';
 import {
   AuthenticatedUser,
   CreateOrUpdateCommentLikeDto,
+  FullyRegisteredAuthenticatedUser,
 } from '@newsfeed/data';
 import { AuthorizationGuard } from '../authorization/authorization.guard';
 import { AuthenticatedRequest } from '@newsfeed/data';
+import { FullyRegisteredUserGuard } from '../authorization/fully-registered-user.guard';
+import { PermissionsGuard } from '../authorization/permissions.guard';
 
 @Controller('comment-likes')
 export class CommentLikesController {
   constructor(private readonly commentLikesService: CommentLikesService) {}
 
-  @UseGuards(AuthorizationGuard)
+  @UseGuards(AuthorizationGuard, FullyRegisteredUserGuard, PermissionsGuard)
   @Post()
   createOrUpdate(
     @Body() createOrUpdateCommentLikeDto: CreateOrUpdateCommentLikeDto,
     @Req() req: AuthenticatedRequest
   ) {
-    const user = req.user as AuthenticatedUser;
+    const user = req.user as FullyRegisteredAuthenticatedUser;
     return this.commentLikesService.createOrUpdate(
       createOrUpdateCommentLikeDto,
       user
@@ -50,8 +53,12 @@ export class CommentLikesController {
 
   @UseGuards(AuthorizationGuard)
   @Delete(':commentLikeId')
-  delete(@Param('commentLikeId') commentLikeId: string) {
-    return this.commentLikesService.delete(commentLikeId);
+  delete(
+    @Param('commentLikeId') commentLikeId: string,
+    @Req() req: AuthenticatedRequest
+  ) {
+    const user = req.user as FullyRegisteredAuthenticatedUser;
+    return this.commentLikesService.delete(commentLikeId, user);
   }
 
   @UseGuards(AuthorizationGuard)

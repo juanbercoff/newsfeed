@@ -6,8 +6,11 @@ import {
   AuthenticatedUser,
   CreateOrUpdateArticleLikeDto,
   GetUserArticleLikeDto,
+  FullyRegisteredAuthenticatedUser,
 } from '@newsfeed/data';
 import { UsersService } from '../users/users.service';
+import { EntityNotOwnedByUserException } from '../others/exceptions/entity-not-owned-by-user.exception';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class ArticleLikesService {
@@ -43,22 +46,25 @@ export class ArticleLikesService {
 
   async createOrUpdate(
     data: CreateOrUpdateArticleLikeDto,
-    authenticatedUser: AuthenticatedUser
+    authenticatedUser: FullyRegisteredAuthenticatedUser
   ) {
     const { articleId, like } = data;
-    const user = await this.usersService.getUserAccount(authenticatedUser);
+    const userId = authenticatedUser.metadata.userId;
 
     const articleAlreadyLiked = await this.prisma.articleLike.findFirst({
       where: {
         articleId,
-        userId: user.id,
+        userId,
       },
     });
 
     if (articleAlreadyLiked) {
+      if (articleAlreadyLiked.userId !== userId) {
+        throw new EntityNotOwnedByUserException(Prisma.ModelName.ArticleLike);
+      }
       return await this.update({ id: articleAlreadyLiked.id, like });
     }
-    return await this.create({ articleId, like, userId: user.id });
+    return await this.create({ articleId, like, userId });
   }
 
   async getAllLikesByArticle(articleId: string) {
@@ -89,7 +95,26 @@ export class ArticleLikesService {
     });
   }
 
-  async delete(id: string) {
+  async delete(
+    id: string,
+    authenticatedUser: FullyRegisteredAuthenticatedUser
+  ) {
+    const userId = authenticatedUser.metadata.userId;
+
+    const articleLike = await this.prisma.articleLike.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    if (!articleLike) {
+      throw new Error('Article like not found');
+    }
+
+    if (articleLike.userId !== userId) {
+      throw new EntityNotOwnedByUserException(Prisma.ModelName.ArticleLike);
+    }
+
     return await this.prisma.articleLike.delete({
       where: {
         id,

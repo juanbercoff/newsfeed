@@ -7,7 +7,10 @@ import {
   AuthenticatedUser,
   CreateOrUpdateCommentLikeDto,
   GetUserCommentLikeDto,
+  FullyRegisteredAuthenticatedUser,
 } from '@newsfeed/data';
+import { Prisma } from '@prisma/client';
+import { EntityNotOwnedByUserException } from '../others/exceptions/entity-not-owned-by-user.exception';
 
 @Injectable()
 export class CommentLikesService {
@@ -42,22 +45,25 @@ export class CommentLikesService {
 
   async createOrUpdate(
     data: CreateOrUpdateCommentLikeDto,
-    authenticatedUser: AuthenticatedUser
+    authenticatedUser: FullyRegisteredAuthenticatedUser
   ) {
     const { commentId, like } = data;
-    const user = await this.usersService.getUserAccount(authenticatedUser);
+    const userId = authenticatedUser.metadata.userId;
 
     const commentAlreadyLiked = await this.prisma.commentLike.findFirst({
       where: {
         commentId,
-        userId: user.id,
+        userId,
       },
     });
 
     if (commentAlreadyLiked) {
+      if (commentAlreadyLiked.userId !== userId) {
+        throw new EntityNotOwnedByUserException(Prisma.ModelName.CommentLike);
+      }
       return this.update({ id: commentAlreadyLiked.id, like });
     }
-    return this.create({ commentId, like, userId: user.id });
+    return this.create({ commentId, like, userId });
   }
 
   async getAllLikesByComment(commentId: string) {
@@ -93,7 +99,26 @@ export class CommentLikesService {
     });
   }
 
-  async delete(id: string) {
+  async delete(
+    id: string,
+    authenticatedUser: FullyRegisteredAuthenticatedUser
+  ) {
+    const userId = authenticatedUser.metadata.userId;
+
+    const commentLike = await this.prisma.commentLike.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    if (!commentLike) {
+      throw new Error('Article like not found');
+    }
+
+    if (commentLike.userId !== userId) {
+      throw new EntityNotOwnedByUserException(Prisma.ModelName.CommentLike);
+    }
+
     return await this.prisma.commentLike.delete({
       where: {
         id,

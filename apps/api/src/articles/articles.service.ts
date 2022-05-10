@@ -8,11 +8,13 @@ import {
   ArticlesWithLikesResponseDto,
   AuthenticatedUser,
   UpdateArticleDto,
+  FullyRegisteredAuthenticatedUser,
 } from '@newsfeed/data';
 import { UsersService } from '../users/users.service';
-import { Article } from '@prisma/client';
+import { Article, Prisma } from '@prisma/client';
 import { ArticleLikesService } from '../article-likes/article-likes.service';
 import { ArticleHistoryService } from '../article-history/article-history.service';
+import { EntityNotOwnedByUserException } from '../others/exceptions/entity-not-owned-by-user.exception';
 
 @Injectable()
 export class ArticlesService {
@@ -25,21 +27,17 @@ export class ArticlesService {
 
   async create(
     data: CreateArticleDto,
-    authenticatedUser: AuthenticatedUser
+    authenticatedUser: FullyRegisteredAuthenticatedUser
   ): Promise<Article> {
     const { title, content, portraitImageUrl } = data;
-    const user = await this.usersService.getUserAccount(authenticatedUser);
-
-    if (!user) {
-      throw new Error('User not found');
-    }
+    const userId = authenticatedUser.metadata.userId;
 
     return this.prisma.article.create({
       data: {
         title,
         author: {
           connect: {
-            id: user.id,
+            id: userId,
           },
         },
         articleContent: {
@@ -182,19 +180,19 @@ export class ArticlesService {
 
   async update(
     data: UpdateArticleDto,
-    authenticatedUser: AuthenticatedUser,
+    authenticatedUser: FullyRegisteredAuthenticatedUser,
     articleId: string
   ) {
-    const user = await this.usersService.getUserAccount(authenticatedUser);
-
-    if (!user) {
-      throw new Error('User not found');
-    }
+    const userId = authenticatedUser.metadata.userId;
 
     const article = await this.findOneToUpdate(articleId);
 
     if (!article) {
       throw new Error('Article not found');
+    }
+
+    if (article.authorId !== userId) {
+      throw new EntityNotOwnedByUserException(Prisma.ModelName.Article);
     }
 
     const articleHistoryData = {

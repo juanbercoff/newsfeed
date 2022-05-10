@@ -12,22 +12,24 @@ import { ArticleLikesService } from './article-likes.service';
 import {
   AuthenticatedUser,
   CreateOrUpdateArticleLikeDto,
+  FullyRegisteredAuthenticatedUser,
 } from '@newsfeed/data';
 import { AuthorizationGuard } from '../authorization/authorization.guard';
 import { AuthenticatedRequest } from '@newsfeed/data';
+import { FullyRegisteredUserGuard } from '../authorization/fully-registered-user.guard';
+import { PermissionsGuard } from '../authorization/permissions.guard';
 
 @Controller('article-likes')
 export class ArticleLikesController {
   constructor(private readonly articleLikesService: ArticleLikesService) {}
 
-  @UseGuards(AuthorizationGuard)
+  @UseGuards(AuthorizationGuard, FullyRegisteredUserGuard, PermissionsGuard)
   @Post()
   createOrUpdate(
     @Body() createOrUpdateArticleLikeDto: CreateOrUpdateArticleLikeDto,
     @Req() req: AuthenticatedRequest
   ) {
-    //eslint-disable-next-line
-    const user = req.user as AuthenticatedUser;
+    const user = req.user as FullyRegisteredAuthenticatedUser;
     return this.articleLikesService.createOrUpdate(
       createOrUpdateArticleLikeDto,
       user
@@ -49,10 +51,14 @@ export class ArticleLikesController {
     return this.articleLikesService.getArticleLikesCount(articleId);
   }
 
-  @UseGuards(AuthorizationGuard)
+  @UseGuards(AuthorizationGuard, FullyRegisteredUserGuard, PermissionsGuard)
   @Delete(':articleLikeId')
-  delete(@Param('articleLikeId') articleLikeId: string) {
-    return this.articleLikesService.delete(articleLikeId);
+  delete(
+    @Param('articleLikeId') articleLikeId: string,
+    @Req() req: AuthenticatedRequest
+  ) {
+    const user = req.user as FullyRegisteredAuthenticatedUser;
+    return this.articleLikesService.delete(articleLikeId, user);
   }
 
   @UseGuards(AuthorizationGuard)
