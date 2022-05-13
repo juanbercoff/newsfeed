@@ -4,7 +4,6 @@ import { AppService } from './app.service';
 import { Module } from '@nestjs/common';
 import { UsersModule } from '../users/users.module';
 import { ArticlesModule } from '../articles/articles.module';
-import { PrismaService } from '../prisma/prisma.service';
 import { CommentsModule } from '../comments/comments.module';
 import { AuthorizationModule } from '../authorization/authorization.module';
 import { Auth0ManagementApiService } from '../auth0-management-api/auth0-management-api.service';
@@ -15,6 +14,7 @@ import { ArticleContentModule } from '../article-content/article-content.module'
 import { ArticleVisitModule } from '../article-visit/article-visit.module';
 import { ArticleHistoryModule } from '../article-history/article-history.module';
 import { TagsModule } from '../tags/tags.module';
+import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
   imports: [
@@ -30,8 +30,9 @@ import { TagsModule } from '../tags/tags.module';
     ArticleVisitModule,
     ArticleHistoryModule,
     TagsModule,
+    PrismaModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService, Auth0ManagementApiService],
+  providers: [AppService, Auth0ManagementApiService],
 })
 export class AppModule {}
