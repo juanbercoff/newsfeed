@@ -13,7 +13,7 @@ const CommentSortingMenu = ({
   setSelectedOption,
 }: CommentSortingMenuProps) => {
   return (
-    <Menu as="div" className="relative pb-1">
+    <Menu as="div" className="relative pb-1 z-10">
       <Menu.Button className="flex justify-between items-center space-x-1">
         <p className="font-semibold text-blue-500 cursor-pointer text-sm">
           {`Ordenar por: ${selectedOption}`}

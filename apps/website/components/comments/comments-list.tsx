@@ -13,6 +13,7 @@ export enum SortOptions {
 }
 
 const CommentSortingQueryParams: { [key in SortOptions]: CommentOrderBy } = {
+  //TODO sort_key=createdAt&sort_direction=desc
   [SortOptions.Newest]: 'createdAt=desc',
   [SortOptions.Oldest]: 'createdAt=asc',
   [SortOptions.MostVoted]: 'likes=desc',

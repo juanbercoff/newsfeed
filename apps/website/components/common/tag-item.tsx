@@ -16,7 +16,7 @@ const TagItem = ({
       key={tag.id}
       className={`text-${textSize} ${
         isSelected ? 'bg-gray-400' : 'bg-gray-200'
-      } rounded-lg px-1.5 py-0.5 w-fit text-black select-none`}
+      } rounded-md px-1.5 py-0.5 w-fit text-black select-none`}
     >
       {tag.name}
     </div>

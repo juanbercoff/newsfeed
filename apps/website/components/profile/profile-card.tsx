@@ -1,13 +1,16 @@
+import { useUpdateUserProfile } from '../../hooks/useUserProfile';
 import { useState } from 'react';
 import Button from '../common/button';
 
 type ProfileCardProps = {
   title: string;
   value: string;
+  userProfileId: string;
 };
 
-const ProfileCard = ({ title, value }: ProfileCardProps) => {
+const ProfileCard = ({ title, value, userProfileId }: ProfileCardProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const { mutate } = useUpdateUserProfile(userProfileId);
 
   return (
     <div className="flex space-x-2 justify-between">
