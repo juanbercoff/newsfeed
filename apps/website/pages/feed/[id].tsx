@@ -53,7 +53,7 @@ const Article = ({ article }: ArticleProps) => {
 
   return (
     <ArticleContext.Provider value={articleVersionToDisplay}>
-      <div className="relative space-y-3 p-6">
+      <div className="relative space-y-3 sm:p-6 p-2">
         <div className="static xl:fixed xl:block flex justify-center gap-2 items-baseline xl:top-[6.5rem] xl:right-44 xl:flex-col xl:items-baseline flex-wrap xl:space-y-2">
           <DepthSelector
             setActiveIndex={setActiveIndex}
@@ -81,7 +81,7 @@ const Article = ({ article }: ArticleProps) => {
         <div className="flex justify-between items-center">
           <ArticleAuthorInformation
             userProfile={article.author.profile}
-            profileImageSize={30}
+            avatarSize="lg"
           />
           <div className="flex justify-between items-center gap-1">
             {visitsLoading ? <Spinner /> : visits?.[0]?._count?.id}
@@ -89,13 +89,13 @@ const Article = ({ article }: ArticleProps) => {
           </div>
         </div>
         <h1 className="font-bold lg:text-4xl text-2xl">{article.title}</h1>
-        <div className="flex justify-center">
+        <div className="flex justify-center bg-slate-100 rounded-md">
           <Image
             src={article.portraitImageUrl}
             objectFit="cover"
             alt="article picture"
-            width={842}
-            height={615}
+            width={589}
+            height={448}
           />
         </div>
         <div className="flex flex-row">

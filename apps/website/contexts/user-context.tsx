@@ -1,9 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 import useAuthToken from '../hooks/useAuthToken';
 import { useUser } from '@auth0/nextjs-auth0';
-import { getOrCreateUserWithUserProfile } from '../hooks/useUserProfile';
-import { UserWithUserProfileResponseDto } from '@newsfeed/data';
 import { UserProfile } from '@prisma/client';
+import { getOrCreateUserWithUserProfile } from '../services/users/users-profiles-api';
 
 export const UserProfileContext = React.createContext<
   UserProfileContextValue | undefined

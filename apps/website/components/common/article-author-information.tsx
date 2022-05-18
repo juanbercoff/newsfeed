@@ -1,21 +1,22 @@
 import { UserProfile } from '@prisma/client';
 import Utils from '../../utils/Utils';
 import UserAvatar from './user-avatar';
+import { AvatarSize } from './user-avatar';
 
 type ArticleAuthorInformationProps = {
   userProfile: UserProfile;
-  profileImageSize: number;
+  avatarSize: AvatarSize;
 };
 
 const ArticleAuthorInformation = ({
   userProfile,
-  profileImageSize,
+  avatarSize,
 }: ArticleAuthorInformationProps) => {
   return (
     <div className="flex items space-x-2 items-center">
-      <UserAvatar userProfile={userProfile} />
+      <UserAvatar avatarSize={avatarSize} />
       <p className="text-md">{userProfile.userName}</p>
-      <p className="text-sm text-gray-500">
+      <p className="text-xs text-gray-500">
         {Utils.formatDateRelative(userProfile.createdAt)}
       </p>
     </div>

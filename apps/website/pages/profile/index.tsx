@@ -7,7 +7,12 @@ const Profile = () => {
   const { userProfile } = useUserProfileContext();
   return (
     <div className="flex flex-col space-y-2">
-      <ProfileCard title="Nombre" value={userProfile?.userName} />
+      <ProfileCard
+        title="Nombre"
+        value={userProfile?.userName}
+        userProfileId={userProfile?.id}
+        field="userName"
+      />
     </div>
   );
 };

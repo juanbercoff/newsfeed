@@ -65,13 +65,26 @@ export async function getUserArticles(authToken: string): Promise<Article[]> {
 export async function updateArticle(
   articleId: string,
   data: UpdateArticleDto,
-  authToken
+  authToken: string
 ): Promise<Article> {
   return callApiService<Article>(
     {
       url: getEndpoint(`articles/${articleId}`),
       method: 'PATCH',
       data,
+    },
+    authToken
+  );
+}
+
+export async function deleteArticle(
+  articleId: string,
+  authToken: string
+): Promise<Article> {
+  return callApiService<Article>(
+    {
+      url: getEndpoint(`articles/${articleId}`),
+      method: 'DELETE',
     },
     authToken
   );

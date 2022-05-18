@@ -9,6 +9,7 @@ import {
   Req,
   Patch,
   SetMetadata,
+  Delete,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import {
@@ -67,5 +68,18 @@ export class ArticlesController {
   ) {
     const user = req.user as FullyRegisteredAuthenticatedUser;
     return this.articlesService.update(data, user, articleId);
+  }
+
+  @SetMetadata(AUTHORIZATION_PERMISSIONS_KEY, [
+    AUTHORIZATION_PERMISSIONS.ACCOUNT_RESOURCES_WRITE,
+  ])
+  @UseGuards(AuthorizationGuard, PermissionsGuard, FullyRegisteredUserGuard)
+  @Delete(':articleId')
+  delete(
+    @Param('articleId') articleId: string,
+    @Req() req: AuthenticatedRequest
+  ) {
+    const user = req.user as FullyRegisteredAuthenticatedUser;
+    return this.articlesService.delete(articleId, user);
   }
 }

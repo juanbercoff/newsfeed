@@ -20,8 +20,6 @@ const VersionControlMobile = ({
 }: VersionControlItemProps) => {
   const [index, setIndex] = useState(null);
 
-  console.log('index', index);
-
   return (
     <div>
       <Listbox

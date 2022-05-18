@@ -9,6 +9,7 @@ import {
 } from '../../services/comment-likes-api';
 import { DateTime } from 'luxon';
 import Image from 'next/image';
+import UserAvatar from '../common/user-avatar';
 
 interface CommentProps {
   comment: CommentsResponseDto;
@@ -34,15 +35,7 @@ const Comment = ({ comment, comments }: CommentProps) => {
   return (
     <div className="space-y-2">
       <div className="flex flex-row justify-start space-x-2 items-center">
-        <Image
-          className="rounded-full cursor-pointer"
-          alt="profile picture"
-          height={30}
-          width={30}
-          src={
-            'https://lh3.googleusercontent.com/a/AATXAJwS_dRkTCQqvW8PbWTJa4mbuIFgeJrVW2v9jGWC=s96-c'
-          }
-        />
+        <UserAvatar avatarSize="sm" />
         <p className="font-medium text-sm">{comment?.userName}</p>
         <p className="text-gray-400 text-sm">
           {isoStringToRelativeTime(comment.createdAt)}

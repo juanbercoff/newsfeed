@@ -1,21 +1,13 @@
 import { Menu, Transition } from '@headlessui/react';
-import Image from 'next/image';
 import { Fragment } from 'react';
 import Link from 'next/link';
+import UserAvatar from '../common/user-avatar';
 
 const AccountMenu = () => {
   return (
     <Menu as="div" className="relative">
       <Menu.Button className="flex">
-        <Image
-          className="rounded-full cursor-pointer"
-          alt="profile picture"
-          height={30}
-          width={30}
-          src={
-            'https://lh3.googleusercontent.com/a/AATXAJwS_dRkTCQqvW8PbWTJa4mbuIFgeJrVW2v9jGWC=s96-c'
-          }
-        />
+        <UserAvatar avatarSize="md" />
       </Menu.Button>
       <Transition
         as={Fragment}

@@ -57,7 +57,7 @@ const CardMobile = ({ article }: CardProps) => {
               </div>
               <ArticleAuthorInformation
                 userProfile={article?.author?.profile}
-                profileImageSize={20}
+                avatarSize={'sm'}
               />
             </div>
           </div>

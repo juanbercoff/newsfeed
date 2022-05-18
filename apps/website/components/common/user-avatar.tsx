@@ -1,10 +1,20 @@
-import { UserProfile } from '@prisma/client';
+import { useUserProfileContext } from '../../contexts/user-context';
+
+export type AvatarSize = 'sm' | 'md' | 'lg';
 
 type UserAvatarProps = {
-  userProfile: UserProfile;
+  avatarSize: AvatarSize;
 };
 
-const UserAvatar = ({ userProfile }: UserAvatarProps) => {
+const AVATAR_SIZE: { [key in AvatarSize]: string } = {
+  sm: 'h-[24px] w-[24px]',
+  md: 'h-[28px] w-[28px]',
+  lg: 'h-[32px] w-[32px]',
+};
+
+const UserAvatar = ({ avatarSize }: UserAvatarProps) => {
+  const { userProfile } = useUserProfileContext();
+
   const getInitials = (userName: string) => {
     const words = userName.split(' ');
     if (words.length > 1) {
@@ -18,9 +28,11 @@ const UserAvatar = ({ userProfile }: UserAvatarProps) => {
   };
 
   return (
-    <div className="rounded-full bg-sky-900 h-7 w-7 flex justify-center items-center">
+    <div
+      className={`${AVATAR_SIZE[avatarSize]} rounded-full bg-sky-900 flex justify-center items-center`}
+    >
       <p className="font-semibold text-sm text-white">
-        {getInitials(userProfile.userName)}
+        {!userProfile ? 'U' : getInitials(userProfile.userName)}
       </p>
     </div>
   );

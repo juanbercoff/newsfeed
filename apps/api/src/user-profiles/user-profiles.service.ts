@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { AuthenticatedUser } from '@newsfeed/data';
+import {
+  AuthenticatedUser,
+  FullyRegisteredAuthenticatedUser,
+} from '@newsfeed/data';
+import { Prisma } from '@prisma/client';
+import { EntityNotOwnedByUserException } from '../others/exceptions/entity-not-owned-by-user.exception';
 import { PrismaService } from '../prisma/prisma.service';
 import { UsersService } from '../users/users.service';
 
@@ -24,6 +29,34 @@ export class UserProfilesService {
       where: {
         id: userProfileId,
       },
+    });
+  }
+
+  async updateUserProfile(
+    id: string,
+    authenticatedUser: FullyRegisteredAuthenticatedUser,
+    data: Prisma.UserProfileUpdateInput
+  ) {
+    const userId = authenticatedUser.metadata.userId;
+
+    const userProfile = await this.prisma.userProfile.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    if (userProfile.user.id !== userId) {
+      throw new EntityNotOwnedByUserException(Prisma.ModelName.UserProfile);
+    }
+
+    return await this.prisma.userProfile.update({
+      where: {
+        id,
+      },
+      data,
     });
   }
 }

@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 
-type ButtonUse = `primary` | `secondary` | `destructive` | `disabled`;
+export type ButtonUse = `primary` | `secondary` | `destructive` | `disabled`;
 type ButtonSize = `xs` | `sm` | `md`;
 type ButtonType = `button` | `submit`;
 
@@ -23,7 +23,7 @@ const BUTTON_SIZE: { [key in ButtonSize]: string } = {
 const BUTTON_COLOR: { [key in ButtonUse]: string } = {
   destructive: `text-white bg-red-600 hover:bg-red-700`,
   primary: `text-white bg-indigo-600 hover:bg-indigo-700`,
-  secondary: ``,
+  secondary: `text-black bg-slate-100 hover:bg-gray-100`,
   disabled: `text-gray-500 bg-gray-200 cursor-not-allowed`,
 };
 

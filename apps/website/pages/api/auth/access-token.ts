@@ -11,7 +11,6 @@ async function accessTokenHandler(
 ) {
   try {
     const session = getSession(req, res);
-    //console.log('session', session);
     const { accessToken } = await getAccessToken(req, res, {
       refresh: true,
     });

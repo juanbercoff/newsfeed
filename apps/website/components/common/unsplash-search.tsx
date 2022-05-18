@@ -23,8 +23,6 @@ const UnsplashSearch = ({
     pageNumber
   );
 
-  console.log(images);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPageNumber(1);
     setSearchTerm(e.target.value);

@@ -226,4 +226,31 @@ export class ArticlesService {
       updateArticleRecord,
     ]);
   }
+
+  async delete(
+    articleId: string,
+    authenticatedUser: FullyRegisteredAuthenticatedUser
+  ) {
+    const userId = authenticatedUser.metadata.userId;
+
+    const article = await this.prisma.article.findFirst({
+      where: {
+        id: articleId,
+      },
+    });
+
+    if (!article) {
+      throw new Error('Article not found');
+    }
+
+    if (article.authorId !== userId) {
+      throw new EntityNotOwnedByUserException(Prisma.ModelName.Article);
+    }
+
+    return this.prisma.article.delete({
+      where: {
+        id: articleId,
+      },
+    });
+  }
 }

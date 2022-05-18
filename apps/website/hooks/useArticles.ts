@@ -10,6 +10,7 @@ import {
   createArticle,
   getUserArticles,
   updateArticle,
+  deleteArticle,
 } from '../services/articles-api';
 import {
   useQuery,
@@ -68,13 +69,9 @@ export function useCreateArticle(onSuccess: (url: string) => Promise<boolean>) {
 
 export function useGetUserArticles() {
   const { authToken } = useAuthToken();
-  return useQuery(
-    ['articlesByUser', authToken],
-    () => getUserArticles(authToken),
-    {
-      enabled: !!authToken,
-    }
-  );
+  return useQuery(['articles', authToken], () => getUserArticles(authToken), {
+    enabled: !!authToken,
+  });
 }
 
 export function useUpdateArticle(
@@ -93,4 +90,15 @@ export function useUpdateArticle(
       },
     }
   );
+}
+
+export function useDeleteArticle(articleId: string) {
+  const queryClient = useQueryClient();
+  const { authToken } = useAuthToken();
+  return useMutation(() => deleteArticle(articleId, authToken), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('articles');
+      toast.success('Articulo eliminado con exito');
+    },
+  });
 }
