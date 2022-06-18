@@ -38,3 +38,6 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+apps/api/.env.prod
+api.Dockerfile
+apps/website/utils/validators.ts
