@@ -20,13 +20,14 @@ export type UserProfileContainerProps = {
 export const UserProfileContainer = ({
   children,
 }: UserProfileContainerProps) => {
-  const { user } = useUser();
-  const { authToken } = useAuthToken();
+  const { authToken, user } = useAuthToken();
   const [userProfile, setUserProfile] = React.useState<UserProfile | null>(
     null
   );
 
   useEffect(() => {
+    console.log('user', user);
+    console.log('authToken', authToken);
     if (user && authToken) {
       (async function () {
         setUserProfile(await getOrCreateUserWithUserProfile(authToken));

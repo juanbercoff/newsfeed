@@ -22,8 +22,6 @@ export class CreateArticleDto {
   portraitImageUrl: string;
 }
 
-//TODO content DTo
-
 export class UpdateArticleDto extends PartialType(CreateArticleDto) {}
 
 export class GetManyArticlesDto {

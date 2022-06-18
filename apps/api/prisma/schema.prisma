@@ -56,7 +56,7 @@ model Comment {
   authorId         String          @db.Uuid
   author           User            @relation(fields: [authorId], references: [id])
   articleId        String?         @db.Uuid
-  article          Article?        @relation(fields: [articleId], references: [id])
+  article          Article?        @relation(fields: [articleId], references: [id], onDelete: Cascade)
   parentComment    Comment?        @relation("commentToComment", fields: [parentCommentId], references: [id])
   parentCommentId  String?         @db.Uuid
   comments         Comment[]       @relation("commentToComment")
@@ -72,7 +72,7 @@ model ArticleLike {
   userId    String   @db.Uuid
   user      User     @relation(fields: [userId], references: [id])
   articleId String   @db.Uuid
-  article   Article  @relation(fields: [articleId], references: [id])
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
   like      Int
 }
 
@@ -95,7 +95,7 @@ model ArticleContent {
   level2           String          @db.VarChar()
   level3           String          @db.VarChar()
   articleId        String?         @db.Uuid
-  article          Article?        @relation(fields: [articleId], references: [id])
+  article          Article?        @relation(fields: [articleId], references: [id], onDelete: Cascade)
   articleHistoryId String?         @db.Uuid
   articleHistory   ArticleHistory? @relation(fields: [articleHistoryId], references: [id])
 }
@@ -105,7 +105,7 @@ model ArticleVisit {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   articleId String   @db.Uuid
-  article   Article  @relation(fields: [articleId], references: [id])
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
   cookie    String   @db.VarChar(255)
 }
 
@@ -114,7 +114,7 @@ model ArticleHistory {
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   articleId      String           @db.Uuid
-  article        Article          @relation(fields: [articleId], references: [id])
+  article        Article          @relation(fields: [articleId], references: [id], onDelete: Cascade)
   articleContent ArticleContent[]
   comments       Comment[]
 }
@@ -134,7 +134,7 @@ model ArticleTag {
   updatedAt DateTime @updatedAt
   articleId String   @db.Uuid
   tagId     String   @db.Uuid
-  article   Article  @relation(fields: [articleId], references: [id])
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
   tag       Tag      @relation(fields: [tagId], references: [id])
 }
 

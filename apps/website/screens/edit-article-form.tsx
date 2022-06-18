@@ -28,6 +28,7 @@ const EditArticleForm = ({ article }: ArticleFormProps) => {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<ArticleFormData>();
   const { push } = useRouter();
 
@@ -51,7 +52,26 @@ const EditArticleForm = ({ article }: ArticleFormProps) => {
       })),
     };
 
-    mutate(data);
+    if (article.title === data.title) {
+      const isEqual = article.articleContent.every((content, index) => {
+        return (
+          content.level1 === data.content[index].level1 &&
+          content.level2 === data.content[index].level2 &&
+          content.level3 === data.content[index].level3
+        );
+      });
+      console.log('isEqual', isEqual);
+      isEqual
+        ? setError('notRegisteredInput', {
+            type: 'custom',
+            message: 'custom message',
+          })
+        : console.log('mutate');
+    }
+    console.log(article.articleContent);
+    console.log(data.content);
+
+    //mutate(data);
   };
 
   return (

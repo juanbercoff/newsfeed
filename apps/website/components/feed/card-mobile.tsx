@@ -39,7 +39,7 @@ const CardMobile = ({ article }: CardProps) => {
                 {article.title}
               </h3>
               {!isXs ? (
-                <p className="text-sm line-clamp-4">
+                <p className="text-sm line-clamp-4 break-all">
                   {article?.articleContent[0]?.level1}
                 </p>
               ) : null}

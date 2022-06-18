@@ -195,6 +195,10 @@ export class ArticlesService {
       throw new EntityNotOwnedByUserException(Prisma.ModelName.Article);
     }
 
+    /* if (article.articleContent) {
+
+    } */
+
     const articleHistoryData = {
       articleId,
       content: article.articleContent,

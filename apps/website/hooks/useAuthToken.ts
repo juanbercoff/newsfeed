@@ -20,5 +20,5 @@ export default function useAuthToken() {
     })();
   }, [user, authToken]);
 
-  return { authToken };
+  return { authToken, user };
 }

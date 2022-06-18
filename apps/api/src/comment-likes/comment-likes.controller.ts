@@ -51,7 +51,7 @@ export class CommentLikesController {
     return this.commentLikesService.getCommentLikesCount(commentId);
   }
 
-  @UseGuards(AuthorizationGuard)
+  @UseGuards(AuthorizationGuard, FullyRegisteredUserGuard, PermissionsGuard)
   @Delete(':commentLikeId')
   delete(
     @Param('commentLikeId') commentLikeId: string,
