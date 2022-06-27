@@ -12,7 +12,7 @@ import UnsplashSearch from '../components/common/unsplash-search';
 
 export type ArticleFormData = {
   title: string;
-  content: ArticleContentFormData[];
+  content: string;
   portraitImageUrl?: string | null;
 };
 
@@ -27,6 +27,7 @@ const NewArticleForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<ArticleFormData>({
     shouldUnregister: true,
   });
@@ -34,10 +35,9 @@ const NewArticleForm = () => {
 
   const { mutate } = useCreateArticle(push);
 
-  const [numberOfContentSections, setNumberOfContentSections] = useState(1);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     document.querySelectorAll('textarea').forEach((element) => {
       element.addEventListener('paste', function (e) {
         e.preventDefault();
@@ -45,14 +45,12 @@ const NewArticleForm = () => {
         document.execCommand('insertHTML', false, text);
       });
     });
-  }, []);
+  }, []); */
 
   const onSubmit = (formData: ArticleFormData) => {
     const data: CreateArticleDto = {
       title: formData.title,
-      content: formData.content.map((content) => ({
-        ...content,
-      })),
+      content: formData.content,
       portraitImageUrl: selectedImage,
     };
     mutate(data);
@@ -78,37 +76,17 @@ const NewArticleForm = () => {
             setSelectedImage={setSelectedImage}
             selectedImage={selectedImage}
           />
-          {[...Array(numberOfContentSections).keys()].map((content, index) => (
-            <ArticleFormContent
-              key={index}
-              register={register}
-              contentSectionNumber={index}
-              errors={errors}
-            />
-          ))}
+          <ArticleFormContent
+            register={register}
+            errors={errors}
+            content={watch('content')}
+          />
         </div>
         {errors.title?.type === 'required' && 'Escribi algo para comentar'}
         {errors.title?.type === 'maxLength' &&
           'Superaste el limite de 2000 caracteres'}
-        <div className="space-x-1">
+        <div>
           <Button type="submit">Publicar</Button>
-          <Button
-            type="button"
-            onClick={() => {
-              setNumberOfContentSections(numberOfContentSections + 1);
-            }}
-          >
-            Agregar otra seccion
-          </Button>
-          <Button
-            type="button"
-            disabled={numberOfContentSections === 1}
-            onClick={() => {
-              setNumberOfContentSections(numberOfContentSections - 1);
-            }}
-          >
-            Remover ultima seccion agregada
-          </Button>
         </div>
       </form>
     </div>
