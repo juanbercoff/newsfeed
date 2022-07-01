@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { CreateArticleDto } from '@newsfeed/data';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './article-form-style.module.css';
-import { useEffect } from 'react';
-import ArticleFormContent from './article-form-content';
+import ArticleFormContentEditor from './article-form-content-editor';
 import Button from '../components/common/button';
 import { useRouter } from 'next/router';
 import { useCreateArticle } from '../hooks/useArticles';
@@ -16,18 +15,13 @@ export type ArticleFormData = {
   portraitImageUrl?: string | null;
 };
 
-type ArticleContentFormData = {
-  level1: string;
-  level2: string;
-  level3: string;
-};
-
 const NewArticleForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
+    control,
   } = useForm<ArticleFormData>({
     shouldUnregister: true,
   });
@@ -37,28 +31,19 @@ const NewArticleForm = () => {
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  /*   useEffect(() => {
-    document.querySelectorAll('textarea').forEach((element) => {
-      element.addEventListener('paste', function (e) {
-        e.preventDefault();
-        const text = e.clipboardData.getData('text/plain');
-        document.execCommand('insertHTML', false, text);
-      });
-    });
-  }, []); */
-
   const onSubmit = (formData: ArticleFormData) => {
     const data: CreateArticleDto = {
       title: formData.title,
       content: formData.content,
       portraitImageUrl: selectedImage,
     };
-    mutate(data);
+    console.log(formData);
+    //mutate(data);
   };
 
   return (
     <div className="pt-5">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
         <div>
           <input
             {...register('title', {
@@ -76,10 +61,15 @@ const NewArticleForm = () => {
             setSelectedImage={setSelectedImage}
             selectedImage={selectedImage}
           />
-          <ArticleFormContent
-            register={register}
-            errors={errors}
-            content={watch('content')}
+          <Controller
+            control={control}
+            render={({ field }) => (
+              <ArticleFormContentEditor
+                contentValue={field.value}
+                onChange={field.onChange}
+              />
+            )}
+            name="content"
           />
         </div>
         {errors.title?.type === 'required' && 'Escribi algo para comentar'}

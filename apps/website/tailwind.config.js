@@ -2,6 +2,7 @@ module.exports = {
   content: [
     'apps/website/pages/**/*.{js,ts,jsx,tsx}',
     'apps/website/components/**/*.{js,ts,jsx,tsx}',
+    'apps/website/screens/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {

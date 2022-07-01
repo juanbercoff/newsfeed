@@ -14,8 +14,9 @@ export class CreateArticleDto {
   @IsString()
   title: string;
 
+  //TODO: sanitize html
   @IsNotEmpty()
-  content: Prisma.ArticleContentUncheckedCreateWithoutArticleInput[];
+  content: string;
 
   @IsNotEmpty()
   @IsUrl()
