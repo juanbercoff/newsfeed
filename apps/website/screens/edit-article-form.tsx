@@ -34,9 +34,6 @@ const EditArticleForm = ({ article }: ArticleFormProps) => {
       content: Utils.parseHtml(formData.content),
     };
 
-    console.log('data', data.content);
-    console.log('article', article.articleContent);
-
     if (article.articleContent === data.content) {
       if (article.title === data.title) {
         setError('title', {
@@ -48,7 +45,7 @@ const EditArticleForm = ({ article }: ArticleFormProps) => {
         console.log('create new endpoint');
       }
     } else {
-      //mutate(data);
+      mutate(data);
     }
   };
 
@@ -73,7 +70,7 @@ const EditArticleForm = ({ article }: ArticleFormProps) => {
             defaultValue={article.articleContent}
             render={({ field }) => (
               <ArticleFormContentEditor
-                contentValue={field.value}
+                contentValue={article.articleContent}
                 onChange={field.onChange}
               />
             )}

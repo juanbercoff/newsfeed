@@ -31,7 +31,7 @@ const NewArticleForm = () => {
       content: Utils.parseHtml(formData.content),
       portraitImageUrl: selectedImage,
     };
-    //console.log(data);
+    console.log(data.content);
     mutate(data);
   };
 

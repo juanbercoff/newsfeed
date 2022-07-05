@@ -1,9 +1,8 @@
-import { useEditor, EditorContent, BubbleMenu, Mark } from '@tiptap/react';
-import { TextStyle } from '@tiptap/extension-text-style';
+import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import Level, { Levels } from '../utils/level-extension';
 import { useEffect } from 'react';
-import Span from '../utils/span-mark';
+import Level from '../utils/level-mark';
+import Paragraph from '@tiptap/extension-paragraph';
 
 type ArticleFormContentEditorProps = {
   onChange: (html: string) => void;
@@ -15,11 +14,19 @@ const ArticleFormContentEditor = ({
   contentValue,
 }: ArticleFormContentEditorProps) => {
   const editor = useEditor({
-    extensions: [StarterKit, TextStyle, Level, Span],
+    extensions: [
+      StarterKit,
+      Level,
+      Paragraph.configure({
+        HTMLAttributes: {
+          class: 'mt-3 mb-4',
+        },
+      }),
+    ],
     content: contentValue,
     editorProps: {
       attributes: {
-        class: 'h-96 p-2 outline-none border-2 rounded',
+        class: 'h-96 px-2 outline-none border-2 rounded',
       },
     },
     onUpdate({ editor }) {
@@ -27,7 +34,7 @@ const ArticleFormContentEditor = ({
     },
   });
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>, level: Levels) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>, level) => {
     event.preventDefault();
     return editor.commands.setLevel(level);
   };
@@ -50,7 +57,7 @@ const ArticleFormContentEditor = ({
             onClick={(e) => handleClick(e, 'level1')}
             className={`bg-slate-200 p-1 rounded
               ${
-                editor.isActive('textStyle', { level: 'level1' })
+                editor.isActive('level', { class: 'level1' })
                   ? 'bg-slate-500'
                   : ''
               }
@@ -62,7 +69,7 @@ const ArticleFormContentEditor = ({
             onClick={(e) => handleClick(e, 'level2')}
             className={`bg-slate-200 p-1 rounded
             ${
-              editor.isActive('textStyle', { level: 'level2' })
+              editor.isActive('level', { class: 'level2' })
                 ? 'bg-slate-500'
                 : ''
             }
@@ -74,7 +81,7 @@ const ArticleFormContentEditor = ({
             onClick={(e) => handleClick(e, 'level3')}
             className={`bg-slate-200 p-1 rounded
             ${
-              editor.isActive('textStyle', { level: 'level3' })
+              editor.isActive('level', { class: 'level3' })
                 ? 'bg-slate-500'
                 : ''
             }

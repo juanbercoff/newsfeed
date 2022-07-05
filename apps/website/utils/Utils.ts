@@ -11,8 +11,6 @@ export default class Utils {
   }
 
   static parseHtml(html: string) {
-    const parsedHtml = DOMPurify.sanitize(html, { FORBID_ATTR: ['style'] });
-    const removeRegexP = /<p><\/p>/g;
-    return parsedHtml.replace(removeRegexP, '<br>');
+    return DOMPurify.sanitize(html, { FORBID_ATTR: ['style'] });
   }
 }
