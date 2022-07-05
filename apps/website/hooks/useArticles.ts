@@ -59,9 +59,10 @@ export function useCreateArticle(onSuccess: (url: string) => Promise<boolean>) {
     (data: CreateArticleDto) => createArticle(data, authToken),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries('articles');
+        console.log('invalidate');
         toast.success('Articulo creado con exito');
         onSuccess('/feed');
+        queryClient.invalidateQueries('articles', { refetchInactive: true });
       },
     }
   );

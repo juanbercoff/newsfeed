@@ -7,16 +7,16 @@ function classNames(...classes) {
 type DepthSelectorProps = {
   setActiveIndex: (index: number) => void;
   activeIndex: number;
-  setShowFirstLevel: (shouldOpen: boolean) => void;
-  setShowSecondLevel: (shouldOpen: boolean) => void;
-  handleLevels: (shouldOpen: boolean) => void;
+  setShowFirstLevel: () => void;
+  setShowSecondLevel: () => void;
+  hideUpperLevels: () => void;
 };
 
 const DepthSelector = ({
   setActiveIndex,
   setShowFirstLevel,
   setShowSecondLevel,
-  handleLevels,
+  hideUpperLevels,
   activeIndex,
 }: DepthSelectorProps) => {
   return (
@@ -27,14 +27,13 @@ const DepthSelector = ({
           setActiveIndex(index);
           switch (index) {
             case 0:
-              handleLevels(false);
+              hideUpperLevels();
               break;
             case 1:
-              setShowFirstLevel(true);
-              setShowSecondLevel(false);
+              setShowFirstLevel();
               break;
             case 2:
-              handleLevels(true);
+              setShowSecondLevel();
           }
         }}
       >

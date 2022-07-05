@@ -38,78 +38,15 @@ const seed = async () => {
     ],
   });
 
-  const articles = [
-    {
-      id: 'e432f468-1bd1-4ea4-84f0-11865080d6c6',
-      title: 'Las fotos de Kiev y la guerra',
-      content: [
-        {
-          level1:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a euismod tortor, quis faucibus tellus. Nunc a risus faucibus, eleifend turpis eu, varius mauris. Nullam efficitur magna non ipsum hendrerit convallis. Quisque elit est, malesuada et consectetur blandit, efficitur sit.',
-          level2:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-          level3:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        },
-        {
-          level1:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a euismod tortor, quis faucibus tellus. Nunc a risus faucibus, eleifend turpis eu, varius mauris. Nullam efficitur magna non ipsum hendrerit convallis. Quisque elit est, malesuada et consectetur blandit, efficitur sit.',
-          level2:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-          level3:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        },
-      ],
-      authorId: 'e332f468-1bd1-4ea4-84f0-11865080d6c6',
-    },
-    {
-      id: 'e532f468-1bd1-4ea4-84f0-11865080d6c6',
-      title: 'Los peligros de la pobreza en tiempos de guerra',
-      content: [
-        {
-          level1:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a euismod tortor, quis faucibus tellus. Nunc a risus faucibus, eleifend turpis eu, varius mauris. Nullam efficitur magna non ipsum hendrerit convallis. Quisque elit est, malesuada et consectetur blandit, efficitur sit.',
-          level2:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-          level3:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        },
-        {
-          level1:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a euismod tortor, quis faucibus tellus. Nunc a risus faucibus, eleifend turpis eu, varius mauris. Nullam efficitur magna non ipsum hendrerit convallis. Quisque elit est, malesuada et consectetur blandit, efficitur sit.',
-          level2:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-          level3:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        },
-      ],
-      authorId: 'e332f468-1bd1-4ea4-84f0-11865080d6c6',
-    },
-  ];
-
   await prisma.article.create({
     data: {
-      id: articles[0].id,
+      id: 'e432f468-1bd1-4ea4-84f0-11865080d6c6',
       title: 'Los peligros de la pobreza en tiempos de guerra',
       authorId: 'e332f468-1bd1-4ea4-84f0-11865080d6c6',
       portraitImageUrl:
         'https://images.unsplash.com/photo-1648737965255-e1e6f33f0937?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-      articleContent: {
-        createMany: {
-          data: [
-            {
-              level1: articles[0].content[0].level1,
-              level2: articles[0].content[0].level2,
-              level3: articles[0].content[0].level3,
-            },
-            {
-              level1: articles[0].content[1].level1,
-              level2: articles[0].content[1].level2,
-              level3: articles[0].content[1].level3,
-            },
-          ],
-        },
-      },
+      articleContent: `<span class="level1">Todo lo que digan podra ser usado en su contra. </span><span class="level2">Absolutamente todo</span>
+        <span class="level2">De todo. </span><span class="level3">Solo doctor leche lo sabra</span><span class="level1">No pasa nada igual</span>`,
     },
   });
 

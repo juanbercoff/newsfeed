@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { CreateArticleDto } from '@newsfeed/data';
+import { CreateArticleDto, ArticleFormData } from '@newsfeed/data';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './article-form-style.module.css';
 import ArticleFormContentEditor from './article-form-content-editor';
@@ -8,19 +8,13 @@ import Button from '../components/common/button';
 import { useRouter } from 'next/router';
 import { useCreateArticle } from '../hooks/useArticles';
 import UnsplashSearch from '../components/common/unsplash-search';
-
-export type ArticleFormData = {
-  title: string;
-  content: string;
-  portraitImageUrl?: string | null;
-};
+import Utils from '../utils/Utils';
 
 const NewArticleForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
     control,
   } = useForm<ArticleFormData>({
     shouldUnregister: true,
@@ -34,11 +28,11 @@ const NewArticleForm = () => {
   const onSubmit = (formData: ArticleFormData) => {
     const data: CreateArticleDto = {
       title: formData.title,
-      content: formData.content,
+      content: Utils.parseHtml(formData.content),
       portraitImageUrl: selectedImage,
     };
-    console.log(formData);
-    //mutate(data);
+    //console.log(data);
+    mutate(data);
   };
 
   return (

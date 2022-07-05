@@ -1,23 +1,16 @@
-import { useForm } from 'react-hook-form';
-import { UpdateArticleDto, ArticlesWithLikesResponseDto } from '@newsfeed/data';
+import { useForm, Controller } from 'react-hook-form';
+import {
+  UpdateArticleDto,
+  ArticlesWithLikesResponseDto,
+  ArticleFormData,
+} from '@newsfeed/data';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './article-form-style.module.css';
-import { useEffect } from 'react';
-import ArticleFormContent from './article-form-content';
+import ArticleFormContentEditor from './article-form-content-editor';
 import Button from '../components/common/button';
 import { useRouter } from 'next/router';
 import { useUpdateArticle } from '../hooks/useArticles';
-
-export type ArticleFormData = {
-  title: string;
-  content: ArticleContentFormData[];
-};
-
-type ArticleContentFormData = {
-  level1: string;
-  level2: string;
-  level3: string;
-};
+import Utils from '../utils/Utils';
 
 type ArticleFormProps = {
   article: ArticlesWithLikesResponseDto;
@@ -29,54 +22,39 @@ const EditArticleForm = ({ article }: ArticleFormProps) => {
     handleSubmit,
     formState: { errors },
     setError,
+    control,
   } = useForm<ArticleFormData>();
   const { push } = useRouter();
 
   const { mutate } = useUpdateArticle(article.id, push);
 
-  useEffect(() => {
-    document.querySelectorAll('textarea').forEach((element) => {
-      element.addEventListener('paste', function (e) {
-        e.preventDefault();
-        const text = e.clipboardData.getData('text/plain');
-        document.execCommand('insertHTML', false, text);
-      });
-    });
-  }, []);
-
   const onSubmit = (formData: ArticleFormData) => {
     const data: UpdateArticleDto = {
       title: formData.title,
-      content: formData.content.map((content) => ({
-        ...content,
-      })),
+      content: Utils.parseHtml(formData.content),
     };
 
-    if (article.title === data.title) {
-      const isEqual = article.articleContent.every((content, index) => {
-        return (
-          content.level1 === data.content[index].level1 &&
-          content.level2 === data.content[index].level2 &&
-          content.level3 === data.content[index].level3
-        );
-      });
-      console.log('isEqual', isEqual);
-      isEqual
-        ? setError('notRegisteredInput', {
-            type: 'custom',
-            message: 'custom message',
-          })
-        : console.log('mutate');
-    }
-    console.log(article.articleContent);
-    console.log(data.content);
+    console.log('data', data.content);
+    console.log('article', article.articleContent);
 
-    //mutate(data);
+    if (article.articleContent === data.content) {
+      if (article.title === data.title) {
+        setError('title', {
+          type: 'custom',
+          message: 'Modifica el titulo o contenido para editar el articulo',
+        });
+      } else {
+        //TODO: modificar articulo sin crear nueva version
+        console.log('create new endpoint');
+      }
+    } else {
+      //mutate(data);
+    }
   };
 
   return (
     <div className="pt-5">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
         <div>
           <input
             {...register('title', {
@@ -90,21 +68,22 @@ const EditArticleForm = ({ article }: ArticleFormProps) => {
             ].join(' ')}
             placeholder="Titulo del articulo"
           ></input>
-          {article?.articleContent.length > 0
-            ? article.articleContent.map((content, index) => (
-                <ArticleFormContent
-                  key={content.id}
-                  register={register}
-                  contentSectionNumber={index}
-                  articleContent={content}
-                  errors={errors}
-                />
-              ))
-            : null}
+          <Controller
+            control={control}
+            defaultValue={article.articleContent}
+            render={({ field }) => (
+              <ArticleFormContentEditor
+                contentValue={field.value}
+                onChange={field.onChange}
+              />
+            )}
+            name="content"
+          />
         </div>
         {errors.title?.type === 'required' && 'Escribi algo para comentar'}
         {errors.title?.type === 'maxLength' &&
           'Superaste el limite de 2000 caracteres'}
+        {errors.title?.message}
         <div className="space-x-1">
           <Button type="submit">Enviar</Button>
         </div>

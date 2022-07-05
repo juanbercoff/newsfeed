@@ -42,7 +42,7 @@ model Article {
   portraitImageUrl String           @db.VarChar(255)
   comments         Comment[]
   likes            ArticleLike[]
-  articleContent   ArticleContent[]
+  articleContent   String
   articleVisit     ArticleVisit[]
   articleHistory   ArticleHistory[]
   articleTag       ArticleTag[]
@@ -87,19 +87,6 @@ model CommentLike {
   like      Int
 }
 
-model ArticleContent {
-  id               String          @id @default(uuid()) @db.Uuid
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
-  level1           String          @db.VarChar()
-  level2           String          @db.VarChar()
-  level3           String          @db.VarChar()
-  articleId        String?         @db.Uuid
-  article          Article?        @relation(fields: [articleId], references: [id], onDelete: Cascade)
-  articleHistoryId String?         @db.Uuid
-  articleHistory   ArticleHistory? @relation(fields: [articleHistoryId], references: [id])
-}
-
 model ArticleVisit {
   id        String   @id @default(uuid()) @db.Uuid
   createdAt DateTime @default(now())
@@ -110,12 +97,12 @@ model ArticleVisit {
 }
 
 model ArticleHistory {
-  id             String           @id @default(uuid()) @db.Uuid
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  articleId      String           @db.Uuid
-  article        Article          @relation(fields: [articleId], references: [id], onDelete: Cascade)
-  articleContent ArticleContent[]
+  id             String    @id @default(uuid()) @db.Uuid
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  articleId      String    @db.Uuid
+  article        Article   @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  articleContent String
   comments       Comment[]
 }
 

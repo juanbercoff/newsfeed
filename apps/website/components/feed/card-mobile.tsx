@@ -39,9 +39,10 @@ const CardMobile = ({ article }: CardProps) => {
                 {article.title}
               </h3>
               {!isXs ? (
-                <p className="text-sm line-clamp-4 break-all">
-                  {article?.articleContent[0]?.level1}
-                </p>
+                <p
+                  className="text-sm line-clamp-4 break-all"
+                  dangerouslySetInnerHTML={{ __html: article?.articleContent }}
+                />
               ) : null}
             </div>
             <div className="flex justify-between items-center flex-wrap">

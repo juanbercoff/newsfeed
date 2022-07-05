@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client';
 
 export class CreateArticleHistoryDto {
   @IsNotEmpty()
-  content: Prisma.ArticleContentUncheckedCreateWithoutArticleInput[];
+  content: string;
 
   @IsNotEmpty()
   @IsUUID()
@@ -15,7 +15,6 @@ export class CreateArticleHistoryDto {
 
 const articleHistory = Prisma.validator<Prisma.ArticleHistoryArgs>()({
   include: {
-    articleContent: true,
     comments: true,
   },
 });

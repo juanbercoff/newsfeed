@@ -9,7 +9,7 @@ const levelStyle = {
   level3: 'font-size: 14px',
 };
 
-const LEVELS = ['level1', 'level2', 'level3'] as const;
+const LEVELS = ['level1', 'level2', 'level3'];
 
 export type Levels = 'level1' | 'level2' | 'level3';
 
@@ -51,9 +51,11 @@ const Level = Extension.create<LevelOptions>({
           level: {
             default: this.options.defaultAttributes,
             parseHTML: (element) =>
-              element.id || this.options.defaultAttributes,
+              !LEVELS.includes(element.className)
+                ? 'level1'
+                : element.className,
             renderHTML: (attributes) => ({
-              id: attributes.level,
+              class: attributes.level,
               style: `${levelStyle[attributes.level]}`,
             }),
           },

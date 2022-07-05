@@ -1,8 +1,9 @@
-import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react';
+import { useEditor, EditorContent, BubbleMenu, Mark } from '@tiptap/react';
 import { TextStyle } from '@tiptap/extension-text-style';
 import StarterKit from '@tiptap/starter-kit';
 import Level, { Levels } from '../utils/level-extension';
 import { useEffect } from 'react';
+import Span from '../utils/span-mark';
 
 type ArticleFormContentEditorProps = {
   onChange: (html: string) => void;
@@ -14,7 +15,7 @@ const ArticleFormContentEditor = ({
   contentValue,
 }: ArticleFormContentEditorProps) => {
   const editor = useEditor({
-    extensions: [StarterKit, TextStyle, Level],
+    extensions: [StarterKit, TextStyle, Level, Span],
     content: contentValue,
     editorProps: {
       attributes: {

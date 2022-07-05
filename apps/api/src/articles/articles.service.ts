@@ -40,11 +40,7 @@ export class ArticlesService {
             id: userId,
           },
         },
-        articleContent: {
-          create: content.map((articleContent) => ({
-            ...articleContent,
-          })),
-        },
+        articleContent: content,
         portraitImageUrl,
       },
     });
@@ -66,7 +62,6 @@ export class ArticlesService {
             comments: true,
           },
         },
-        articleContent: true,
         articleHistory: true,
         articleTag: {
           include: {
@@ -77,6 +72,7 @@ export class ArticlesService {
     });
   }
 
+  //FIX: write query
   async findAll({
     cursor,
     tags,
@@ -121,7 +117,6 @@ export class ArticlesService {
             comments: true,
           },
         },
-        articleContent: true,
         articleHistory: {
           orderBy: {
             createdAt: 'asc',
@@ -172,7 +167,6 @@ export class ArticlesService {
         id: articleId,
       },
       include: {
-        articleContent: true,
         comments: true,
       },
     });
@@ -195,10 +189,6 @@ export class ArticlesService {
       throw new EntityNotOwnedByUserException(Prisma.ModelName.Article);
     }
 
-    /* if (article.articleContent) {
-
-    } */
-
     const articleHistoryData = {
       articleId,
       content: article.articleContent,
@@ -213,12 +203,7 @@ export class ArticlesService {
         id: articleId,
       },
       data: {
-        articleContent: {
-          set: [],
-          create: data.content.map((articleContent) => ({
-            ...articleContent,
-          })),
-        },
+        articleContent: data.content,
         comments: {
           set: [],
         },

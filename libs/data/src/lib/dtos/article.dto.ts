@@ -6,7 +6,7 @@ import {
   IsUrl,
 } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
-import { Prisma, ArticleContent } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { AllArticlesLikesDto } from './article-likes.dto';
 
 export class CreateArticleDto {
@@ -40,7 +40,6 @@ const articlesResponseDto = Prisma.validator<Prisma.ArticleArgs>()({
   include: {
     author: { include: { profile: true } },
     _count: { select: { comments: true } },
-    articleContent: true,
     articleHistory: true,
     articleTag: { include: { tag: true } },
   },

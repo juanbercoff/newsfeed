@@ -10,11 +10,7 @@ export class ArticleHistoryService {
   create(data: CreateArticleHistoryDto) {
     return this.prisma.articleHistory.create({
       data: {
-        articleContent: {
-          connect: data.content.map((articleContent) => ({
-            id: articleContent.id,
-          })),
-        },
+        articleContent: data.content,
         articleId: data.articleId,
         comments: {
           connect: data.comments.map((comment) => ({
@@ -31,7 +27,6 @@ export class ArticleHistoryService {
         articleId,
       },
       include: {
-        articleContent: true,
         comments: {
           include: {
             likes: true,
