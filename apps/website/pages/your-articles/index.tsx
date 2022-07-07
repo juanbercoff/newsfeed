@@ -5,6 +5,7 @@ import Utils from '../../utils/Utils';
 import Button from '../../components/common/button';
 import Link from 'next/link';
 import Modal from '../../components/common/modal';
+import { useGetArticleHistory } from '../../hooks/useArticleHistory';
 
 const YourArticles = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,8 +19,10 @@ const YourArticles = () => {
     return <h1 className="mt-4">Error, intenta nuevamente</h1>;
   }
 
+  console.log(articles);
+  //TODO new component for article edit card card
   return (
-    <div className="flex flex-col mt-4">
+    <div className="flex flex-col mt-4 px-2">
       <Modal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
@@ -49,7 +52,11 @@ const YourArticles = () => {
                   }}
                   passHref={true}
                 >
-                  <Button use="primary" size="sm">
+                  <Button
+                    use="primary"
+                    size="sm"
+                    disabled={article._count?.articleHistory >= 4}
+                  >
                     Editar
                   </Button>
                 </Link>

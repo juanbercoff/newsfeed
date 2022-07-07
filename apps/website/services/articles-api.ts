@@ -11,6 +11,7 @@ import {
   CreateArticleDto,
   UpdateArticleDto,
   GetArticlesPayload,
+  UserArticles,
 } from '@newsfeed/data';
 import { Article } from '@prisma/client';
 
@@ -52,8 +53,10 @@ export async function createArticle(
   );
 }
 
-export async function getUserArticles(authToken: string): Promise<Article[]> {
-  return callApiService<Article[]>(
+export async function getUserArticles(
+  authToken: string
+): Promise<UserArticles[]> {
+  return callApiService<UserArticles[]>(
     {
       url: getEndpoint('articles/user'),
       method: 'GET',

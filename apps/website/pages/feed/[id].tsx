@@ -29,9 +29,6 @@ const TEXT_SIZE = {
   size0: 'text-[0]',
 };
 
-const htmlto =
-  "<p><span class='level1'>Alberto Fernández </span><span class='level1'>encabezó hoy el acto por el aniversario de la muerte de Juan Domingo Perón en la CGT y</span><span class='level1'>aprovechó esa plataforma para contestar algunas de las críticas que Cristina Kichner le hizo públicamente a su gestión.</span></p><p></p><p><span class='level1'>Durante su discurso, el Presidente elogió la búsqueda de consensos de Juan Domingo Perón en los últimos años de su vida. “</span><span class='level1'>En la conducción política no hay que obligar a nadie, hay que persuadir</span><span class='level1'>”, dijo y agregó que “convencer es una tarea mucho más ardua pero más segura”.</span></p><p></p><p><span class='level1'>Rodeado por sindicalistas afines, miembros de su gabinete y apenas un puñado de gobernadores peronistas, el Presidente refutó los dicho de su vice, quien</span><span class='level1'>a principios del mes pasado le pidió que “use la lapicera”</span><span class='level1'>para administrar las tensiones sociales “en favor de las grandes mayorías” y para terminar con el “festival de importaciones” que consume las reservas del Banco Central.</span></p>";
-
 interface ArticleProps {
   article: ArticlesWithLikesResponseDto;
 }
@@ -162,7 +159,7 @@ const Article = ({ article }: ArticleProps) => {
         <div>
           <div
             dangerouslySetInnerHTML={{
-              __html: article.articleContent,
+              __html: articleVersionToDisplay.articleContent,
             }}
           />
         </div>

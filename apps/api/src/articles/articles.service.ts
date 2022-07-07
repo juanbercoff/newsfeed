@@ -9,6 +9,7 @@ import {
   AuthenticatedUser,
   UpdateArticleDto,
   FullyRegisteredAuthenticatedUser,
+  UserArticles,
 } from '@newsfeed/data';
 import { UsersService } from '../users/users.service';
 import { Article, Prisma } from '@prisma/client';
@@ -147,7 +148,7 @@ export class ArticlesService {
 
   async getArticlesByUser(
     authenticatedUser: AuthenticatedUser
-  ): Promise<Article[]> {
+  ): Promise<UserArticles[]> {
     const user = await this.usersService.getUserAccount(authenticatedUser);
 
     if (!user) {
@@ -157,6 +158,13 @@ export class ArticlesService {
     return this.prisma.article.findMany({
       where: {
         authorId: user.id,
+      },
+      include: {
+        _count: {
+          select: {
+            articleHistory: true,
+          },
+        },
       },
     });
   }
@@ -168,6 +176,11 @@ export class ArticlesService {
       },
       include: {
         comments: true,
+        _count: {
+          select: {
+            articleHistory: true,
+          },
+        },
       },
     });
   }
@@ -187,6 +200,25 @@ export class ArticlesService {
 
     if (article.authorId !== userId) {
       throw new EntityNotOwnedByUserException(Prisma.ModelName.Article);
+    }
+
+    if (article.articleContent === data.content) {
+      if (article.title === data.title) {
+        //TODO
+        throw new Error('Article is the same');
+      }
+      return this.prisma.article.update({
+        where: {
+          id: articleId,
+        },
+        data: {
+          title: data.title,
+        },
+      });
+    }
+
+    if (article._count.articleHistory >= 4) {
+      throw new Error("You can't edit an article more than 5 times");
     }
 
     const articleHistoryData = {

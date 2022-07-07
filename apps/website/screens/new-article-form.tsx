@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import { useCreateArticle } from '../hooks/useArticles';
 import UnsplashSearch from '../components/common/unsplash-search';
 import Utils from '../utils/Utils';
+import { useGetTags } from '../hooks/useTags';
 
 const NewArticleForm = () => {
   const {
@@ -22,6 +23,7 @@ const NewArticleForm = () => {
   const { push } = useRouter();
 
   const { mutate } = useCreateArticle(push);
+  const { data: tags, isLoading } = useGetTags();
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
@@ -31,7 +33,6 @@ const NewArticleForm = () => {
       content: Utils.parseHtml(formData.content),
       portraitImageUrl: selectedImage,
     };
-    console.log(data.content);
     mutate(data);
   };
 

@@ -34,16 +34,14 @@ const EditArticleForm = ({ article }: ArticleFormProps) => {
       content: Utils.parseHtml(formData.content),
     };
 
-    if (article.articleContent === data.content) {
-      if (article.title === data.title) {
-        setError('title', {
-          type: 'custom',
-          message: 'Modifica el titulo o contenido para editar el articulo',
-        });
-      } else {
-        //TODO: modificar articulo sin crear nueva version
-        console.log('create new endpoint');
-      }
+    if (
+      article.articleContent === data.content &&
+      article.title === data.title
+    ) {
+      setError('title', {
+        type: 'custom',
+        message: 'Modifica el titulo o contenido para editar el articulo',
+      });
     } else {
       mutate(data);
     }

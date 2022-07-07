@@ -52,3 +52,11 @@ export type ArticleResponseDto = Prisma.ArticleGetPayload<
 export type ArticlesWithLikesResponseDto = ArticleResponseDto & {
   articleLike: AllArticlesLikesDto;
 };
+
+const userArticles = Prisma.validator<Prisma.ArticleArgs>()({
+  include: {
+    _count: { select: { articleHistory: true } },
+  },
+});
+
+export type UserArticles = Prisma.ArticleGetPayload<typeof userArticles>;

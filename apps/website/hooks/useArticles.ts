@@ -46,7 +46,7 @@ export function useGetOneArticle(
   initialData?: ArticlesWithLikesResponseDto,
   enabled?: boolean
 ) {
-  return useQuery(['article', articleId], () => getOneArticle(articleId), {
+  return useQuery(['articles', articleId], () => getOneArticle(articleId), {
     initialData,
     enabled: enabled,
   });
@@ -59,7 +59,6 @@ export function useCreateArticle(onSuccess: (url: string) => Promise<boolean>) {
     (data: CreateArticleDto) => createArticle(data, authToken),
     {
       onSuccess: () => {
-        console.log('invalidate');
         toast.success('Articulo creado con exito');
         onSuccess('/feed');
         queryClient.invalidateQueries('articles', { refetchInactive: true });
@@ -70,9 +69,13 @@ export function useCreateArticle(onSuccess: (url: string) => Promise<boolean>) {
 
 export function useGetUserArticles() {
   const { authToken } = useAuthToken();
-  return useQuery(['articles', authToken], () => getUserArticles(authToken), {
-    enabled: !!authToken,
-  });
+  return useQuery(
+    ['articlesUser', authToken],
+    () => getUserArticles(authToken),
+    {
+      enabled: !!authToken,
+    }
+  );
 }
 
 export function useUpdateArticle(
@@ -85,7 +88,8 @@ export function useUpdateArticle(
     (data: UpdateArticleDto) => updateArticle(articleId, data, authToken),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries('articles');
+        //queryClient.invalidateQueries('articles');
+        queryClient.refetchQueries('articles');
         toast.success('Articulo modificado con exito');
         onSuccess('/feed');
       },
