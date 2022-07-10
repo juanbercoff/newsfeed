@@ -4,7 +4,7 @@ type ImageOptionsProps = {
 
 const ImageOptions = ({ setSelectedImage }: ImageOptionsProps) => {
   return (
-    <div className="absolute z-10 cursor-pointer">
+    <div className="absolute cursor-pointer">
       <p onClick={() => setSelectedImage(null)}>Cambiar imagen</p>
     </div>
   );

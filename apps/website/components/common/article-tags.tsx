@@ -10,7 +10,7 @@ type ArticleTagsProps = {
 const ArticleTags = ({ articleTag }: ArticleTagsProps) => {
   return (
     <div className="flex space-x-1 flex-wrap">
-      {articleTag.map((tag) => (
+      {articleTag?.map((tag) => (
         <TagItem key={tag.id} tag={tag.tag} />
       ))}
     </div>

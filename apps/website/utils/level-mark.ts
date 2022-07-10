@@ -38,7 +38,6 @@ const Level = Mark.create<LevelOptions>({
       class: {
         default: { class: 'level1' },
         parseHTML: (element) => {
-          console.log(element);
           return !LEVELS.includes(element.className)
             ? 'level1'
             : element.className;

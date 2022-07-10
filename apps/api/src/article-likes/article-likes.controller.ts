@@ -7,12 +7,14 @@ import {
   UseGuards,
   Req,
   Delete,
+  Patch,
 } from '@nestjs/common';
 import { ArticleLikesService } from './article-likes.service';
 import {
   AuthenticatedUser,
   CreateOrUpdateArticleLikeDto,
   FullyRegisteredAuthenticatedUser,
+  UpdateArticleLikeDto,
 } from '@newsfeed/data';
 import { AuthorizationGuard } from '../authorization/authorization.guard';
 import { AuthenticatedRequest } from '@newsfeed/data';
@@ -23,7 +25,7 @@ import { PermissionsGuard } from '../authorization/permissions.guard';
 export class ArticleLikesController {
   constructor(private readonly articleLikesService: ArticleLikesService) {}
 
-  @UseGuards(AuthorizationGuard, FullyRegisteredUserGuard, PermissionsGuard)
+  /* @UseGuards(AuthorizationGuard, FullyRegisteredUserGuard, PermissionsGuard)
   @Post()
   createOrUpdate(
     @Body() createOrUpdateArticleLikeDto: CreateOrUpdateArticleLikeDto,
@@ -34,7 +36,7 @@ export class ArticleLikesController {
       createOrUpdateArticleLikeDto,
       user
     );
-  }
+  } */
 
   @Get('/all/:articleId')
   getAllLikesByArticle(@Param('articleId') articleId: string) {
@@ -61,11 +63,25 @@ export class ArticleLikesController {
     return this.articleLikesService.delete(articleLikeId, user);
   }
 
-  @UseGuards(AuthorizationGuard)
+  @UseGuards(AuthorizationGuard, FullyRegisteredUserGuard, PermissionsGuard)
   @Get(':articleId')
   get(@Param('articleId') articleId: string, @Req() req: AuthenticatedRequest) {
-    const user = req.user as AuthenticatedUser;
+    const user = req.user as FullyRegisteredAuthenticatedUser;
 
     return this.articleLikesService.getUserArticleLike({ articleId }, user);
+  }
+
+  @UseGuards(AuthorizationGuard, FullyRegisteredUserGuard, PermissionsGuard)
+  @Patch(':articleLikeId')
+  patch(
+    @Body() data: UpdateArticleLikeDto,
+    @Param('articleLikeId') articleLikeId: string,
+    @Req() req: AuthenticatedRequest
+  ) {
+    const user = req.user as FullyRegisteredAuthenticatedUser;
+    return this.articleLikesService.update(
+      { articleLikeId, like: data.like },
+      user
+    );
   }
 }

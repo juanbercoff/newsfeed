@@ -22,7 +22,7 @@ export class CreateOrUpdateArticleLikeDto extends PartialType(
 export class UpdateArticleLikeDto extends PartialType(CreateArticleLikeDto) {
   @IsNotEmpty()
   @IsUUID()
-  id: string;
+  articleLikeId: string;
 }
 
 export class GetUserArticleLikeDto extends PartialType(CreateArticleLikeDto) {}

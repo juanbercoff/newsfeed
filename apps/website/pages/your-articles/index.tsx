@@ -19,7 +19,6 @@ const YourArticles = () => {
     return <h1 className="mt-4">Error, intenta nuevamente</h1>;
   }
 
-  console.log(articles);
   //TODO new component for article edit card card
   return (
     <div className="flex flex-col mt-4 px-2">

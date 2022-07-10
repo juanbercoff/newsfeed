@@ -13,6 +13,10 @@ import useBreakpoints from '../../hooks/useBreakpoints';
 import ArticleTags from '../common/article-tags';
 import ArticleAuthorInformation from '../common/article-author-information';
 import { useGetCountOfComments } from '../../hooks/useComments';
+import {
+  useGetArticleIsLiked,
+  useGetArticlesLikesCount,
+} from '../../hooks/useArticleLikes';
 
 interface CardProps {
   article: ArticleResponseDto & { articleLike: AllArticlesLikesDto };
@@ -26,9 +30,22 @@ const CardMobile = ({ article }: CardProps) => {
     deleteArticleLike,
     postArticleLike
   );
+
   const { data, isLoading } = useGetCountOfComments(article.id);
+  const { data: allArticleLikes, isLoading: articleLikeCountLoading } =
+    useGetArticlesLikesCount(article.id);
+  const {
+    data: isArticleLiked,
+    isLoading: articleLikeLoading,
+    isIdle,
+  } = useGetArticleIsLiked(article.id);
 
   const { isXs } = useBreakpoints();
+
+  if (isLoading || articleLikeLoading || articleLikeCountLoading || isIdle) {
+    return <div>loading</div>;
+  }
+
   return (
     <Link href={`/feed/${article.id}`} passHref>
       <div className="max-h-lg bg-white cursor-pointer p-4 rounded-md shadow-md hover:shadow-lg hover:scale-[1.01] transition-all">
@@ -53,6 +70,9 @@ const CardMobile = ({ article }: CardProps) => {
                   uiLikes={uiLikes}
                   like={hasBeenLiked?.like}
                   handleLike={handleLike}
+                  article={article}
+                  likeCount={allArticleLikes?._sum?.like || 0}
+                  isLiked={isArticleLiked?.like}
                 />
                 <ArticleTags articleTag={article.articleTag} />
               </div>

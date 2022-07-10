@@ -2,12 +2,17 @@ import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import Link from 'next/link';
 import UserAvatar from '../common/user-avatar';
+import { UserProfile } from '@prisma/client';
 
-const AccountMenu = () => {
+type AccountMenuProps = {
+  userProfile: UserProfile;
+};
+
+const AccountMenu = ({ userProfile }: AccountMenuProps) => {
   return (
     <Menu as="div" className="relative">
       <Menu.Button className="flex">
-        <UserAvatar avatarSize="md" />
+        <UserAvatar avatarSize="md" userName={userProfile?.userName} />
       </Menu.Button>
       <Transition
         as={Fragment}

@@ -14,7 +14,7 @@ const ArticleAuthorInformation = ({
 }: ArticleAuthorInformationProps) => {
   return (
     <div className="flex items space-x-2 items-center">
-      <UserAvatar avatarSize={avatarSize} />
+      <UserAvatar avatarSize={avatarSize} userName={userProfile.userName} />
       <p className="text-md">{userProfile.userName}</p>
       <p className="text-xs text-gray-500">
         {Utils.formatDateRelative(userProfile.createdAt)}

@@ -11,6 +11,7 @@ export const UserProfileContext = React.createContext<
 export type UserProfileContextValue = {
   userProfile: UserProfile;
   authToken: string | null;
+  isLoading: boolean;
 };
 
 export type UserProfileContainerProps = {
@@ -24,13 +25,12 @@ export const UserProfileContainer = ({
   const [userProfile, setUserProfile] = React.useState<UserProfile | null>(
     null
   );
-
+  const [isLoading, setIsLoading] = React.useState(true);
   useEffect(() => {
-    console.log('user', user);
-    console.log('authToken', authToken);
     if (user && authToken) {
       (async function () {
         setUserProfile(await getOrCreateUserWithUserProfile(authToken));
+        setIsLoading(false);
       })();
     }
   }, [user, authToken]);
@@ -40,6 +40,7 @@ export const UserProfileContainer = ({
       value={{
         userProfile,
         authToken,
+        isLoading,
       }}
     >
       {children}

@@ -20,7 +20,6 @@ interface FeedProps {
 }
 
 const Feed = ({ articles }: FeedProps) => {
-  useUserProfileContext();
   const [selectedTags, setSelectedTags] = useState<Tag[]>();
   const formatFilterTags = () => {
     return selectedTags?.map((tag) => `tags=${tag.name}`).join('&');

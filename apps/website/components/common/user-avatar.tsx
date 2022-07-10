@@ -1,9 +1,11 @@
-import { useUserProfileContext } from '../../contexts/user-context';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 export type AvatarSize = 'sm' | 'md' | 'lg';
 
 type UserAvatarProps = {
   avatarSize: AvatarSize;
+  userName: string;
 };
 
 const AVATAR_SIZE: { [key in AvatarSize]: string } = {
@@ -12,9 +14,7 @@ const AVATAR_SIZE: { [key in AvatarSize]: string } = {
   lg: 'h-[32px] w-[32px]',
 };
 
-const UserAvatar = ({ avatarSize }: UserAvatarProps) => {
-  const { userProfile } = useUserProfileContext();
-
+const UserAvatar = ({ avatarSize, userName }: UserAvatarProps) => {
   const getInitials = (userName: string) => {
     const words = userName.split(' ');
     if (words.length > 1) {
@@ -31,9 +31,13 @@ const UserAvatar = ({ avatarSize }: UserAvatarProps) => {
     <div
       className={`${AVATAR_SIZE[avatarSize]} rounded-full bg-sky-900 flex justify-center items-center`}
     >
-      <p className="font-semibold text-sm text-white">
-        {!userProfile ? 'U' : getInitials(userProfile.userName)}
-      </p>
+      {!userName ? (
+        <Skeleton baseColor="#202020" />
+      ) : (
+        <p className="font-semibold text-sm text-white">
+          {getInitials(userName)}
+        </p>
+      )}
     </div>
   );
 };

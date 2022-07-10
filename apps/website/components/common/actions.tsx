@@ -3,6 +3,11 @@ import { FaRegCommentAlt } from 'react-icons/fa';
 import CommentForm from '../comments/comment-form';
 import { useState } from 'react';
 import { useArticleContext } from '../../contexts/article-context';
+import {
+  useGetArticleIsLiked,
+  useGetArticlesLikesCount,
+} from '../../hooks/useArticleLikes';
+import { ArticleResponseDto, AllArticlesLikesDto } from '@newsfeed/data';
 
 interface ActionsProps {
   countOfComments?: number;
@@ -11,6 +16,9 @@ interface ActionsProps {
   like: number | null;
   handleLike: (like: boolean) => void;
   commentId?: string;
+  article: ArticleResponseDto & { articleLike: AllArticlesLikesDto };
+  isLiked: number;
+  likeCount: number;
 }
 
 const Actions = ({
@@ -20,6 +28,9 @@ const Actions = ({
   like,
   handleLike,
   commentId,
+  article,
+  isLiked,
+  likeCount,
 }: ActionsProps) => {
   const [showForm, setShowForm] = useState(false);
   const articleVersionToDisplay = useArticleContext();
@@ -32,7 +43,7 @@ const Actions = ({
     <div className="space-y-2">
       <div className="flex justify-start space-x-1 ">
         <GoArrowUp
-          style={{ color: like === 1 ? 'green' : 'black' }}
+          style={{ color: isLiked === 1 ? 'green' : 'black' }}
           size={24}
           onClick={(e) => {
             handleLike(true);
@@ -40,9 +51,9 @@ const Actions = ({
           }}
           className="cursor-pointer hover:bg-slate-300 rounded"
         />
-        <p className="font-medium">{uiLikes}</p>
+        <p className="font-medium">{likeCount || 0}</p>
         <GoArrowDown
-          style={{ color: like === -1 ? 'red' : 'black' }}
+          style={{ color: isLiked === -1 ? 'red' : 'black' }}
           size={24}
           onClick={(e) => {
             handleLike(false);

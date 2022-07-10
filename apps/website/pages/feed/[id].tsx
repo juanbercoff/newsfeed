@@ -5,7 +5,6 @@ import {
   ArticlesWithLikesResponseDto,
   ArticleHistoryDto,
 } from '@newsfeed/data';
-import ArticleContent from '../../components/article/article-content';
 import { useEffect, useState } from 'react';
 import { ArticleContext } from '../../contexts/article-context';
 import {
@@ -53,33 +52,19 @@ const Article = ({ article }: ArticleProps) => {
   }, [mutate, article.id]);
 
   useEffect(() => {
-    //TODO: deberia agregarles las properties desde el server?
     (function () {
       const level1Elements = document.getElementsByClassName('level1');
       const level2Elements = document.getElementsByClassName('level2');
       setLevel2Elements(level2Elements);
       const level3Elements = document.getElementsByClassName('level3');
       setLevel3Elements(level3Elements);
-      Array.from(level2Elements).forEach((element: HTMLElement) => {
-        //element.style.display = 'inline-block';
-        element.classList.add('transition-all');
-        element.classList.add('ease-linear');
-        element.classList.add('duration-100');
-        element.classList.add('text-[0]');
-      });
-      Array.from(level3Elements).forEach((element: HTMLElement) => {
-        //element.style.display = 'inline-block';
-        element.classList.add('transition-all');
-        element.classList.add('ease-linear');
-        element.classList.add('duration-100');
-        element.classList.add('text-[0]');
-      });
+      setElementStyles(level2Elements);
+      setElementStyles(level3Elements);
       Array.from(level1Elements).forEach((element: HTMLElement) => {
-        //element.style.display = 'inline-block';
         element.classList.add('text-xl');
       });
     })();
-  }, []);
+  }, [articleVersionToDisplay]);
 
   const classListHandler = (
     elements: HTMLElement[],
@@ -105,6 +90,15 @@ const Article = ({ article }: ArticleProps) => {
   const hideUpperLevels = () => {
     classListHandler(level2Elements, TEXT_SIZE.size0, TEXT_SIZE.level2);
     classListHandler(level3Elements, TEXT_SIZE.size0, TEXT_SIZE.level3);
+  };
+
+  const setElementStyles = (elements: HTMLCollectionOf<Element>) => {
+    Array.from(elements).forEach((element: HTMLElement) => {
+      element.classList.add('transition-all');
+      element.classList.add('ease-linear');
+      element.classList.add('duration-100');
+      element.classList.add('text-[0]');
+    });
   };
 
   const { isXl } = useBreakpoints();

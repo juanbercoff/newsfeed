@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { useUser } from '@auth0/nextjs-auth0';
 import AccountMenu from './account-menu';
 import logo from '../../public/logo.png';
+import { useUserProfileContext } from '../../contexts/user-context';
 
 const TopBar = () => {
-  const { user, error } = useUser();
+  const { userProfile, isLoading } = useUserProfileContext();
 
   return (
     <div className="flex fixed top-0 w-full justify-center border-b border-gray-300 bg-white z-10 px-4">
@@ -17,16 +17,15 @@ const TopBar = () => {
             </a>
           </Link>
         </div>
-        {user && !error ? (
+        {userProfile && !isLoading ? (
           <div className="flex flex-row space-x-4 items-center relative">
             <div className="hover:text-cyan-800 transition-colors">
               <Link href={'/articles/new'}>Escribir articulo</Link>
             </div>
-
-            <AccountMenu />
+            <AccountMenu userProfile={userProfile} />
           </div>
         ) : (
-          <div className="cursor-pointer">
+          <div className="cursor-pointer self-center">
             <Link href="/api/auth/login?returnTo=/feed">Log in</Link>
           </div>
         )}
