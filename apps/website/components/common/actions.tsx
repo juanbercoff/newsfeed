@@ -3,20 +3,12 @@ import { FaRegCommentAlt } from 'react-icons/fa';
 import CommentForm from '../comments/comment-form';
 import { useState } from 'react';
 import { useArticleContext } from '../../contexts/article-context';
-import {
-  useGetArticleIsLiked,
-  useGetArticlesLikesCount,
-} from '../../hooks/useArticleLikes';
-import { ArticleResponseDto, AllArticlesLikesDto } from '@newsfeed/data';
 
 interface ActionsProps {
   countOfComments?: number;
   isArticle: boolean;
-  uiLikes: number;
-  like: number | null;
   handleLike: (like: boolean) => void;
   commentId?: string;
-  article: ArticleResponseDto & { articleLike: AllArticlesLikesDto };
   isLiked: number;
   likeCount: number;
 }
@@ -24,11 +16,8 @@ interface ActionsProps {
 const Actions = ({
   countOfComments,
   isArticle,
-  uiLikes,
-  like,
   handleLike,
   commentId,
-  article,
   isLiked,
   likeCount,
 }: ActionsProps) => {

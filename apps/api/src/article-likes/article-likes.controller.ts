@@ -11,10 +11,8 @@ import {
 } from '@nestjs/common';
 import { ArticleLikesService } from './article-likes.service';
 import {
-  AuthenticatedUser,
-  CreateOrUpdateArticleLikeDto,
+  CreateArticleLikeDto,
   FullyRegisteredAuthenticatedUser,
-  UpdateArticleLikeDto,
 } from '@newsfeed/data';
 import { AuthorizationGuard } from '../authorization/authorization.guard';
 import { AuthenticatedRequest } from '@newsfeed/data';
@@ -25,18 +23,15 @@ import { PermissionsGuard } from '../authorization/permissions.guard';
 export class ArticleLikesController {
   constructor(private readonly articleLikesService: ArticleLikesService) {}
 
-  /* @UseGuards(AuthorizationGuard, FullyRegisteredUserGuard, PermissionsGuard)
+  @UseGuards(AuthorizationGuard, FullyRegisteredUserGuard, PermissionsGuard)
   @Post()
   createOrUpdate(
-    @Body() createOrUpdateArticleLikeDto: CreateOrUpdateArticleLikeDto,
+    @Body() data: CreateArticleLikeDto,
     @Req() req: AuthenticatedRequest
   ) {
     const user = req.user as FullyRegisteredAuthenticatedUser;
-    return this.articleLikesService.createOrUpdate(
-      createOrUpdateArticleLikeDto,
-      user
-    );
-  } */
+    return this.articleLikesService.create(data, user);
+  }
 
   @Get('/all/:articleId')
   getAllLikesByArticle(@Param('articleId') articleId: string) {
@@ -74,7 +69,7 @@ export class ArticleLikesController {
   @UseGuards(AuthorizationGuard, FullyRegisteredUserGuard, PermissionsGuard)
   @Patch(':articleLikeId')
   patch(
-    @Body() data: UpdateArticleLikeDto,
+    @Body() data: { like: boolean },
     @Param('articleLikeId') articleLikeId: string,
     @Req() req: AuthenticatedRequest
   ) {

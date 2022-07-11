@@ -6,7 +6,6 @@ import {
 
 import {
   GetOneArticlePayload,
-  GetManyArticlesDto,
   ArticlesWithLikesResponseDto,
   CreateArticleDto,
   UpdateArticleDto,

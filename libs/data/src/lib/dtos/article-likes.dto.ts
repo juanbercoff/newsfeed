@@ -7,10 +7,6 @@ export class CreateArticleLikeDto {
   articleId: string;
 
   @IsNotEmpty()
-  @IsUUID()
-  userId: string;
-
-  @IsNotEmpty()
   @IsBoolean()
   like: boolean;
 }

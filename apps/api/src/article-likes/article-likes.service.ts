@@ -3,8 +3,6 @@ import { PrismaService } from '../prisma/prisma.service';
 import {
   CreateArticleLikeDto,
   UpdateArticleLikeDto,
-  AuthenticatedUser,
-  CreateOrUpdateArticleLikeDto,
   GetUserArticleLikeDto,
   FullyRegisteredAuthenticatedUser,
 } from '@newsfeed/data';
@@ -19,8 +17,23 @@ export class ArticleLikesService {
     private readonly usersService: UsersService
   ) {}
 
-  async create(data: CreateArticleLikeDto) {
-    const { articleId, like, userId } = data;
+  async create(
+    data: CreateArticleLikeDto,
+    authenticatedUser?: FullyRegisteredAuthenticatedUser
+  ) {
+    const { articleId, like } = data;
+    const userId = authenticatedUser.metadata.userId;
+
+    const articleAlreadyLiked = await this.prisma.articleLike.findFirst({
+      where: {
+        articleId,
+        userId,
+      },
+    });
+
+    if (articleAlreadyLiked) {
+      throw new Error('Only one article like per user');
+    }
 
     return await this.prisma.articleLike.create({
       data: {
@@ -57,29 +70,6 @@ export class ArticleLikesService {
       },
     });
   }
-
-  /*   async createOrUpdate(
-    data: CreateOrUpdateArticleLikeDto,
-    authenticatedUser: FullyRegisteredAuthenticatedUser
-  ) {
-    const { articleId, like } = data;
-    const userId = authenticatedUser.metadata.userId;
-
-    const articleAlreadyLiked = await this.prisma.articleLike.findFirst({
-      where: {
-        articleId,
-        userId,
-      },
-    });
-
-    if (articleAlreadyLiked) {
-      if (articleAlreadyLiked.userId !== userId) {
-        throw new EntityNotOwnedByUserException(Prisma.ModelName.ArticleLike);
-      }
-      return await this.update({ id: articleAlreadyLiked.id, like });
-    }
-    return await this.create({ articleId, like, userId });
-  } */
 
   async getAllLikesByArticle(articleId: string) {
     return await this.prisma.articleLike.findMany({

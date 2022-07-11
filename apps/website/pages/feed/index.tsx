@@ -3,7 +3,6 @@ import {
   ArticlesWithLikesResponseDto,
   AllArticlesLikesDto,
 } from '@newsfeed/data';
-import { useUserProfileContext } from '../../contexts/user-context';
 import { useGetArticles } from '../../hooks/useArticles';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
@@ -18,7 +17,7 @@ interface FeedProps {
   articles: ArticlesWithLikesResponseDto[];
   articlesLikes: AllArticlesLikesDto[];
 }
-
+//FIX multiple rerenders
 const Feed = ({ articles }: FeedProps) => {
   const [selectedTags, setSelectedTags] = useState<Tag[]>();
   const formatFilterTags = () => {
@@ -32,7 +31,9 @@ const Feed = ({ articles }: FeedProps) => {
     isFetchingNextPage,
     isLoading,
   } = useGetArticles(articles, formatFilterTags());
-  const { ref, inView } = useInView();
+  const { ref, inView } = useInView({
+    delay: 200,
+  });
   const { data: allTags, isLoading: allTagsIsLoading } = useGetTags();
 
   useEffect(() => {
@@ -58,9 +59,11 @@ const Feed = ({ articles }: FeedProps) => {
             <CardMobile key={article.id} article={article} />
           ))
         )}
-        <span className="invisible" ref={ref}>
-          Intersection observer marker
-        </span>
+        {
+          <span className="invisible" ref={ref}>
+            Intersection observer marker
+          </span>
+        }
         {isFetchingNextPage && <Spinner />}
         {!hasNextPage && <div>No hay mas articulos</div>}
       </div>

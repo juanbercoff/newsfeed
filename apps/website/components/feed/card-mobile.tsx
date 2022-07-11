@@ -2,47 +2,56 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArticleResponseDto, AllArticlesLikesDto } from '@newsfeed/data';
 import Actions from '../common/actions';
-import {
-  deleteArticleLike,
-  getUserArticleLike,
-  postArticleLike,
-} from '../../services/article-likes-api';
-import { ArticleLike } from '@prisma/client';
-import useLikes from '../../hooks/useLikes';
 import useBreakpoints from '../../hooks/useBreakpoints';
 import ArticleTags from '../common/article-tags';
 import ArticleAuthorInformation from '../common/article-author-information';
 import { useGetCountOfComments } from '../../hooks/useComments';
 import {
   useGetArticleIsLiked,
+  useDeleteArticleLike,
+  useUpdateArticleLike,
+  useCreateArticleLike,
   useGetArticlesLikesCount,
 } from '../../hooks/useArticleLikes';
+import { useUserProfileContext } from '../../contexts/user-context';
 
 interface CardProps {
   article: ArticleResponseDto & { articleLike: AllArticlesLikesDto };
 }
 
 const CardMobile = ({ article }: CardProps) => {
-  const { uiLikes, hasBeenLiked, handleLike } = useLikes<ArticleLike>(
-    article.id,
-    article.articleLike?._sum.like,
-    getUserArticleLike,
-    deleteArticleLike,
-    postArticleLike
-  );
-
+  const { authToken } = useUserProfileContext();
   const { data, isLoading } = useGetCountOfComments(article.id);
-  const { data: allArticleLikes, isLoading: articleLikeCountLoading } =
-    useGetArticlesLikesCount(article.id);
   const {
     data: isArticleLiked,
     isLoading: articleLikeLoading,
     isIdle,
-  } = useGetArticleIsLiked(article.id);
+  } = useGetArticleIsLiked(article.id, authToken);
+  const { data: articlesLikeCount } = useGetArticlesLikesCount(article.id);
 
   const { isXs } = useBreakpoints();
+  const { mutate: createArticleLike } = useCreateArticleLike();
+  const { mutate: updateArticleLike } = useUpdateArticleLike();
+  const { mutate: deleteArticleLike } = useDeleteArticleLike();
+  const handleLikeFunction = (like: boolean) => {
+    const likeValue = like ? 1 : -1;
+    if (isArticleLiked) {
+      if (isArticleLiked?.like === likeValue) {
+        deleteArticleLike({ articleLikeId: isArticleLiked.id, authToken });
+      } else {
+        updateArticleLike({
+          like,
+          articleLikeId: isArticleLiked?.id,
+          authToken,
+        });
+      }
+    } else {
+      createArticleLike({ like, articleId: article.id, authToken });
+    }
+  };
 
-  if (isLoading || articleLikeLoading || articleLikeCountLoading || isIdle) {
+  //TODO sekeleto
+  if (isLoading || articleLikeLoading || isIdle) {
     return <div>loading</div>;
   }
 
@@ -67,11 +76,8 @@ const CardMobile = ({ article }: CardProps) => {
                 <Actions
                   countOfComments={!isLoading ? data : 0}
                   isArticle={true}
-                  uiLikes={uiLikes}
-                  like={hasBeenLiked?.like}
-                  handleLike={handleLike}
-                  article={article}
-                  likeCount={allArticleLikes?._sum?.like || 0}
+                  handleLike={handleLikeFunction}
+                  likeCount={articlesLikeCount?._sum?.like || 0}
                   isLiked={isArticleLiked?.like}
                 />
                 <ArticleTags articleTag={article.articleTag} />

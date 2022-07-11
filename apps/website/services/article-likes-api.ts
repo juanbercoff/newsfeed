@@ -1,7 +1,7 @@
 import { callApiService, getEndpoint } from './api-service-utilities';
 
-import { AllArticlesLikesDto } from '@newsfeed/data';
-import { Article, ArticleLike, Prisma } from '@prisma/client';
+import { AllArticlesLikesDto, UpdateArticleLikeDto } from '@newsfeed/data';
+import { ArticleLike, Prisma } from '@prisma/client';
 
 export async function getAllArticlesLikes(): Promise<AllArticlesLikesDto[]> {
   // TODO: Apply payload once it has pagination, order by, etc.
@@ -61,15 +61,7 @@ export async function getUserArticleLike(
 }
 
 export async function updateArticleLike(
-  {
-    articleId,
-    like,
-    articleLikeId,
-  }: {
-    articleId: string;
-    like: boolean;
-    articleLikeId: string;
-  },
+  { like, articleLikeId }: UpdateArticleLikeDto,
   authToken: string
 ): Promise<ArticleLike | null> {
   return callApiService(
@@ -77,7 +69,6 @@ export async function updateArticleLike(
       url: getEndpoint(`article-likes/${articleLikeId}`),
       method: 'PATCH',
       data: {
-        articleId: articleId,
         like,
       },
     },

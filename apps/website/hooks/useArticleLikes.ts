@@ -8,10 +8,9 @@ import {
   getArticleLikesCount,
 } from '../services/article-likes-api';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import useAuthToken from '../hooks/useAuthToken';
 
 export function useGetAllArticlesLikes(initialData: AllArticlesLikesDto[]) {
-  return useQuery(['articleLikesAll'], () => getAllArticlesLikes(), {
+  return useQuery(['articleLikes'], () => getAllArticlesLikes(), {
     initialData,
   });
 }
@@ -24,10 +23,9 @@ export function useGetArticlesLikesCount(articleId: string) {
   );
 }
 
-export function useGetArticleIsLiked(articleId: string) {
-  const { authToken } = useAuthToken();
+export function useGetArticleIsLiked(articleId: string, authToken: string) {
   return useQuery(
-    ['articleLikesUserLiked', articleId],
+    ['articleLikes', articleId, authToken],
     () => getUserArticleLike(articleId, authToken),
     {
       enabled: !!authToken,
@@ -35,23 +33,18 @@ export function useGetArticleIsLiked(articleId: string) {
   );
 }
 
-export async function useCreateArticleLike(articleId: string) {
-  const { authToken } = useAuthToken();
-  return useMutation((like: boolean) =>
-    postArticleLike({ id: articleId, like }, authToken)
-  );
-}
-
-export async function useUpdateArticleLike(
-  articleId: string,
-  articleLikeId: string
-) {
-  const { authToken } = useAuthToken();
+export function useCreateArticleLike() {
   const queryClient = useQueryClient();
-
   return useMutation(
-    (like: boolean) =>
-      updateArticleLike({ articleId, like, articleLikeId }, authToken),
+    ({
+      like,
+      articleId,
+      authToken,
+    }: {
+      like: boolean;
+      articleId: string;
+      authToken: string;
+    }) => postArticleLike({ id: articleId, like }, authToken),
     {
       onSuccess: () => {
         queryClient.invalidateQueries('articleLikes');
@@ -60,13 +53,41 @@ export async function useUpdateArticleLike(
   );
 }
 
-export async function useDeleteArticleLike(articleLikeId: string) {
-  const { authToken } = useAuthToken();
+export function useUpdateArticleLike() {
   const queryClient = useQueryClient();
+  return useMutation(
+    ({
+      like,
+      articleLikeId,
+      authToken,
+    }: {
+      like: boolean;
+      articleLikeId: string;
+      authToken: string;
+    }) => updateArticleLike({ like, articleLikeId }, authToken),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('articleLikes');
+      },
+    }
+  );
+}
 
-  return useMutation(() => deleteArticleLike(articleLikeId, authToken), {
-    onSuccess: () => {
-      queryClient.invalidateQueries('articleLikes');
-    },
-  });
+export function useDeleteArticleLike() {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ({
+      articleLikeId,
+      authToken,
+    }: {
+      articleLikeId: string;
+      authToken: string;
+    }) => deleteArticleLike(articleLikeId, authToken),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['articleLikes']);
+        queryClient.refetchQueries('articles');
+      },
+    }
+  );
 }

@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react';
 import useAuthToken from '../hooks/useAuthToken';
-import { useUser } from '@auth0/nextjs-auth0';
 import { UserProfile } from '@prisma/client';
 import { getOrCreateUserWithUserProfile } from '../services/users/users-profiles-api';
 

@@ -4,6 +4,7 @@ import { useGetComments } from '../../hooks/useComments';
 import { useArticleContext } from '../../contexts/article-context';
 import CommentSortionMenu from '../comments/comment-sorting-menu';
 import { CommentOrderBy } from '@newsfeed/data';
+import { useUserProfileContext } from '../../contexts/user-context';
 
 export enum SortOptions {
   Newest = 'Más nuevos',
@@ -22,6 +23,7 @@ const CommentSortingQueryParams: { [key in SortOptions]: CommentOrderBy } = {
 
 const CommentsList = () => {
   const articleVersionToDisplay = useArticleContext();
+  const { authToken } = useUserProfileContext();
   const [selectedOption, setSelectedOption] = useState(SortOptions.Newest);
 
   const { data: comments, isLoading } = useGetComments(
@@ -31,6 +33,8 @@ const CommentsList = () => {
     },
     articleVersionToDisplay
   );
+
+  console.log(comments);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -49,7 +53,12 @@ const CommentsList = () => {
               return comment.parentCommentId === null;
             })
             .map((comment) => (
-              <Comment key={comment.id} comment={comment} comments={comments} />
+              <Comment
+                key={comment.id}
+                comment={comment}
+                comments={comments}
+                authToken={authToken}
+              />
             ))
         ) : (
           <div>No hay comentarios</div>

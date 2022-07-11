@@ -1,28 +1,19 @@
 import Actions from '../common/actions';
 import { CommentsResponseDto } from '@newsfeed/data';
-import { CommentLike } from '@prisma/client';
-import useLikes from '../../hooks/useLikes';
-import {
-  getUserCommentLike,
-  deleteCommentLike,
-  postCommentLike,
-} from '../../services/comment-likes-api';
 import { DateTime } from 'luxon';
-import Image from 'next/image';
 import UserAvatar from '../common/user-avatar';
+import { useGetCommentIsLiked } from '../../hooks/useCommentsLikes';
 
 interface CommentProps {
   comment: CommentsResponseDto;
   comments: CommentsResponseDto[];
+  authToken: string;
 }
 
-const Comment = ({ comment, comments }: CommentProps) => {
-  const { uiLikes, hasBeenLiked, handleLike } = useLikes<CommentLike>(
+const Comment = ({ comment, comments, authToken }: CommentProps) => {
+  const { data: commentUserLiked } = useGetCommentIsLiked(
     comment.id,
-    comment.likes,
-    getUserCommentLike,
-    deleteCommentLike,
-    postCommentLike
+    authToken
   );
 
   const getReplies = (commentId) => {
@@ -35,7 +26,7 @@ const Comment = ({ comment, comments }: CommentProps) => {
   return (
     <div className="space-y-2">
       <div className="flex flex-row justify-start space-x-2 items-center">
-        <UserAvatar avatarSize="sm" />
+        <UserAvatar avatarSize="sm" userName="user name" />
         <p className="font-medium text-sm">{comment?.userName}</p>
         <p className="text-gray-400 text-sm">
           {isoStringToRelativeTime(comment.createdAt)}
@@ -47,10 +38,10 @@ const Comment = ({ comment, comments }: CommentProps) => {
           <div className="ml-2">
             <Actions
               isArticle={false}
-              uiLikes={uiLikes}
-              like={hasBeenLiked?.like}
-              handleLike={handleLike}
+              handleLike={() => ({})}
               commentId={comment.id}
+              likeCount={comment.likes}
+              isLiked={commentUserLiked?.like}
             />
           </div>
         </div>
@@ -61,6 +52,7 @@ const Comment = ({ comment, comments }: CommentProps) => {
                   key={newComment.id}
                   comment={newComment}
                   comments={comments}
+                  authToken={authToken}
                 />
               ))
             : null}

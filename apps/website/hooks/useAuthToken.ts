@@ -5,7 +5,6 @@ import axios from 'axios';
 export default function useAuthToken() {
   const { user } = useUser();
   const [authToken, setAuthToken] = useState<string | null>(null);
-
   useEffect(() => {
     if (!user) return;
     (async function () {
