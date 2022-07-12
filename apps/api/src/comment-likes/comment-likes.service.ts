@@ -18,33 +18,8 @@ export class CommentLikesService {
     private readonly prisma: PrismaService,
     private readonly usersService: UsersService
   ) {}
-  async create(data: CreateCommentLikeDto) {
-    const { commentId, like, userId } = data;
-
-    return await this.prisma.commentLike.create({
-      data: {
-        commentId,
-        userId,
-        like: like ? 1 : -1,
-      },
-    });
-  }
-
-  async update(data: UpdateCommentLikeDto) {
-    const { id, like } = data;
-
-    return await this.prisma.commentLike.update({
-      where: {
-        id,
-      },
-      data: {
-        like: like ? 1 : -1,
-      },
-    });
-  }
-
-  async createOrUpdate(
-    data: CreateOrUpdateCommentLikeDto,
+  async create(
+    data: CreateCommentLikeDto,
     authenticatedUser: FullyRegisteredAuthenticatedUser
   ) {
     const { commentId, like } = data;
@@ -58,12 +33,44 @@ export class CommentLikesService {
     });
 
     if (commentAlreadyLiked) {
-      if (commentAlreadyLiked.userId !== userId) {
-        throw new EntityNotOwnedByUserException(Prisma.ModelName.CommentLike);
-      }
-      return this.update({ id: commentAlreadyLiked.id, like });
+      throw new Error('Only one comment like per user per comment');
     }
-    return this.create({ commentId, like, userId });
+
+    return await this.prisma.commentLike.create({
+      data: {
+        commentId,
+        userId,
+        like: like ? 1 : -1,
+      },
+    });
+  }
+
+  async update(
+    data: UpdateCommentLikeDto,
+    authenticatedUser: FullyRegisteredAuthenticatedUser
+  ) {
+    const { like, commentLikeId } = data;
+
+    const userId = authenticatedUser.metadata.userId;
+
+    const commentAlreadyLiked = await this.prisma.commentLike.findFirst({
+      where: {
+        id: commentLikeId,
+      },
+    });
+
+    if (commentAlreadyLiked.userId !== userId) {
+      throw new EntityNotOwnedByUserException(Prisma.ModelName.CommentLike);
+    }
+
+    return await this.prisma.commentLike.update({
+      where: {
+        id: commentLikeId,
+      },
+      data: {
+        like: like ? 1 : -1,
+      },
+    });
   }
 
   async getAllLikesByComment(commentId: string) {

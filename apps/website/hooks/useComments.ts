@@ -40,7 +40,5 @@ export function useCreateComment(onSuccess: () => void) {
 }
 
 export function useGetCountOfComments(articleId: string) {
-  return useQuery(['commentsCount', articleId], () =>
-    getCountOfComments(articleId)
-  );
+  return useQuery(['comments', articleId], () => getCountOfComments(articleId));
 }

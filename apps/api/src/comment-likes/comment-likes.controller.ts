@@ -7,11 +7,12 @@ import {
   Delete,
   UseGuards,
   Req,
+  Patch,
 } from '@nestjs/common';
 import { CommentLikesService } from './comment-likes.service';
 import {
   AuthenticatedUser,
-  CreateOrUpdateCommentLikeDto,
+  CreateCommentLikeDto,
   FullyRegisteredAuthenticatedUser,
 } from '@newsfeed/data';
 import { AuthorizationGuard } from '../authorization/authorization.guard';
@@ -25,15 +26,12 @@ export class CommentLikesController {
 
   @UseGuards(AuthorizationGuard, FullyRegisteredUserGuard, PermissionsGuard)
   @Post()
-  createOrUpdate(
-    @Body() createOrUpdateCommentLikeDto: CreateOrUpdateCommentLikeDto,
+  create(
+    @Body() createOrUpdateCommentLikeDto: CreateCommentLikeDto,
     @Req() req: AuthenticatedRequest
   ) {
     const user = req.user as FullyRegisteredAuthenticatedUser;
-    return this.commentLikesService.createOrUpdate(
-      createOrUpdateCommentLikeDto,
-      user
-    );
+    return this.commentLikesService.create(createOrUpdateCommentLikeDto, user);
   }
 
   @Get('/all/:commentId')
@@ -67,5 +65,19 @@ export class CommentLikesController {
     const user = req.user as AuthenticatedUser;
 
     return this.commentLikesService.getUserCommentLike({ commentId }, user);
+  }
+
+  @UseGuards(AuthorizationGuard, FullyRegisteredUserGuard, PermissionsGuard)
+  @Patch(':commentLikeId')
+  patch(
+    @Body() data: { like: boolean },
+    @Param('commentLikeId') commentLikeId: string,
+    @Req() req: AuthenticatedRequest
+  ) {
+    const user = req.user as FullyRegisteredAuthenticatedUser;
+    return this.commentLikesService.update(
+      { commentLikeId, like: data.like },
+      user
+    );
   }
 }

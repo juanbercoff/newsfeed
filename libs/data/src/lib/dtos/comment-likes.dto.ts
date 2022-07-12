@@ -7,10 +7,6 @@ export class CreateCommentLikeDto {
   commentId: string;
 
   @IsNotEmpty()
-  @IsUUID()
-  userId: string;
-
-  @IsNotEmpty()
   @IsBoolean()
   like: boolean;
 }
@@ -22,7 +18,7 @@ export class CreateOrUpdateCommentLikeDto extends PartialType(
 export class UpdateCommentLikeDto extends PartialType(CreateCommentLikeDto) {
   @IsNotEmpty()
   @IsUUID()
-  id: string;
+  commentLikeId: string;
 }
 
 export class GetUserCommentLikeDto extends PartialType(CreateCommentLikeDto) {}

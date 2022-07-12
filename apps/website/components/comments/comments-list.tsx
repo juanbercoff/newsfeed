@@ -34,8 +34,6 @@ const CommentsList = () => {
     articleVersionToDisplay
   );
 
-  console.log(comments);
-
   if (isLoading) {
     return <div>Loading...</div>;
   }

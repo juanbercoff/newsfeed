@@ -2,7 +2,12 @@ import Actions from '../common/actions';
 import { CommentsResponseDto } from '@newsfeed/data';
 import { DateTime } from 'luxon';
 import UserAvatar from '../common/user-avatar';
-import { useGetCommentIsLiked } from '../../hooks/useCommentsLikes';
+import {
+  useGetCommentIsLiked,
+  useDeleteCommentLike,
+  useUpdateCommentLike,
+  useCreateCommentLike,
+} from '../../hooks/useCommentsLikes';
 
 interface CommentProps {
   comment: CommentsResponseDto;
@@ -15,8 +20,28 @@ const Comment = ({ comment, comments, authToken }: CommentProps) => {
     comment.id,
     authToken
   );
+  const { mutate: createCommentLike } = useCreateCommentLike();
+  const { mutate: updateCommentLike } = useUpdateCommentLike();
+  const { mutate: deleteCommentLike } = useDeleteCommentLike();
 
-  const getReplies = (commentId) => {
+  const handleLikeFunction = (like: boolean) => {
+    const likeValue = like ? 1 : -1;
+    if (commentUserLiked) {
+      if (commentUserLiked?.like === likeValue) {
+        deleteCommentLike({ articleLikeId: commentUserLiked.id, authToken });
+      } else {
+        updateCommentLike({
+          like,
+          commentLikeId: commentUserLiked?.id,
+          authToken,
+        });
+      }
+    } else {
+      createCommentLike({ like, commentId: comment.id, authToken });
+    }
+  };
+
+  const getReplies = (commentId: string) => {
     return comments.filter((comment) => comment.parentCommentId === commentId);
   };
 
@@ -38,7 +63,7 @@ const Comment = ({ comment, comments, authToken }: CommentProps) => {
           <div className="ml-2">
             <Actions
               isArticle={false}
-              handleLike={() => ({})}
+              handleLike={handleLikeFunction}
               commentId={comment.id}
               likeCount={comment.likes}
               isLiked={commentUserLiked?.like}

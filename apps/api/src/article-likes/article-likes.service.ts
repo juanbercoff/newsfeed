@@ -32,7 +32,7 @@ export class ArticleLikesService {
     });
 
     if (articleAlreadyLiked) {
-      throw new Error('Only one article like per user');
+      throw new Error('Only one article like per user per article');
     }
 
     return await this.prisma.articleLike.create({
