@@ -18,7 +18,6 @@ import {
   useQueryClient,
   useMutation,
 } from 'react-query';
-import useAuthToken from '../hooks/useAuthToken';
 import { toast } from 'react-toastify';
 
 export function useGetArticles(
@@ -54,9 +53,9 @@ export function useGetOneArticle(
 
 export function useCreateArticle(onSuccess: (url: string) => Promise<boolean>) {
   const queryClient = useQueryClient();
-  const { authToken } = useAuthToken();
   return useMutation(
-    (data: CreateArticleDto) => createArticle(data, authToken),
+    ({ data, authToken }: { data: CreateArticleDto; authToken: string }) =>
+      createArticle(data, authToken),
     {
       onSuccess: () => {
         toast.success('Articulo creado con exito');
@@ -67,28 +66,26 @@ export function useCreateArticle(onSuccess: (url: string) => Promise<boolean>) {
   );
 }
 
-export function useGetUserArticles() {
-  const { authToken } = useAuthToken();
-  return useQuery(
-    ['articlesUser', authToken],
-    () => getUserArticles(authToken),
-    {
-      enabled: !!authToken,
-    }
-  );
+export function useGetUserArticles(authToken: string) {
+  return useQuery(['articles', authToken], () => getUserArticles(authToken), {
+    enabled: !!authToken,
+  });
 }
 
-export function useUpdateArticle(
-  articleId: string,
-  onSuccess: (url: string) => Promise<boolean>
-) {
+export function useUpdateArticle(onSuccess: (url: string) => Promise<boolean>) {
   const queryClient = useQueryClient();
-  const { authToken } = useAuthToken();
   return useMutation(
-    (data: UpdateArticleDto) => updateArticle(articleId, data, authToken),
+    ({
+      data,
+      articleId,
+      authToken,
+    }: {
+      data: UpdateArticleDto;
+      articleId: string;
+      authToken: string;
+    }) => updateArticle(articleId, data, authToken),
     {
       onSuccess: () => {
-        //queryClient.invalidateQueries('articles');
         queryClient.refetchQueries('articles');
         toast.success('Articulo modificado con exito');
         onSuccess('/feed');
@@ -97,13 +94,16 @@ export function useUpdateArticle(
   );
 }
 
-export function useDeleteArticle(articleId: string) {
+export function useDeleteArticle() {
   const queryClient = useQueryClient();
-  const { authToken } = useAuthToken();
-  return useMutation(() => deleteArticle(articleId, authToken), {
-    onSuccess: () => {
-      queryClient.invalidateQueries('articles');
-      toast.success('Articulo eliminado con exito');
-    },
-  });
+  return useMutation(
+    ({ articleId, authToken }: { articleId: string; authToken: string }) =>
+      deleteArticle(articleId, authToken),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('articles');
+        toast.success('Articulo eliminado con exito');
+      },
+    }
+  );
 }

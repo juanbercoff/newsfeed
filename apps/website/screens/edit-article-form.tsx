@@ -11,6 +11,7 @@ import Button from '../components/common/button';
 import { useRouter } from 'next/router';
 import { useUpdateArticle } from '../hooks/useArticles';
 import Utils from '../utils/Utils';
+import { useUserProfileContext } from '../contexts/user-context';
 
 type ArticleFormProps = {
   article: ArticlesWithLikesResponseDto;
@@ -25,8 +26,8 @@ const EditArticleForm = ({ article }: ArticleFormProps) => {
     control,
   } = useForm<ArticleFormData>();
   const { push } = useRouter();
-
-  const { mutate } = useUpdateArticle(article.id, push);
+  const { authToken } = useUserProfileContext();
+  const { mutate } = useUpdateArticle(push);
 
   const onSubmit = (formData: ArticleFormData) => {
     const data: UpdateArticleDto = {
@@ -43,7 +44,7 @@ const EditArticleForm = ({ article }: ArticleFormProps) => {
         message: 'Modifica el titulo o contenido para editar el articulo',
       });
     } else {
-      mutate(data);
+      mutate({ data, articleId: article.id, authToken });
     }
   };
 

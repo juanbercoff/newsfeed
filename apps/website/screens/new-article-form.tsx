@@ -10,6 +10,7 @@ import { useCreateArticle } from '../hooks/useArticles';
 import UnsplashSearch from '../components/common/unsplash-search';
 import Utils from '../utils/Utils';
 import { useGetTags } from '../hooks/useTags';
+import { useUserProfileContext } from '../contexts/user-context';
 
 const NewArticleForm = () => {
   const {
@@ -21,7 +22,7 @@ const NewArticleForm = () => {
     shouldUnregister: true,
   });
   const { push } = useRouter();
-
+  const { authToken } = useUserProfileContext();
   const { mutate } = useCreateArticle(push);
   const { data: tags, isLoading } = useGetTags();
 
@@ -33,7 +34,7 @@ const NewArticleForm = () => {
       content: Utils.parseHtml(formData.content),
       portraitImageUrl: selectedImage,
     };
-    mutate(data);
+    mutate({ data, authToken });
   };
 
   return (

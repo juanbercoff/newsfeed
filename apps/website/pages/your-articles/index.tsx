@@ -5,15 +5,25 @@ import Utils from '../../utils/Utils';
 import Button from '../../components/common/button';
 import Link from 'next/link';
 import Modal from '../../components/common/modal';
-import { useGetArticleHistory } from '../../hooks/useArticleHistory';
+import { useUserProfileContext } from '../../contexts/user-context';
 
 const YourArticles = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [articleIdToDelete, setArticleIdToDelete] = useState<string | null>(
     null
   );
-  const { data: articles, isError, isLoading, status } = useGetUserArticles();
-  const { mutate } = useDeleteArticle(articleIdToDelete);
+  const { authToken } = useUserProfileContext();
+  const {
+    data: articles,
+    isError,
+    isLoading,
+    status,
+  } = useGetUserArticles(authToken);
+  const { mutate } = useDeleteArticle();
+
+  const handleDelete = () => {
+    mutate({ articleId: articleIdToDelete, authToken });
+  };
 
   if (isError) {
     return <h1 className="mt-4">Error, intenta nuevamente</h1>;
@@ -29,7 +39,7 @@ const YourArticles = () => {
         description="Estas seguro de que deseas eliminar el articulo? Esta accion no puede ser revertida."
         primaryButtonText="Eliminar"
         pimaryButtonUse="destructive"
-        primaryButtonAction={mutate}
+        primaryButtonAction={handleDelete}
       />
       <p className="text-4xl font-bold mb-4">Tus articulos</p>
       {articles?.length > 0 ? (
