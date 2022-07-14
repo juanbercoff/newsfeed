@@ -42,10 +42,6 @@ const Feed = ({ articles }: FeedProps) => {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  if (isLoading || allTagsIsLoading) {
-    return <Spinner />;
-  }
-
   return (
     <>
       <FilterBar
@@ -65,7 +61,7 @@ const Feed = ({ articles }: FeedProps) => {
           </span>
         }
         {isFetchingNextPage && <Spinner />}
-        {!hasNextPage && <div>No hay mas articulos</div>}
+        {!hasNextPage && <div className="px-2">No hay mas articulos</div>}
       </div>
     </>
   );

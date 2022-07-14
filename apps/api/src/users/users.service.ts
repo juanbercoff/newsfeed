@@ -16,6 +16,37 @@ export class UsersService {
     private readonly auth0ManagementApiService: Auth0ManagementApiService
   ) {}
 
+  async upsert(authenticatedUser: AuthenticatedUser): Promise<User> {
+    const auth0User = await this.auth0ManagementApiService.getUserById(
+      authenticatedUser.sub
+    );
+
+    if (!auth0User) {
+      //throw new BadRequestException('Invalid user id');
+      throw new Error('Invalid user id');
+    }
+
+    const createdUser = await this.prisma.user.upsert({
+      where: {
+        auth0Id: auth0User.user_id,
+      },
+      update: {},
+      create: {
+        auth0Id: auth0User.user_id,
+        email: auth0User.email,
+        profile: {
+          create: {
+            firstName: auth0User.given_name,
+            lastName: auth0User.family_name,
+            userName: auth0User.nickname,
+          },
+        },
+      },
+    });
+
+    return createdUser;
+  }
+
   async create(
     authenticatedUser: AuthenticatedUser
   ): Promise<UserWithUserProfileResponseDto> {

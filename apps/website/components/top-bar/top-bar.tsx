@@ -3,6 +3,8 @@ import Image from 'next/image';
 import AccountMenu from './account-menu';
 import logo from '../../public/logo.png';
 import { useUserProfileContext } from '../../contexts/user-context';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const TopBar = () => {
   const { userProfile, isLoading } = useUserProfileContext();
@@ -17,12 +19,29 @@ const TopBar = () => {
             </a>
           </Link>
         </div>
-        {userProfile && !isLoading ? (
+        {userProfile || isLoading ? (
           <div className="flex flex-row space-x-4 items-center relative">
             <div className="hover:text-cyan-800 transition-colors">
-              <Link href={'/articles/new'}>Escribir articulo</Link>
+              {isLoading ? (
+                <Skeleton
+                  width="109px"
+                  height="18px"
+                  containerClassName="skeleton"
+                />
+              ) : (
+                <Link href={'/articles/new'}>Escribir articulo</Link>
+              )}
             </div>
-            <AccountMenu userProfile={userProfile} />
+            {isLoading ? (
+              <Skeleton
+                width="28px"
+                height="28px"
+                containerClassName="skeleton"
+                borderRadius="50%"
+              />
+            ) : (
+              <AccountMenu userProfile={userProfile} />
+            )}
           </div>
         ) : (
           <div className="cursor-pointer self-center">
@@ -33,4 +52,5 @@ const TopBar = () => {
     </div>
   );
 };
+
 export default TopBar;

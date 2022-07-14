@@ -23,6 +23,7 @@ import { PermissionsGuard } from '../authorization/permissions.guard';
 export class UserProfilesController {
   constructor(private readonly userProfilesService: UserProfilesService) {}
 
+  @UseGuards(FullyRegisteredUserGuard)
   @Get()
   async getUserProfile(@Req() req: AuthenticatedRequest): Promise<UserProfile> {
     const user = req.user as AuthenticatedUser;

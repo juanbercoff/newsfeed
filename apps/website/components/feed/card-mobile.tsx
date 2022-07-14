@@ -14,6 +14,7 @@ import {
   useGetArticlesLikesCount,
 } from '../../hooks/useArticleLikes';
 import { useUserProfileContext } from '../../contexts/user-context';
+import Skeleton from 'react-loading-skeleton';
 
 interface CardProps {
   article: ArticleResponseDto & { articleLike: AllArticlesLikesDto };
@@ -50,14 +51,13 @@ const CardMobile = ({ article }: CardProps) => {
     }
   };
 
-  //TODO sekeleto
   if (isLoading || articleLikeLoading || isIdle) {
-    return <div>loading</div>;
+    return <Skeleton height={isXs ? 111 : 168} />;
   }
 
   return (
     <Link href={`/feed/${article.id}`} passHref>
-      <div className="max-h-lg bg-white cursor-pointer p-4 rounded-md shadow-md hover:shadow-lg hover:scale-[1.01] transition-all">
+      <div className="bg-white cursor-pointer p-4 rounded-md shadow-md hover:shadow-lg hover:scale-[1.01] transition-all">
         <div className="flex justify-between items-start items-center space-x-8">
           <div className="flex flex-col space-y-3 flex-grow self-stretch justify-between">
             <div>

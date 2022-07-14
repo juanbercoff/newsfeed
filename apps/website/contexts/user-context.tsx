@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import useAuthToken from '../hooks/useAuthToken';
 import { UserProfile } from '@prisma/client';
-import { getOrCreateUserWithUserProfile } from '../services/users/users-profiles-api';
+import { getUserProfile } from '../services/users/users-profiles-api';
 
 export const UserProfileContext = React.createContext<
   UserProfileContextValue | undefined
@@ -20,19 +20,21 @@ export type UserProfileContainerProps = {
 export const UserProfileContainer = ({
   children,
 }: UserProfileContainerProps) => {
-  const { authToken, user } = useAuthToken();
   const [userProfile, setUserProfile] = React.useState<UserProfile | null>(
     null
   );
   const [isLoading, setIsLoading] = React.useState(true);
+  const { authToken } = useAuthToken(() => setIsLoading(false));
+
   useEffect(() => {
-    if (user && authToken) {
+    if (authToken) {
       (async function () {
-        setUserProfile(await getOrCreateUserWithUserProfile(authToken));
+        setIsLoading(true);
+        setUserProfile(await getUserProfile(authToken));
         setIsLoading(false);
       })();
     }
-  }, [user, authToken]);
+  }, [authToken]);
 
   return (
     <UserProfileContext.Provider

@@ -29,7 +29,7 @@ const FilterBar = ({
 
   return (
     <div className="flex align-center gap-2 p-5 flex-wrap">
-      {allTags.map((tag) => (
+      {allTags?.map((tag) => (
         <div
           key={tag.id}
           className="cursor-pointer"

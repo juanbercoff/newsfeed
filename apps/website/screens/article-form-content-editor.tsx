@@ -3,6 +3,10 @@ import StarterKit from '@tiptap/starter-kit';
 import { useEffect } from 'react';
 import Level from '../utils/level-mark';
 import Paragraph from '@tiptap/extension-paragraph';
+import Document from '@tiptap/extension-document';
+import Text from '@tiptap/extension-text';
+import History from '@tiptap/extension-history';
+import { Editor } from '@tiptap/core';
 
 type ArticleFormContentEditorProps = {
   onChange: (html: string) => void;
@@ -15,7 +19,9 @@ const ArticleFormContentEditor = ({
 }: ArticleFormContentEditorProps) => {
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      Document,
+      Text,
+      History,
       Level,
       Paragraph.configure({
         HTMLAttributes: {
@@ -26,11 +32,52 @@ const ArticleFormContentEditor = ({
     content: contentValue,
     editorProps: {
       attributes: {
-        class: 'h-96 px-2 outline-none border-2 rounded',
+        class: 'min-h-[348px] h-auto px-2 outline-none border-2 rounded',
       },
+      transformPastedHTML(html) {
+        const htmlObject = document.createElement('div');
+        htmlObject.innerHTML = html;
+        const res = [];
+        Array.from(htmlObject.getElementsByTagName('span')).forEach((element) =>
+          res.push(element.outerHTML)
+        );
+        console.log('res', res);
+        console.log(
+          htmlObject.getElementsByTagName('span')[0].parentElement.tagName ===
+            'P'
+        );
+        return res.join('');
+        //console.log(htmlObject);
+        const text = htmlObject.textContent || htmlObject.innerText || '';
+        const returnValue = `<span>${text}</span>`;
+        return returnValue;
+      },
+      transformPastedText(text, plain) {
+        const returnValue = `<span>${text}</span>`;
+        return returnValue;
+      },
+      transformPasted(slice) {
+        //console.log(slice.content.forEach());
+        return slice;
+      },
+      /* transformPastedHTML(html) {
+        const htmlObject = document.createElement('div');
+        const text =
+          '<html><body><p>Paragraph <span>span</span></p><body></html>';
+        htmlObject.innerHTML = text;
+        console.log(htmlObject);
+        return html;
+      }, */
     },
     onUpdate({ editor }) {
       onChange(editor.getHTML());
+      const level1IsActive = editor.isActive('level', { class: 'level1' });
+      const level2IsActive = editor.isActive('level', { class: 'level2' });
+      const level3IsActive = editor.isActive('level', { class: 'level3' });
+
+      if (!level1IsActive && !level2IsActive && !level3IsActive) {
+        editor?.commands.setMark('level', { class: 'level1' });
+      }
     },
   });
 

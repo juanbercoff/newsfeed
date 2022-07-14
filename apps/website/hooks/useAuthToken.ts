@@ -1,12 +1,10 @@
-import { useUser } from '@auth0/nextjs-auth0';
+//import { useUser } from '@auth0/nextjs-auth0';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-export default function useAuthToken() {
-  const { user } = useUser();
+export default function useAuthToken(callback?: () => void) {
   const [authToken, setAuthToken] = useState<string | null>(null);
   useEffect(() => {
-    if (!user) return;
     (async function () {
       if (!authToken) {
         try {
@@ -14,10 +12,11 @@ export default function useAuthToken() {
           setAuthToken(data?.accessToken || '');
         } catch (error) {
           console.log('ERROR', error);
+          callback();
         }
       }
     })();
-  }, [user, authToken]);
+  }, [authToken, callback]);
 
-  return { authToken, user };
+  return { authToken };
 }
