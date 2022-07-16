@@ -3,6 +3,7 @@ import { useUpdateUserProfile } from '../../hooks/useUserProfile';
 import { useState } from 'react';
 import Button from '../common/button';
 import { Prisma } from '@prisma/client';
+import { useUserProfileContext } from '../../contexts/user-context';
 
 type ProfileCardProps = {
   title: string;
@@ -23,13 +24,14 @@ const ProfileCard = ({
     handleSubmit,
     formState: { errors },
   } = useForm<Prisma.UserProfileUpdateInput>();
+  const { authToken } = useUserProfileContext();
   const { mutate } = useUpdateUserProfile(userProfileId, setIsEditing);
 
   const onSubmit = (formData: Prisma.UserProfileUpdateInput) => {
     const data: Prisma.UserProfileUpdateInput = {
       ...formData,
     };
-    mutate(data);
+    mutate({ data, authToken });
   };
 
   return (

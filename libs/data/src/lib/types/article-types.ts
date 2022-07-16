@@ -1,4 +1,4 @@
-import { Article } from '@prisma/client';
+import { Tag } from '@prisma/client';
 
 export type GetOneArticlePayload = { id: string };
 
@@ -8,4 +8,5 @@ export type ArticleFormData = {
   title: string;
   content: string;
   portraitImageUrl?: string | null;
+  tag: Tag;
 };

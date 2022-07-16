@@ -32,10 +32,6 @@ export function useGetArticles(
       getNextPageParam: (lastPage) =>
         lastPage[lastPage.length - 1]?.id ?? undefined,
       refetchOnMount: false,
-      initialData: {
-        pages: [initialData],
-        pageParams: [''],
-      },
     }
   );
 }

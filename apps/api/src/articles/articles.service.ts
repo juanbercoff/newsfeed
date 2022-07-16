@@ -30,7 +30,7 @@ export class ArticlesService {
     data: CreateArticleDto,
     authenticatedUser: FullyRegisteredAuthenticatedUser
   ): Promise<Article> {
-    const { title, content, portraitImageUrl } = data;
+    const { title, content, portraitImageUrl, tagId } = data;
     const userId = authenticatedUser.metadata.userId;
 
     return this.prisma.article.create({
@@ -43,6 +43,15 @@ export class ArticlesService {
         },
         articleContent: content,
         portraitImageUrl,
+        articleTag: {
+          create: {
+            tag: {
+              connect: {
+                id: tagId,
+              },
+            },
+          },
+        },
       },
     });
   }

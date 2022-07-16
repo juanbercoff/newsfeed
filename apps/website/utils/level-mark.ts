@@ -34,7 +34,6 @@ const Level = Mark.create<LevelOptions>({
 
   addAttributes() {
     return {
-      //FIX PASTE
       class: {
         default: { class: 'level1' },
         parseHTML: (element) => {

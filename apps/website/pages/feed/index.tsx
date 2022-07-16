@@ -49,7 +49,7 @@ const Feed = ({ articles }: FeedProps) => {
         selectedTags={selectedTags}
         setSelectedTags={setSelectedTags}
       />
-      <div className="relative flex flex-col space-y-4">
+      <div className="relative flex flex-col space-y-2">
         {articlesData?.pages.map((page) =>
           page.map((article) => (
             <CardMobile key={article.id} article={article} />

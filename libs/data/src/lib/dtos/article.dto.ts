@@ -21,6 +21,10 @@ export class CreateArticleDto {
   @IsNotEmpty()
   @IsUrl()
   portraitImageUrl: string;
+
+  @IsNotEmpty()
+  @IsUUID()
+  tagId: string;
 }
 
 export class UpdateArticleDto extends PartialType(CreateArticleDto) {}

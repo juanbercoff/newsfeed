@@ -11,6 +11,10 @@ import UnsplashSearch from '../components/common/unsplash-search';
 import Utils from '../utils/Utils';
 import { useGetTags } from '../hooks/useTags';
 import { useUserProfileContext } from '../contexts/user-context';
+import ListBox from '../components/common/list-box/list-box';
+import ListBoxItem from '../components/common/list-box/list-box-item';
+import { Tag } from '@prisma/client';
+import Skeleton from 'react-loading-skeleton';
 
 const NewArticleForm = () => {
   const {
@@ -27,20 +31,33 @@ const NewArticleForm = () => {
   const { data: tags, isLoading } = useGetTags();
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedTag, setSelectedTag] = useState<Tag | null>(null);
 
   const onSubmit = (formData: ArticleFormData) => {
     const data: CreateArticleDto = {
       title: formData.title,
       content: Utils.parseHtml(formData.content),
       portraitImageUrl: selectedImage,
+      tagId: formData.tag.id,
     };
+    //console.log(formData);
     mutate({ data, authToken });
   };
+
+  if (isLoading) {
+    return (
+      <div>
+        <Skeleton height={108} />
+        <Skeleton height={42} />
+        <Skeleton height={348} />
+      </div>
+    );
+  }
 
   return (
     <div className="pt-5">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-        <div>
+        <div className="space-y-4">
           <input
             {...register('title', {
               required: true,
@@ -53,12 +70,14 @@ const NewArticleForm = () => {
             ].join(' ')}
             placeholder="Titulo del articulo"
           ></input>
+          {errors.title?.type === 'required' && 'Escribi algo para comentar'}
           <UnsplashSearch
             setSelectedImage={setSelectedImage}
             selectedImage={selectedImage}
           />
           <Controller
             control={control}
+            rules={{ minLength: 200, required: true }}
             render={({ field }) => (
               <ArticleFormContentEditor
                 contentValue={field.value}
@@ -67,10 +86,35 @@ const NewArticleForm = () => {
             )}
             name="content"
           />
+          {errors.content?.type === 'required' && 'Escribi algo para continuar'}
+          {errors.content?.type === 'minLength' &&
+            'Escribi al menos 200 caracteres para continuar'}
+          <Controller
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <ListBox
+                items={tags}
+                value={selectedTag}
+                label={selectedTag?.name ?? 'Selecciona un tag'}
+                setValue={(value) => {
+                  setSelectedTag(value);
+                  field.onChange(value);
+                }}
+                renderItem={(item) => (
+                  <ListBoxItem
+                    item={item}
+                    itemLabel={item.name}
+                    handleClick={() => ({})}
+                  />
+                )}
+              />
+            )}
+            name="tag"
+          />
+          {errors?.tag?.name?.type === 'required' &&
+            'Selecciona un tag para continuar'}
         </div>
-        {errors.title?.type === 'required' && 'Escribi algo para comentar'}
-        {errors.title?.type === 'maxLength' &&
-          'Superaste el limite de 2000 caracteres'}
         <div>
           <Button type="submit">Publicar</Button>
         </div>

@@ -51,7 +51,7 @@ const Comment = ({ comment, comments, authToken }: CommentProps) => {
   return (
     <div className="space-y-2">
       <div className="flex flex-row justify-start space-x-2 items-center">
-        <UserAvatar avatarSize="sm" userName="user name" />
+        <UserAvatar avatarSize="sm" userName={comment?.userName} />
         <p className="font-medium text-sm">{comment?.userName}</p>
         <p className="text-gray-400 text-sm">
           {isoStringToRelativeTime(comment.createdAt)}

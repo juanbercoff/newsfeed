@@ -3,6 +3,7 @@ import { CreateCommentDto } from '@newsfeed/data';
 import 'react-toastify/dist/ReactToastify.css';
 import { useArticleContext } from '../../contexts/article-context';
 import { useCreateComment } from '../../hooks/useComments';
+import { useUserProfileContext } from '../../contexts/user-context';
 
 type CommentFormData = {
   comment: string;
@@ -15,6 +16,7 @@ type CommentFormProps = {
 
 const CommentForm = ({ commentId, setShowForm }: CommentFormProps) => {
   const article = useArticleContext();
+  const { authToken } = useUserProfileContext();
   const {
     register,
     handleSubmit,
@@ -31,7 +33,7 @@ const CommentForm = ({ commentId, setShowForm }: CommentFormProps) => {
       parentCommentId: commentId,
       content: formData.comment,
     };
-    mutate(data);
+    mutate({ data, authToken });
   };
 
   return (

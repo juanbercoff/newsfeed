@@ -38,36 +38,34 @@ const ArticleFormContentEditor = ({
         const htmlObject = document.createElement('div');
         htmlObject.innerHTML = html;
         const res = [];
-        Array.from(htmlObject.getElementsByTagName('span')).forEach((element) =>
-          res.push(element.outerHTML)
-        );
-        console.log('res', res);
-        console.log(
-          htmlObject.getElementsByTagName('span')[0].parentElement.tagName ===
-            'P'
+        let intermediateArray = [];
+
+        Array.from(htmlObject.getElementsByTagName('span')).forEach(
+          (element) => {
+            if (
+              element.previousSibling === null &&
+              element.nextSibling === null
+            ) {
+              res.push(`<p>${element.outerHTML}</p>`);
+            } else if (
+              (element.previousSibling !== null &&
+                element.nextSibling !== null) ||
+              element.nextSibling !== null
+            ) {
+              intermediateArray.push(element.outerHTML);
+            } else if (element.nextSibling === null) {
+              intermediateArray.push(element.outerHTML);
+              res.push(`<p>${intermediateArray.join('')}</p>`);
+              intermediateArray = [];
+            }
+          }
         );
         return res.join('');
-        //console.log(htmlObject);
-        const text = htmlObject.textContent || htmlObject.innerText || '';
-        const returnValue = `<span>${text}</span>`;
-        return returnValue;
       },
       transformPastedText(text, plain) {
         const returnValue = `<span>${text}</span>`;
         return returnValue;
       },
-      transformPasted(slice) {
-        //console.log(slice.content.forEach());
-        return slice;
-      },
-      /* transformPastedHTML(html) {
-        const htmlObject = document.createElement('div');
-        const text =
-          '<html><body><p>Paragraph <span>span</span></p><body></html>';
-        htmlObject.innerHTML = text;
-        console.log(htmlObject);
-        return html;
-      }, */
     },
     onUpdate({ editor }) {
       onChange(editor.getHTML());

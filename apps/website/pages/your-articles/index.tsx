@@ -6,6 +6,7 @@ import Button from '../../components/common/button';
 import Link from 'next/link';
 import Modal from '../../components/common/modal';
 import { useUserProfileContext } from '../../contexts/user-context';
+import Skeleton from 'react-loading-skeleton';
 
 const YourArticles = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -84,7 +85,7 @@ const YourArticles = () => {
           ))}
         </div>
       ) : isLoading || status === 'idle' ? (
-        <Spinner />
+        <Skeleton height={80} />
       ) : (
         <p className="text-center text-lg">No tienes articulos</p>
       )}

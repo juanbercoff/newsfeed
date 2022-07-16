@@ -5,6 +5,7 @@ import logo from '../../public/logo.png';
 import { useUserProfileContext } from '../../contexts/user-context';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import Button from '../common/button';
 
 const TopBar = () => {
   const { userProfile, isLoading } = useUserProfileContext();
@@ -21,7 +22,7 @@ const TopBar = () => {
         </div>
         {userProfile || isLoading ? (
           <div className="flex flex-row space-x-4 items-center relative">
-            <div className="hover:text-cyan-800 transition-colors">
+            <div>
               {isLoading ? (
                 <Skeleton
                   width="109px"
@@ -29,7 +30,16 @@ const TopBar = () => {
                   containerClassName="skeleton"
                 />
               ) : (
-                <Link href={'/articles/new'}>Escribir articulo</Link>
+                <Link
+                  href={{
+                    pathname: `articles/new`,
+                  }}
+                  passHref={true}
+                >
+                  <Button use="primary" size="sm">
+                    Escribir Articulo
+                  </Button>
+                </Link>
               )}
             </div>
             {isLoading ? (
