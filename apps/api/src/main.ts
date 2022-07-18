@@ -20,7 +20,14 @@ async function bootstrap() {
   app.enableCors(corsOptions);
   app.use(cookieParser());
   const globalPrefix = 'api';
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    })
+  );
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3333;
   await app.listen(port);

@@ -4,7 +4,9 @@ import {
   IsNotEmpty,
   IsOptional,
   IsUrl,
+  IsInt,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 import { PartialType } from '@nestjs/mapped-types';
 import { Prisma } from '@prisma/client';
 import { AllArticlesLikesDto } from './article-likes.dto';
@@ -29,13 +31,27 @@ export class CreateArticleDto {
 
 export class UpdateArticleDto extends PartialType(CreateArticleDto) {}
 
+export const getArticleCondition = ['latest', 'top', 'mostDiscused'] as const;
+export type GetArticleCondition = typeof getArticleCondition[number];
+export type GetArticleConditionValue = {
+  orderBy: string;
+};
+
+export type GetArticleConditionMappedValues = {
+  [key in GetArticleCondition]: GetArticleConditionValue;
+};
+
 export class GetManyArticlesDto {
-  @IsUUID()
   @IsOptional()
-  cursor?: string;
+  @Type(() => Number)
+  @IsInt()
+  cursor?: number;
 
   @IsOptional()
   tags?: string[];
+
+  @IsString()
+  sortBy: GetArticleCondition;
 }
 
 //https://stackoverflow.com/questions/68366105/get-full-type-on-prisma-client

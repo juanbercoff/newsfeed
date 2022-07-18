@@ -30,11 +30,12 @@ const Feed = ({ articles }: FeedProps) => {
     fetchNextPage,
     isFetchingNextPage,
     isLoading,
-  } = useGetArticles(articles, formatFilterTags());
+  } = useGetArticles(articles, 'latest', formatFilterTags());
   const { ref, inView } = useInView({
     delay: 200,
   });
   const { data: allTags, isLoading: allTagsIsLoading } = useGetTags();
+  console.log({ articlesData });
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -68,7 +69,7 @@ const Feed = ({ articles }: FeedProps) => {
 };
 
 export async function getStaticProps() {
-  const articles = await getArticlesList({});
+  const articles = await getArticlesList({ condition: 'latest' });
   return {
     props: {
       articles,

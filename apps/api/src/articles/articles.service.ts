@@ -10,12 +10,14 @@ import {
   UpdateArticleDto,
   FullyRegisteredAuthenticatedUser,
   UserArticles,
+  GetArticleConditionMappedValues,
 } from '@newsfeed/data';
 import { UsersService } from '../users/users.service';
 import { Article, Prisma } from '@prisma/client';
 import { ArticleLikesService } from '../article-likes/article-likes.service';
 import { ArticleHistoryService } from '../article-history/article-history.service';
 import { EntityNotOwnedByUserException } from '../others/exceptions/entity-not-owned-by-user.exception';
+import { allArticlesWithLikesQuery } from './queries/allArticlesWithLikesQuery';
 
 @Injectable()
 export class ArticlesService {
@@ -82,77 +84,29 @@ export class ArticlesService {
     });
   }
 
-  //FIX: write query
   async findAll({
     cursor,
     tags,
+    sortBy,
   }: GetManyArticlesDto): Promise<ArticlesWithLikesResponseDto[]> {
-    const paginationObject = {
-      take: 4,
-      skip: cursor ? 1 : 0,
+    const conditionValues: GetArticleConditionMappedValues = {
+      latest: {
+        orderBy: `ORDER BY a."createdAt" desc`,
+      },
+      top: {
+        orderBy: `ORDER BY likes desc`,
+      },
+      mostDiscused: {
+        orderBy: `ORDER BY c."countOfComments" desc`,
+      },
     };
 
-    if (cursor) {
-      paginationObject['cursor'] = { id: cursor };
-    }
+    const query = allArticlesWithLikesQuery(
+      conditionValues[sortBy].orderBy,
+      cursor ? `LIMIT 4 OFFSET ${cursor * 4 - 4}` : ''
+    );
 
-    if (typeof tags === 'string') {
-      tags = [tags];
-    }
-
-    const tagsFilter = tags?.map((tag) => {
-      return {
-        articleTag: {
-          some: {
-            tag: {
-              name: {
-                contains: tag,
-              },
-            },
-          },
-        },
-      };
-    });
-
-    const articles = await this.prisma.article.findMany({
-      ...paginationObject,
-      include: {
-        author: {
-          include: {
-            profile: true,
-          },
-        },
-        _count: {
-          select: {
-            comments: true,
-          },
-        },
-        articleHistory: {
-          orderBy: {
-            createdAt: 'asc',
-          },
-        },
-        articleTag: {
-          include: {
-            tag: true,
-          },
-        },
-      },
-      where: {
-        OR: tagsFilter,
-      },
-    });
-
-    const articlesLikes = await this.articleLikesService.getAllArticlesLikes();
-
-    const articlesWithLikes = articles.map((article) => {
-      const articleLike = articlesLikes.find(
-        (articleLike) => articleLike.articleId === article.id
-      );
-      return { ...article, articleLike };
-    });
-
-    return articlesWithLikes;
+    return await this.prisma.$queryRaw(Prisma.raw(query));
   }
 
   async getArticlesByUser(

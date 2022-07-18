@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { AxiosRequestHeaders, AxiosRequestConfig } from 'axios';
+import { GetArticleCondition } from '@newsfeed/data';
 
 export function getEndpoint(path = '/') {
   return `${process.env.NEXT_PUBLIC_NEWSFEED_API}/${path}`;
@@ -7,11 +8,14 @@ export function getEndpoint(path = '/') {
 
 export function getEndpointWithPagination(
   path = '/',
-  cursor: string,
-  filter = ''
+  cursor: number = 1,
+  filter = '',
+  condition: GetArticleCondition = 'latest'
 ) {
   if (cursor) {
-    return `${getEndpoint(path)}?cursor=${cursor}&${filter}`;
+    return `${getEndpoint(
+      path
+    )}?cursor=${cursor}&${filter}&sortBy=${condition}`;
   }
   return `${getEndpoint(path)}?${filter}`;
 }

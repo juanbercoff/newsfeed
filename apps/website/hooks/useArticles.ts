@@ -3,6 +3,7 @@ import {
   ArticlesWithLikesResponseDto,
   CreateArticleDto,
   UpdateArticleDto,
+  GetArticleCondition,
 } from '@newsfeed/data';
 import {
   getOneArticle,
@@ -22,15 +23,16 @@ import { toast } from 'react-toastify';
 
 export function useGetArticles(
   initialData: ArticlesWithLikesResponseDto[],
+  condition: GetArticleCondition,
   tagsFilter?: string
 ) {
   return useInfiniteQuery(
     ['articles', tagsFilter],
-    ({ pageParam = '' }) =>
-      getArticlesList({ cursor: pageParam, tags: tagsFilter }),
+    ({ pageParam = 1 }) =>
+      getArticlesList({ cursor: pageParam, tags: tagsFilter, condition }),
     {
-      getNextPageParam: (lastPage) =>
-        lastPage[lastPage.length - 1]?.id ?? undefined,
+      getNextPageParam: (lastPage, pages) =>
+        lastPage.length === 4 ? pages.length + 1 : undefined,
       refetchOnMount: false,
     }
   );

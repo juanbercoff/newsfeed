@@ -60,13 +60,18 @@ const CardMobile = ({ article }: CardProps) => {
       <div className="bg-white cursor-pointer p-4 rounded-md shadow-md hover:shadow-lg hover:scale-[1.01] transition-all">
         <div className="flex justify-between items-start items-center space-x-8">
           <div className="flex flex-col space-y-3 flex-grow self-stretch justify-between">
-            <div>
+            <div className="space-y-2">
+              <ArticleAuthorInformation
+                userProfile={article?.author?.profile}
+                articleCreatedDate={article.createdAt}
+                avatarSize={'sm'}
+              />
               <h3 className="text-lg sm:text-xl font-semibold line-clamp-2 mb-2">
                 {article.title}
               </h3>
               {!isXs ? (
                 <p
-                  className="text-sm line-clamp-4 break-all"
+                  className="text-sm line-clamp-1 break-all"
                   dangerouslySetInnerHTML={{ __html: article?.articleContent }}
                 />
               ) : null}
@@ -82,10 +87,6 @@ const CardMobile = ({ article }: CardProps) => {
                 />
                 <ArticleTags articleTag={article.articleTag} />
               </div>
-              <ArticleAuthorInformation
-                userProfile={article?.author?.profile}
-                avatarSize={'sm'}
-              />
             </div>
           </div>
           <div className="relative w-[80px] h-[80px] sm:w-[160px] sm:h-[160px] flex-shrink-0">

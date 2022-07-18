@@ -1,6 +1,7 @@
 export const allArticlesWithLikesQuery = (
-  whereCondition: string,
-  orderByCondition?: string
+  orderByCondition?: string,
+  offsetCondition?: string,
+  limitCondition?: string
 ) => {
   return `
 SELECT a.id,
@@ -8,6 +9,7 @@ a."createdAt",
 a."updatedAt",
 a."title",
 a."articleContent",
+a."portraitImageUrl",
 up."userName",
 up."firstName",
 up."lastName",
@@ -34,7 +36,7 @@ LEFT JOIN
     GROUP BY c."articleId"
   ) AS c
 ON c."articleId" = a."id"
-ORDER BY a."createdAt" desc
-${whereCondition ? whereCondition : ''}
-${orderByCondition ? orderByCondition : ''}`;
+${orderByCondition ? orderByCondition : ''}
+${offsetCondition ? offsetCondition : ''}
+`;
 };

@@ -17,14 +17,11 @@ import { Article } from '@prisma/client';
 export async function getArticlesList({
   cursor,
   tags,
+  condition,
 }: GetArticlesPayload): Promise<ArticlesWithLikesResponseDto[]> {
   // TODO: Apply payload once it has pagination, order by, etc.
-  const url =
-    cursor || tags
-      ? getEndpointWithPagination('articles', cursor, tags)
-      : getEndpoint('articles');
   return callApiService<ArticlesWithLikesResponseDto[]>({
-    url,
+    url: getEndpointWithPagination('articles', cursor, tags, condition),
     method: 'GET',
   });
 }

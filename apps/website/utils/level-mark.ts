@@ -4,7 +4,7 @@ export interface LevelOptions {
   HTMLAttributes: Record<string, any>;
 }
 
-const LEVELS = ['level1', 'level2', 'level3'];
+const LEVELS = ['level1', 'level2', 'level3'] as const;
 
 const levelStyle = {
   level1: 'font-size: 18px',
@@ -12,13 +12,12 @@ const levelStyle = {
   level3: 'font-size: 14px',
 };
 
-export type Levels = 'level1' | 'level2' | 'level3';
+export type Levels = typeof LEVELS[number];
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     level: {
-      //TODO: no es redudante LEVELS y Levels?
-      setLevel: (level: 'level1' | 'level2' | 'level3') => ReturnType;
+      setLevel: (level: Levels) => ReturnType;
     };
   }
 }
@@ -37,7 +36,7 @@ const Level = Mark.create<LevelOptions>({
       class: {
         default: { class: 'level1' },
         parseHTML: (element) => {
-          return !LEVELS.includes(element.className)
+          return !LEVELS.includes(element.className as Levels)
             ? 'level1'
             : element.className;
         },
