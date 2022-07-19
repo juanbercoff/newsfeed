@@ -50,6 +50,7 @@ const Article = ({ article }: ArticleProps) => {
 
   useEffect(() => {
     (function () {
+      setActiveIndex(0);
       const level1Elements = document.getElementsByClassName('level1');
       const level2Elements = document.getElementsByClassName('level2');
       setLevel2Elements(level2Elements);

@@ -15,6 +15,7 @@ import ListBox from '../components/common/list-box/list-box';
 import ListBoxItem from '../components/common/list-box/list-box-item';
 import { Tag } from '@prisma/client';
 import Skeleton from 'react-loading-skeleton';
+import useBreakpoints from '../hooks/useBreakpoints';
 
 const NewArticleForm = () => {
   const {
@@ -38,11 +39,12 @@ const NewArticleForm = () => {
       title: formData.title,
       content: Utils.parseHtml(formData.content),
       portraitImageUrl: selectedImage,
-      tagId: formData.tag.id,
+      tagId: formData.tag,
     };
-    //console.log(formData);
     mutate({ data, authToken });
   };
+  const { isXs } = useBreakpoints();
+  if (isXs) push('/feed');
 
   if (isLoading) {
     return (
@@ -94,12 +96,13 @@ const NewArticleForm = () => {
             rules={{ required: true }}
             render={({ field }) => (
               <ListBox
+                position="top"
                 items={tags}
                 value={selectedTag}
                 label={selectedTag?.name ?? 'Selecciona un tag'}
                 setValue={(value) => {
                   setSelectedTag(value);
-                  field.onChange(value);
+                  field.onChange(value.id);
                 }}
                 renderItem={(item) => (
                   <ListBoxItem
@@ -112,7 +115,7 @@ const NewArticleForm = () => {
             )}
             name="tag"
           />
-          {errors?.tag?.name?.type === 'required' &&
+          {errors?.tag?.type === 'required' &&
             'Selecciona un tag para continuar'}
         </div>
         <div>

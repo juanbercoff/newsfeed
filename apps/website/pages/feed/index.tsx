@@ -9,7 +9,7 @@ import FilterBar from '../../components/feed/filter-bar';
 import { useGetTags } from '../../hooks/useTags';
 import { useState } from 'react';
 import { Tag } from '@prisma/client';
-import ArticlesFilter from '../../components/feed/articles-filter';
+import ArticlesSorter from '../../components/feed/articles-sort';
 import { GetArticleCondition } from '@newsfeed/data';
 
 interface FeedProps {
@@ -44,7 +44,7 @@ const Feed = ({ articles }: FeedProps) => {
 
   return (
     <>
-      <ArticlesFilter condition={condition} setCondition={setCondition} />
+      <ArticlesSorter condition={condition} setCondition={setCondition} />
       <div className="relative flex flex-col space-y-2">
         {articlesData?.pages.map((page) =>
           page.map((article) => (

@@ -13,5 +13,5 @@ export type ArticleFormData = {
   title: string;
   content: string;
   portraitImageUrl?: string | null;
-  tag: Tag;
+  tag: string;
 };

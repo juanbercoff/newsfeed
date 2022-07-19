@@ -93,7 +93,7 @@ const CardMobile = ({ article }: CardProps) => {
               </div>
             </div>
           </div>
-          <div className="relative w-[80px] h-[80px] sm:w-[160px] sm:h-[160px] flex-shrink-0">
+          <div className="relative w-[96px] h-[96px] sm:w-[160px] sm:h-[160px] flex-shrink-0">
             <Image
               className="rounded-md"
               src={article.portraitImageUrl}

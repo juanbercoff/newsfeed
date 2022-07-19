@@ -46,9 +46,9 @@ const STYLE: Style = {
     },
     unChecked: {
       bgColor: 'transparent',
-      textColor: 'text-gray-600 hover:text-primary-500',
+      textColor: 'text-gray-600 group-hover:text-primary-500',
     },
-    base: 'relative px-5 py-4 cursor-pointer flex focus:outline-none hover:bg-white rounded-lg',
+    base: 'group relative px-3 py-2 cursor-pointer flex focus:outline-none hover:bg-white rounded-lg',
     textSize: 'text-base',
   },
 };

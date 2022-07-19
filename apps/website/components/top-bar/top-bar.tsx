@@ -6,9 +6,11 @@ import { useUserProfileContext } from '../../contexts/user-context';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Button from '../common/button';
+import useBreakpoints from '../../hooks/useBreakpoints';
 
 const TopBar = () => {
   const { userProfile, isLoading } = useUserProfileContext();
+  const { isXs } = useBreakpoints();
 
   return (
     <div className="flex fixed top-0 w-full justify-center border-b border-gray-300 bg-white z-10 px-4">
@@ -29,7 +31,7 @@ const TopBar = () => {
                   height="18px"
                   containerClassName="skeleton"
                 />
-              ) : (
+              ) : !isXs ? (
                 <Link
                   href={{
                     pathname: `articles/new`,
@@ -40,7 +42,7 @@ const TopBar = () => {
                     Escribir Articulo
                   </Button>
                 </Link>
-              )}
+              ) : null}
             </div>
             {isLoading ? (
               <Skeleton
