@@ -1,6 +1,7 @@
 import {
   GetOneArticlePayload,
-  ArticlesWithLikesResponseDto,
+  ArticlesResponseDto,
+  ArticleResponseDto,
   CreateArticleDto,
   UpdateArticleDto,
   GetArticleCondition,
@@ -22,12 +23,12 @@ import {
 import { toast } from 'react-toastify';
 
 export function useGetArticles(
-  initialData: ArticlesWithLikesResponseDto[],
+  initialData: ArticlesResponseDto[],
   condition: GetArticleCondition,
   tagsFilter?: string
 ) {
   return useInfiniteQuery(
-    ['articles', tagsFilter],
+    ['articles', tagsFilter, condition],
     ({ pageParam = 1 }) =>
       getArticlesList({ cursor: pageParam, tags: tagsFilter, condition }),
     {
@@ -40,7 +41,7 @@ export function useGetArticles(
 
 export function useGetOneArticle(
   articleId: GetOneArticlePayload,
-  initialData?: ArticlesWithLikesResponseDto,
+  initialData?: ArticleResponseDto,
   enabled?: boolean
 ) {
   return useQuery(['articles', articleId], () => getOneArticle(articleId), {

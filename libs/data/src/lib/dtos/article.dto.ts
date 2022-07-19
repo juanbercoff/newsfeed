@@ -69,8 +69,18 @@ export type ArticleResponseDto = Prisma.ArticleGetPayload<
   typeof articlesResponseDto
 >;
 
-export type ArticlesWithLikesResponseDto = ArticleResponseDto & {
-  articleLike: AllArticlesLikesDto;
+export type ArticlesResponseDto = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  title: string;
+  articleContent: string;
+  portraitImageUrl: string;
+  userName: string;
+  firstName: string;
+  likes: number;
+  countOfComments: number;
+  tagName: string;
 };
 
 const userArticles = Prisma.validator<Prisma.ArticleArgs>()({

@@ -15,6 +15,7 @@ const VersionControlMobile = ({
   return (
     <div>
       <ListBox
+        position="bottom"
         items={articleHistory}
         value={articleVersionToDisplay}
         setValue={setArticleVersionToDisplay}

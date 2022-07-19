@@ -1,8 +1,5 @@
 import { getArticlesList } from '../../services/articles-api';
-import {
-  ArticlesWithLikesResponseDto,
-  AllArticlesLikesDto,
-} from '@newsfeed/data';
+import { ArticlesResponseDto, AllArticlesLikesDto } from '@newsfeed/data';
 import { useGetArticles } from '../../hooks/useArticles';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
@@ -12,14 +9,17 @@ import FilterBar from '../../components/feed/filter-bar';
 import { useGetTags } from '../../hooks/useTags';
 import { useState } from 'react';
 import { Tag } from '@prisma/client';
+import ArticlesFilter from '../../components/feed/articles-filter';
+import { GetArticleCondition } from '@newsfeed/data';
 
 interface FeedProps {
-  articles: ArticlesWithLikesResponseDto[];
+  articles: ArticlesResponseDto[];
   articlesLikes: AllArticlesLikesDto[];
 }
 //FIX multiple rerenders
 const Feed = ({ articles }: FeedProps) => {
   const [selectedTags, setSelectedTags] = useState<Tag[]>();
+  const [condition, setCondition] = useState<GetArticleCondition>('latest');
   const formatFilterTags = () => {
     return selectedTags?.map((tag) => `tags=${tag.name}`).join('&');
   };
@@ -30,12 +30,11 @@ const Feed = ({ articles }: FeedProps) => {
     fetchNextPage,
     isFetchingNextPage,
     isLoading,
-  } = useGetArticles(articles, 'latest', formatFilterTags());
+  } = useGetArticles(articles, condition, formatFilterTags());
   const { ref, inView } = useInView({
     delay: 200,
   });
   const { data: allTags, isLoading: allTagsIsLoading } = useGetTags();
-  console.log({ articlesData });
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -45,11 +44,7 @@ const Feed = ({ articles }: FeedProps) => {
 
   return (
     <>
-      <FilterBar
-        allTags={allTags}
-        selectedTags={selectedTags}
-        setSelectedTags={setSelectedTags}
-      />
+      <ArticlesFilter condition={condition} setCondition={setCondition} />
       <div className="relative flex flex-col space-y-2">
         {articlesData?.pages.map((page) =>
           page.map((article) => (

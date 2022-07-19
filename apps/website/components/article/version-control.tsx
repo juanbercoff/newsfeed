@@ -1,16 +1,15 @@
 import { RadioGroup } from '@headlessui/react';
-import {
-  ArticlesWithLikesResponseDto,
-  ArticleHistoryDto,
-} from '@newsfeed/data';
-import VersionControlItem from './version-control-item';
+import { ArticleResponseDto, ArticleHistoryDto } from '@newsfeed/data';
+import RadioGroupComponent from '../common/radio-group/radio-group';
+import RadioGroupItem from '../common/radio-group/radio-group-item';
+import Utils from '../../utils/Utils';
 
 export type VersionControlItemProps = {
-  article: ArticlesWithLikesResponseDto;
+  article: ArticleResponseDto;
   articleHistory: ArticleHistoryDto[];
-  articleVersionToDisplay: ArticlesWithLikesResponseDto | ArticleHistoryDto;
+  articleVersionToDisplay: ArticleResponseDto | ArticleHistoryDto;
   setArticleVersionToDisplay: (
-    article: ArticlesWithLikesResponseDto | ArticleHistoryDto
+    article: ArticleResponseDto | ArticleHistoryDto
   ) => void;
 };
 
@@ -22,27 +21,27 @@ const VersionControl = ({
 }: VersionControlItemProps) => {
   return (
     <div className="shadow hover:shadow-md bg-white">
-      <RadioGroup
+      <RadioGroupComponent
+        items={articleHistory}
         value={articleVersionToDisplay}
-        onChange={setArticleVersionToDisplay}
-      >
-        <RadioGroup.Label className="sr-only">Article Version</RadioGroup.Label>
-        {articleHistory?.length > 0
-          ? articleHistory.map((articleHistory, index) => (
-              <VersionControlItem
-                key={articleHistory.id}
-                versionNumber={index + 1}
-                createdDate={articleHistory.createdAt}
-                articleVersionToDisplay={articleHistory}
-              />
-            ))
-          : null}
-        <VersionControlItem
-          versionNumber="final"
-          createdDate={article.createdAt}
-          articleVersionToDisplay={article}
-        />
-      </RadioGroup>
+        setValue={setArticleVersionToDisplay}
+        keyExtractor={(item) => item.id}
+        renderItem={(item, index) => (
+          <RadioGroupItem
+            item={item}
+            itemLabel={`Version ${index + 1}`}
+            description={Utils.formatDateTimeRelative(item.createdAt)}
+          />
+        )}
+        label="Article Version"
+        extraOption={
+          <RadioGroupItem
+            item={article}
+            itemLabel={`Version actual`}
+            description={Utils.formatDateTimeRelative(article.createdAt)}
+          />
+        }
+      />
     </div>
   );
 };

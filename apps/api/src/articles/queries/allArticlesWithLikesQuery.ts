@@ -14,7 +14,8 @@ up."userName",
 up."firstName",
 up."lastName",
 COALESCE(al."likes", 0) as "likes",
-c."countOfComments"
+COALESCE(c."countOfComments", 0) as "countOfComments",
+at."tagName"
 FROM public."Article" a
 LEFT JOIN public."User" u ON u.id = a."authorId"
 LEFT JOIN public."UserProfile" up ON up.id = u."profileId"
@@ -36,6 +37,22 @@ LEFT JOIN
     GROUP BY c."articleId"
   ) AS c
 ON c."articleId" = a."id"
+LEFT JOIN
+  (
+    SELECT
+    at."articleId",
+    t."name" as "tagName"
+    FROM public."ArticleTag" at
+    INNER JOIN 
+      (
+        SELECT
+        t.id,
+        t.name
+        FROM public."Tag" t
+      ) AS t
+    ON t.id = at."tagId"
+  ) AS at
+ON at."articleId" = a."id"
 ${orderByCondition ? orderByCondition : ''}
 ${offsetCondition ? offsetCondition : ''}
 `;

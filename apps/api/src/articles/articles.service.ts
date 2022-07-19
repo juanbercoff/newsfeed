@@ -3,9 +3,9 @@ import { PrismaService } from '../prisma/prisma.service';
 
 import {
   CreateArticleDto,
+  ArticlesResponseDto,
   ArticleResponseDto,
   GetManyArticlesDto,
-  ArticlesWithLikesResponseDto,
   AuthenticatedUser,
   UpdateArticleDto,
   FullyRegisteredAuthenticatedUser,
@@ -14,7 +14,6 @@ import {
 } from '@newsfeed/data';
 import { UsersService } from '../users/users.service';
 import { Article, Prisma } from '@prisma/client';
-import { ArticleLikesService } from '../article-likes/article-likes.service';
 import { ArticleHistoryService } from '../article-history/article-history.service';
 import { EntityNotOwnedByUserException } from '../others/exceptions/entity-not-owned-by-user.exception';
 import { allArticlesWithLikesQuery } from './queries/allArticlesWithLikesQuery';
@@ -24,7 +23,6 @@ export class ArticlesService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly usersService: UsersService,
-    private readonly articleLikesService: ArticleLikesService,
     private readonly articleHistoryService: ArticleHistoryService
   ) {}
 
@@ -88,7 +86,7 @@ export class ArticlesService {
     cursor,
     tags,
     sortBy,
-  }: GetManyArticlesDto): Promise<ArticlesWithLikesResponseDto[]> {
+  }: GetManyArticlesDto): Promise<ArticlesResponseDto[]> {
     const conditionValues: GetArticleConditionMappedValues = {
       latest: {
         orderBy: `ORDER BY a."createdAt" desc`,
@@ -97,7 +95,7 @@ export class ArticlesService {
         orderBy: `ORDER BY likes desc`,
       },
       mostDiscused: {
-        orderBy: `ORDER BY c."countOfComments" desc`,
+        orderBy: `ORDER BY "countOfComments" desc`,
       },
     };
 

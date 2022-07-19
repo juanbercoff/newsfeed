@@ -1,22 +1,22 @@
 import { RadioGroup } from '@headlessui/react';
-import { ArticlesWithLikesResponseDto } from '@newsfeed/data';
+import { ArticlesResponseDto } from '@newsfeed/data';
 import { ArticleHistory } from '@prisma/client';
-import Utils from '../../utils/Utils';
+import Utils from '../../../utils/Utils';
 
-type VersionControlItemProps = {
-  versionNumber: number | string;
-  createdDate: Date;
-  articleVersionToDisplay: ArticleHistory | ArticlesWithLikesResponseDto;
+type RadioGroupItemProps<TItem> = {
+  item: TItem;
+  itemLabel: string;
+  description?: string;
 };
 
-const VersionControlItem = ({
-  versionNumber,
-  createdDate,
-  articleVersionToDisplay,
-}: VersionControlItemProps) => {
+const RadioGroupItem = <TItem,>({
+  item,
+  itemLabel,
+  description,
+}: RadioGroupItemProps<TItem>) => {
   return (
     <RadioGroup.Option
-      value={articleVersionToDisplay}
+      value={item}
       className={({ checked }) =>
         `
   ${checked ? 'bg-sky-900 bg-opacity-75 text-white' : 'bg-white'}
@@ -34,16 +34,18 @@ const VersionControlItem = ({
                     checked ? 'text-white' : 'text-gray-900'
                   }`}
                 >
-                  {`Version ${versionNumber}`}
+                  {itemLabel}
                 </RadioGroup.Label>
-                <RadioGroup.Description
-                  as="span"
-                  className={`inline ${
-                    checked ? 'text-sky-100' : 'text-gray-500'
-                  }`}
-                >
-                  {Utils.formatDateTimeRelative(createdDate)}
-                </RadioGroup.Description>
+                {description ?? (
+                  <RadioGroup.Description
+                    as="span"
+                    className={`inline ${
+                      checked ? 'text-sky-100' : 'text-gray-500'
+                    }`}
+                  >
+                    {description}
+                  </RadioGroup.Description>
+                )}
               </div>
             </div>
           </div>
@@ -53,4 +55,4 @@ const VersionControlItem = ({
   );
 };
 
-export default VersionControlItem;
+export default RadioGroupItem;

@@ -1,10 +1,7 @@
 import CommentsList from '../../components/comments/comments-list';
 import CommentForm from '../..//components/comments/comment-form';
 import { getArticlesList, getOneArticle } from '../../services/articles-api';
-import {
-  ArticlesWithLikesResponseDto,
-  ArticleHistoryDto,
-} from '@newsfeed/data';
+import { ArticleResponseDto, ArticleHistoryDto } from '@newsfeed/data';
 import { useEffect, useState } from 'react';
 import { ArticleContext } from '../../contexts/article-context';
 import {
@@ -29,7 +26,7 @@ const TEXT_SIZE = {
 };
 
 interface ArticleProps {
-  article: ArticlesWithLikesResponseDto;
+  article: ArticleResponseDto;
 }
 //FIX: dangerouslySetInnerHTML
 const Article = ({ article }: ArticleProps) => {
@@ -39,7 +36,7 @@ const Article = ({ article }: ArticleProps) => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const { mutate } = usePostArticleVisit();
   const [articleVersionToDisplay, setArticleVersionToDisplay] = useState<
-    ArticlesWithLikesResponseDto | ArticleHistoryDto
+    ArticleResponseDto | ArticleHistoryDto
   >(article);
   const { data: visits, isLoading: visitsLoading } = useGetArticleVisits(
     article.id
@@ -132,7 +129,8 @@ const Article = ({ article }: ArticleProps) => {
         </div>
         <div className="flex justify-between items-center">
           <ArticleAuthorInformation
-            userProfile={article.author.profile}
+            userName={article?.author.profile.userName}
+            articleCreatedDate={article.createdAt}
             avatarSize="lg"
           />
           <div className="flex justify-between items-center gap-1">
@@ -152,6 +150,7 @@ const Article = ({ article }: ArticleProps) => {
         </div>
         <div>
           <div
+            className="break-all"
             dangerouslySetInnerHTML={{
               __html: articleVersionToDisplay.articleContent,
             }}
@@ -165,7 +164,7 @@ const Article = ({ article }: ArticleProps) => {
 };
 
 export async function getStaticPaths() {
-  const articles = await getArticlesList({});
+  const articles = await getArticlesList({ condition: 'latest' });
 
   return {
     paths: articles.map((article) => ({ params: { id: article.id } })),

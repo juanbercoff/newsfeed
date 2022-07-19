@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArticleResponseDto, AllArticlesLikesDto } from '@newsfeed/data';
+import { ArticlesResponseDto, AllArticlesLikesDto } from '@newsfeed/data';
 import Actions from '../common/actions';
 import useBreakpoints from '../../hooks/useBreakpoints';
 import ArticleTags from '../common/article-tags';
@@ -17,7 +17,7 @@ import { useUserProfileContext } from '../../contexts/user-context';
 import Skeleton from 'react-loading-skeleton';
 
 interface CardProps {
-  article: ArticleResponseDto & { articleLike: AllArticlesLikesDto };
+  article: ArticlesResponseDto & { articleLike: AllArticlesLikesDto };
 }
 
 const CardMobile = ({ article }: CardProps) => {
@@ -62,7 +62,7 @@ const CardMobile = ({ article }: CardProps) => {
           <div className="flex flex-col space-y-3 flex-grow self-stretch justify-between">
             <div className="space-y-2">
               <ArticleAuthorInformation
-                userProfile={article?.author?.profile}
+                userName={article?.userName}
                 articleCreatedDate={article.createdAt}
                 avatarSize={'sm'}
               />
@@ -85,7 +85,11 @@ const CardMobile = ({ article }: CardProps) => {
                   likeCount={articlesLikeCount?._sum?.like || 0}
                   isLiked={isArticleLiked?.like}
                 />
-                <ArticleTags articleTag={article.articleTag} />
+                {article.tagName ? (
+                  <div className="text-xs rounded-md px-1.5 py-0.5 w-fit text-black select-none bg-gray-200">
+                    {article.tagName}{' '}
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>
