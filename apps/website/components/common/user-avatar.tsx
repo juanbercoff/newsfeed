@@ -33,9 +33,9 @@ const UserAvatar = ({ avatarSize, userName }: UserAvatarProps) => {
 
   return (
     <div
-      className={`${AVATAR_SIZE[avatarSize]} rounded-full bg-sky-900 flex justify-center items-center`}
+      className={`${AVATAR_SIZE[avatarSize]} rounded-full bg-[#7B1FA2] flex justify-center items-center`}
     >
-      <p className="font-semibold text-sm text-white">
+      <p className="font-semibold text-xs text-white">
         {getInitials(userName)}
       </p>
     </div>

@@ -20,6 +20,7 @@ const ArticlesFilter = ({ condition, setCondition }: ArticlesFilter) => {
       isHorizontal={true}
       renderItem={(item) => (
         <RadioGroupItem
+          use="button"
           item={item}
           itemLabel={item.charAt(0).toUpperCase() + item.slice(1)}
         />

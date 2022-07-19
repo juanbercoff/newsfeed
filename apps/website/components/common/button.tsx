@@ -14,15 +14,15 @@ type ButtonProps = {
   disabled?: boolean;
 };
 
-const BUTTON_SIZE: { [key in ButtonSize]: string } = {
+export const BUTTON_SIZE: { [key in ButtonSize]: string } = {
   md: `text-base px-4 py-2`,
   sm: `text-sm px-3 py-2 leading-4`,
   xs: `text-xs px-2.5 py-1.5`,
 };
 
-const BUTTON_COLOR: { [key in ButtonUse]: string } = {
+export const BUTTON_COLOR: { [key in ButtonUse]: string } = {
   destructive: `text-white bg-red-600 hover:bg-red-700`,
-  primary: `text-white bg-indigo-600 hover:bg-indigo-700`,
+  primary: `text-white bg-primary-400 hover:bg-primary-500`,
   secondary: `text-black bg-slate-100 hover:bg-gray-100`,
   disabled: `text-gray-500 bg-gray-200 cursor-not-allowed`,
 };

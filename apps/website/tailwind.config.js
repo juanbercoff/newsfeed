@@ -9,6 +9,17 @@ module.exports = {
       transitionProperty: {
         height: 'height',
       },
+      colors: {
+        primary: {
+          100: '#4da5ff',
+          200: '#3399ff',
+          300: '#1a8cff',
+          400: '#007fff',
+          500: '#0072e6',
+          600: '#0066cc',
+          700: '#0059b3',
+        },
+      },
     },
     screens: {
       sm: '640px',

@@ -10,7 +10,7 @@ const Layout = ({ children }: AccountLayoutProps) => {
   return (
     <>
       <TopBar />
-      <div className="mt-[70px] w-full justify-center flex bg-slate-50 min-h-screen">
+      <div className="mt-[70px] w-full justify-center flex bg-slate-50 min-h-screen pb-[40px]">
         <div className="max-w-2xl sm:max-w-3xl w-full">{children}</div>
       </div>
     </>

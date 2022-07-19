@@ -28,6 +28,7 @@ const VersionControl = ({
         keyExtractor={(item) => item.id}
         renderItem={(item, index) => (
           <RadioGroupItem
+            use="radio"
             item={item}
             itemLabel={`Version ${index + 1}`}
             description={Utils.formatDateTimeRelative(item.createdAt)}
@@ -36,6 +37,7 @@ const VersionControl = ({
         label="Article Version"
         extraOption={
           <RadioGroupItem
+            use="radio"
             item={article}
             itemLabel={`Version actual`}
             description={Utils.formatDateTimeRelative(article.createdAt)}
