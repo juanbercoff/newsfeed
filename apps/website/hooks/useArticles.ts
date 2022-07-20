@@ -21,6 +21,7 @@ import {
   useMutation,
 } from 'react-query';
 import { toast } from 'react-toastify';
+import Utils from '../utils/Utils';
 
 export function useGetArticles(
   initialData: ArticlesResponseDto[],
@@ -61,6 +62,9 @@ export function useCreateArticle(onSuccess: (url: string) => Promise<boolean>) {
         onSuccess('/feed');
         queryClient.invalidateQueries('articles', { refetchInactive: true });
       },
+      onError: (error) => {
+        toast.error(Utils.handleError(error));
+      },
     }
   );
 }
@@ -89,6 +93,9 @@ export function useUpdateArticle(onSuccess: (url: string) => Promise<boolean>) {
         toast.success('Articulo modificado con exito');
         onSuccess('/feed');
       },
+      onError: (error) => {
+        toast.error(Utils.handleError(error));
+      },
     }
   );
 }
@@ -102,6 +109,9 @@ export function useDeleteArticle() {
       onSuccess: () => {
         queryClient.invalidateQueries('articles');
         toast.success('Articulo eliminado con exito');
+      },
+      onError: (error) => {
+        toast.error(Utils.handleError(error));
       },
     }
   );

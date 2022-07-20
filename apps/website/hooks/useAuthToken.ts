@@ -11,7 +11,7 @@ export default function useAuthToken(callback?: () => void) {
           const { data } = await axios.get('/api/auth/access-token');
           setAuthToken(data?.accessToken || '');
         } catch (error) {
-          console.log('ERROR', error);
+          throw new Error(error as string);
           callback();
         }
       }

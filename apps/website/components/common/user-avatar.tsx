@@ -16,7 +16,6 @@ const AVATAR_SIZE: { [key in AvatarSize]: string } = {
 
 const UserAvatar = ({ avatarSize, userName }: UserAvatarProps) => {
   const getInitials = (userName: string) => {
-    console.log(userName);
     if (!userName) {
       return <Skeleton />;
     }

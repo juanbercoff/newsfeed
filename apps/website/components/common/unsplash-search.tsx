@@ -28,13 +28,6 @@ const UnsplashSearch = ({
     setSearchTerm(e.target.value);
   };
 
-  const handleImageAspectRatio = (image) => {
-    if (image.width > image.height) {
-      return 'horizontal';
-    }
-    return 'vertical';
-  };
-
   if (selectedImage) {
     return (
       <div className="relative flex justify-center py-2">

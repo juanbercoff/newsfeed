@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArticlesResponseDto, AllArticlesLikesDto } from '@newsfeed/data';
+import { ArticlesResponseDto } from '@newsfeed/data';
 import Actions from '../common/actions';
 import useBreakpoints from '../../hooks/useBreakpoints';
 import ArticleTags from '../common/article-tags';
@@ -17,7 +17,7 @@ import { useUserProfileContext } from '../../contexts/user-context';
 import Skeleton from 'react-loading-skeleton';
 
 interface CardProps {
-  article: ArticlesResponseDto & { articleLike: AllArticlesLikesDto };
+  article: ArticlesResponseDto;
 }
 
 const CardMobile = ({ article }: CardProps) => {

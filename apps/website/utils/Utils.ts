@@ -13,4 +13,9 @@ export default class Utils {
   static parseHtml(html: string) {
     return DOMPurify.sanitize(html, { FORBID_ATTR: ['style'] });
   }
+
+  static handleError(error: unknown) {
+    const errorMessage: string = (error as any)['message'];
+    return errorMessage ?? 'Ha ocurrido un error';
+  }
 }

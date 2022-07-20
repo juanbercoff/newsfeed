@@ -35,9 +35,7 @@ export class FullyRegisteredUserGuard implements CanActivate {
         setMetadata(user);
         return true;
       } catch (error) {
-        //TODO: error handling
-        console.log(error);
-        return false;
+        throw new Error(error as string);
       }
     }
     return true;

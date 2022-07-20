@@ -1,4 +1,5 @@
 import React, { forwardRef } from 'react';
+import Spinner from './spinner';
 
 export type ButtonUse = `primary` | `secondary` | `destructive` | `disabled`;
 type ButtonSize = `xs` | `sm` | `md`;
@@ -12,6 +13,7 @@ type ButtonProps = {
   children: React.ReactNode;
   className?: string;
   disabled?: boolean;
+  isLoading?: boolean;
 };
 
 export const BUTTON_SIZE: { [key in ButtonSize]: string } = {
@@ -37,6 +39,7 @@ const Button = forwardRef<HTMLInputElement, ButtonProps>(
       type = `button`,
       onClick = () => ({}),
       disabled = false,
+      isLoading,
     }: ButtonProps,
     ref
   ) => {
@@ -50,12 +53,12 @@ const Button = forwardRef<HTMLInputElement, ButtonProps>(
       <button
         ref={ref}
         {...{ onClick, type }}
-        disabled={disabled}
+        disabled={disabled || isLoading}
         className={`inline-flex items-center border border-transparent
         font-medium rounded shadow-sm focus:outline-none focus:ring-2
         focus:ring-offset-2 focus:ring-indigo-500 justify-center ${buttonClass}`}
       >
-        {children}
+        {isLoading ? <Spinner size="small" /> : children}
       </button>
     );
   }

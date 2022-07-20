@@ -28,7 +28,11 @@ const NewArticleForm = () => {
   });
   const { push } = useRouter();
   const { authToken } = useUserProfileContext();
-  const { mutate } = useCreateArticle(push);
+  const {
+    mutate,
+    isError,
+    isLoading: isCreatingLoading,
+  } = useCreateArticle(push);
   const { data: tags, isLoading } = useGetTags();
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -119,7 +123,9 @@ const NewArticleForm = () => {
             'Selecciona un tag para continuar'}
         </div>
         <div>
-          <Button type="submit">Publicar</Button>
+          <Button type="submit" isLoading={isCreatingLoading}>
+            Publicar
+          </Button>
         </div>
       </form>
     </div>

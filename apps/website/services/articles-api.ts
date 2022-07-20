@@ -6,7 +6,8 @@ import {
 
 import {
   GetOneArticlePayload,
-  ArticlesWithLikesResponseDto,
+  ArticleResponseDto,
+  ArticlesResponseDto,
   CreateArticleDto,
   UpdateArticleDto,
   GetArticlesPayload,
@@ -18,9 +19,9 @@ export async function getArticlesList({
   cursor,
   tags,
   condition,
-}: GetArticlesPayload): Promise<ArticlesWithLikesResponseDto[]> {
+}: GetArticlesPayload): Promise<ArticlesResponseDto[]> {
   // TODO: Apply payload once it has pagination, order by, etc.
-  return callApiService<ArticlesWithLikesResponseDto[]>({
+  return callApiService<ArticlesResponseDto[]>({
     url: getEndpointWithPagination('articles', cursor, tags, condition),
     method: 'GET',
   });
@@ -28,8 +29,8 @@ export async function getArticlesList({
 
 export async function getOneArticle(
   payload: GetOneArticlePayload
-): Promise<ArticlesWithLikesResponseDto> {
-  return callApiService<ArticlesWithLikesResponseDto>({
+): Promise<ArticleResponseDto> {
+  return callApiService<ArticleResponseDto>({
     url: getEndpoint(`articles/${payload.id}`),
     method: 'GET',
   });

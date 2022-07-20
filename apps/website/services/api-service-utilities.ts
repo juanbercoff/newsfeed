@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { AxiosRequestHeaders, AxiosRequestConfig } from 'axios';
 import { GetArticleCondition } from '@newsfeed/data';
 
@@ -49,8 +49,10 @@ export async function callApiService<Data>(
       withCredentials: true,
     });
     return response.data as Data;
-  } catch (e) {
-    console.log('E', e);
-    throw new Error(e as string);
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error(error as string);
   }
 }
