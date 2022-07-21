@@ -5,23 +5,34 @@ import {
   IsOptional,
   IsUrl,
   IsInt,
+  Validate,
 } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { PartialType } from '@nestjs/mapped-types';
 import { Prisma } from '@prisma/client';
-import { AllArticlesLikesDto } from './article-likes.dto';
+import { CorrectUrlDomain } from './custom-validators';
+const createDOMPurify = require('dompurify');
+const { JSDOM } = require('jsdom');
 
 export class CreateArticleDto {
   @IsNotEmpty()
   @IsString()
   title: string;
 
-  //TODO: sanitize html
+  @Transform(({ value }) => {
+    const window = new JSDOM('').window;
+    const DOMPurify = createDOMPurify(window);
+    return DOMPurify.sanitize(value, {
+      FORBID_ATTR: ['style'],
+      ALLOWED_TAGS: ['p', 'span'],
+    });
+  })
   @IsNotEmpty()
   content: string;
 
   @IsNotEmpty()
   @IsUrl()
+  @Validate(CorrectUrlDomain)
   portraitImageUrl: string;
 
   @IsNotEmpty()

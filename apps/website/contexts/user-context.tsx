@@ -25,7 +25,6 @@ export const UserProfileContainer = ({
   );
   const [isLoading, setIsLoading] = React.useState(true);
   const { authToken } = useAuthToken(() => setIsLoading(false));
-
   useEffect(() => {
     if (authToken) {
       (async function () {

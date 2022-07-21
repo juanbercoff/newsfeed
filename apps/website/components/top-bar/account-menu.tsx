@@ -46,18 +46,20 @@ const AccountMenu = ({ userProfile }: AccountMenuProps) => {
         >
           <div>
             {MENU_ITEMS.map((item) => (
-              <Menu.Item>
-                {({ active }) => (
-                  <LinkWrapper
-                    href={item.href}
-                    className={`${
-                      active ? ' text-gray-900' : 'text-gray-500'
-                    } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                  >
-                    {item.label}
-                  </LinkWrapper>
-                )}
-              </Menu.Item>
+              <div key={item.label}>
+                <Menu.Item>
+                  {({ active }) => (
+                    <LinkWrapper
+                      href={item.href}
+                      className={`${
+                        active ? ' text-gray-900' : 'text-gray-500'
+                      } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                    >
+                      {item.label}
+                    </LinkWrapper>
+                  )}
+                </Menu.Item>
+              </div>
             ))}
           </div>
         </Menu.Items>

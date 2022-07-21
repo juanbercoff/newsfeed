@@ -25,7 +25,7 @@ export const BUTTON_SIZE: { [key in ButtonSize]: string } = {
 export const BUTTON_COLOR: { [key in ButtonUse]: string } = {
   destructive: `text-white bg-red-600 hover:bg-red-700`,
   primary: `text-white bg-primary-400 hover:bg-primary-500`,
-  secondary: `text-black bg-slate-100 hover:bg-gray-100`,
+  secondary: `text-black bg-slate-100 hover:bg-gray-200`,
   disabled: `text-gray-500 bg-gray-200 cursor-not-allowed`,
 };
 

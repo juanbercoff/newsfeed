@@ -77,10 +77,24 @@ const NewArticleForm = () => {
             placeholder="Titulo del articulo"
           ></input>
           {errors.title?.type === 'required' && 'Escribi algo para comentar'}
-          <UnsplashSearch
-            setSelectedImage={setSelectedImage}
-            selectedImage={selectedImage}
+          <Controller
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <UnsplashSearch
+                setSelectedImage={(image) => {
+                  setSelectedImage(image);
+                  field.onChange(image);
+                }}
+                selectedImage={selectedImage}
+              />
+            )}
+            name="portraitImageUrl"
           />
+          <div>
+            {errors.portraitImageUrl?.type === 'required' &&
+              'Seleciona una imagen para continuar'}
+          </div>
           <Controller
             control={control}
             rules={{ minLength: 200, required: true }}

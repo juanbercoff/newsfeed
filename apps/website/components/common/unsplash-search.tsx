@@ -30,15 +30,16 @@ const UnsplashSearch = ({
 
   if (selectedImage) {
     return (
-      <div className="relative flex justify-center py-2">
+      <div className="group relative flex justify-center py-2">
         <ImageOptions setSelectedImage={setSelectedImage} />
-        <div className="hover:opacity-60">
+        <div className="group-hover:opacity-90 transition-all">
           <Image
             src={selectedImage}
             objectFit="cover"
             alt="article picture"
             width={842}
             height={615}
+            priority
           />
         </div>
       </div>
@@ -90,7 +91,7 @@ const UnsplashSearch = ({
                 key={image.id}
                 src={image.urls.regular}
                 alt=""
-                className="break-inside-avoid py-2"
+                className="break-inside-avoid py-2 cursor-pointer"
               />
             ))}
           </div>
