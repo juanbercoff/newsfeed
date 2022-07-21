@@ -17,6 +17,7 @@ import Image from 'next/image';
 import ArticleAuthorInformation from '../../components/common/article-author-information';
 import { AiOutlineEye } from 'react-icons/ai';
 import Spinner from '../../components/common/spinner';
+import { useUserProfileContext } from 'apps/website/contexts/user-context';
 
 const TEXT_SIZE = {
   level1: 'text-lg',
@@ -32,6 +33,7 @@ interface ArticleProps {
 const Article = ({ article }: ArticleProps) => {
   const [level2Elements, setLevel2Elements] = useState(null);
   const [level3Elements, setLevel3Elements] = useState(null);
+  const { authToken } = useUserProfileContext();
 
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const { mutate } = usePostArticleVisit();
@@ -157,7 +159,9 @@ const Article = ({ article }: ArticleProps) => {
             }}
           />
         </div>
-        {'comments' in articleVersionToDisplay ? null : <CommentForm />}
+        {'comments' in articleVersionToDisplay
+          ? null
+          : authToken && <CommentForm />}
         <CommentsList />
       </div>
     </ArticleContext.Provider>

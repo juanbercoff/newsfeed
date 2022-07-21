@@ -8,6 +8,7 @@ import {
   useUpdateCommentLike,
   useCreateCommentLike,
 } from '../../hooks/useCommentsLikes';
+import { useRouter } from 'next/router';
 
 interface CommentProps {
   comment: CommentsResponseDto;
@@ -20,11 +21,13 @@ const Comment = ({ comment, comments, authToken }: CommentProps) => {
     comment.id,
     authToken
   );
+  const { push, pathname } = useRouter();
   const { mutate: createCommentLike } = useCreateCommentLike();
   const { mutate: updateCommentLike } = useUpdateCommentLike();
   const { mutate: deleteCommentLike } = useDeleteCommentLike();
 
   const handleLikeFunction = (like: boolean) => {
+    if (!authToken) return push(`/api/auth/login?returnTo=/${pathname}`);
     const likeValue = like ? 1 : -1;
     if (commentUserLiked) {
       if (commentUserLiked?.like === likeValue) {

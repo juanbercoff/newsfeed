@@ -11,7 +11,6 @@ const VersionControlMobile = ({
   setArticleVersionToDisplay,
 }: VersionControlItemProps) => {
   const [index, setIndex] = useState<number | null>(null);
-  console.log({ index });
   return (
     <div>
       <ListBox

@@ -8,6 +8,22 @@ type AccountMenuProps = {
   userProfile: UserProfile;
 };
 
+const MENU_ITEMS = [
+  {
+    href: '/profile',
+    label: 'Tu perfil',
+  },
+  {
+    href: '/your-articles',
+    label: 'Tus articulos',
+  },
+  { href: '/faq', label: 'Ayuda' },
+  {
+    href: '/api/auth/logout?returnTo=/',
+    label: 'Salir',
+  },
+];
+
 const AccountMenu = ({ userProfile }: AccountMenuProps) => {
   return (
     <Menu as="div" className="relative">
@@ -29,56 +45,20 @@ const AccountMenu = ({ userProfile }: AccountMenuProps) => {
           shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none p-3`}
         >
           <div>
-            <Menu.Item>
-              {({ active }) => (
-                <LinkWrapper
-                  href="/profile"
-                  className={`${
-                    active ? ' text-gray-900' : 'text-gray-500'
-                  } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                >
-                  Tu perfil
-                </LinkWrapper>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <LinkWrapper
-                  href="/your-articles"
-                  className={`${
-                    active ? ' text-gray-900' : 'text-gray-500'
-                  } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                >
-                  Tus articulos
-                </LinkWrapper>
-              )}
-            </Menu.Item>
-          </div>
-          <div>
-            <Menu.Item>
-              {({ active }) => (
-                <LinkWrapper
-                  href="/faq"
-                  className={`${
-                    active ? ' text-gray-900' : 'text-gray-500'
-                  } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                >
-                  Ayuda
-                </LinkWrapper>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <LinkWrapper
-                  href="/api/auth/logout?returnTo=/"
-                  className={`${
-                    active ? ' text-gray-900' : 'text-gray-500'
-                  } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                >
-                  Salir
-                </LinkWrapper>
-              )}
-            </Menu.Item>
+            {MENU_ITEMS.map((item) => (
+              <Menu.Item>
+                {({ active }) => (
+                  <LinkWrapper
+                    href={item.href}
+                    className={`${
+                      active ? ' text-gray-900' : 'text-gray-500'
+                    } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                  >
+                    {item.label}
+                  </LinkWrapper>
+                )}
+              </Menu.Item>
+            ))}
           </div>
         </Menu.Items>
       </Transition>

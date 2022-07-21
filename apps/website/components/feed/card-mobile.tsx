@@ -15,6 +15,7 @@ import {
 } from '../../hooks/useArticleLikes';
 import { useUserProfileContext } from '../../contexts/user-context';
 import Skeleton from 'react-loading-skeleton';
+import { useRouter } from 'next/router';
 
 interface CardProps {
   article: ArticlesResponseDto;
@@ -22,6 +23,7 @@ interface CardProps {
 
 const CardMobile = ({ article }: CardProps) => {
   const { authToken } = useUserProfileContext();
+  const { route, pathname, push } = useRouter();
   const { data, isLoading } = useGetCountOfComments(article.id);
   const {
     data: isArticleLiked,
@@ -35,6 +37,7 @@ const CardMobile = ({ article }: CardProps) => {
   const { mutate: updateArticleLike } = useUpdateArticleLike();
   const { mutate: deleteArticleLike } = useDeleteArticleLike();
   const handleLikeFunction = (like: boolean) => {
+    if (!authToken) return push(`/api/auth/login?returnTo=/${pathname}`);
     const likeValue = like ? 1 : -1;
     if (isArticleLiked) {
       if (isArticleLiked?.like === likeValue) {
@@ -51,7 +54,7 @@ const CardMobile = ({ article }: CardProps) => {
     }
   };
 
-  if (isLoading || articleLikeLoading || isIdle) {
+  if (isLoading || articleLikeLoading) {
     return <Skeleton height={isXs ? 111 : 168} />;
   }
 
