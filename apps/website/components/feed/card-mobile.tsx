@@ -1,6 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArticlesResponseDto } from '@newsfeed/data';
+import {
+  ArticlesResponseDto,
+  CreateArticleLikePayload,
+  UpdateArticleLikePayload,
+  DeleteArticleLikePayload,
+} from '@newsfeed/data';
 import Actions from '../common/actions';
 import useBreakpoints from '../../hooks/useBreakpoints';
 import ArticleTags from '../common/article-tags';
@@ -16,6 +21,8 @@ import {
 import { useUserProfileContext } from '../../contexts/user-context';
 import Skeleton from 'react-loading-skeleton';
 import { useRouter } from 'next/router';
+import { ArticleLike } from '@prisma/client';
+import Utils from '../../utils/Utils';
 
 interface CardProps {
   article: ArticlesResponseDto;
@@ -36,23 +43,26 @@ const CardMobile = ({ article }: CardProps) => {
   const { mutate: createArticleLike } = useCreateArticleLike();
   const { mutate: updateArticleLike } = useUpdateArticleLike();
   const { mutate: deleteArticleLike } = useDeleteArticleLike();
-  const handleLikeFunction = (like: boolean) => {
-    if (!authToken) return push(`/api/auth/login?returnTo=/${pathname}`);
-    const likeValue = like ? 1 : -1;
-    if (isArticleLiked) {
-      if (isArticleLiked?.like === likeValue) {
-        deleteArticleLike({ articleLikeId: isArticleLiked.id, authToken });
-      } else {
-        updateArticleLike({
-          like,
-          articleLikeId: isArticleLiked?.id,
-          authToken,
-        });
-      }
-    } else {
-      createArticleLike({ like, articleId: article.id, authToken });
-    }
-  };
+
+  const handleLikeFunction = (like: boolean) =>
+    Utils.handleLike<
+      CreateArticleLikePayload,
+      UpdateArticleLikePayload,
+      DeleteArticleLikePayload,
+      ArticleLike
+    >(
+      like,
+      isArticleLiked,
+      authToken,
+      `/api/auth/login?returnTo=/${pathname}`,
+      createArticleLike,
+      updateArticleLike,
+      deleteArticleLike,
+      push,
+      { like, articleId: article.id, authToken },
+      { like, articleLikeId: isArticleLiked?.id, authToken },
+      { articleLikeId: isArticleLiked?.id, authToken }
+    );
 
   if (isLoading || articleLikeLoading) {
     return <Skeleton height={isXs ? 111 : 168} />;

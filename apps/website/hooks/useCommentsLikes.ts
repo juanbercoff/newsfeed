@@ -67,12 +67,12 @@ export function useDeleteCommentLike() {
   const queryClient = useQueryClient();
   return useMutation(
     ({
-      articleLikeId,
+      commentLikeId,
       authToken,
     }: {
-      articleLikeId: string;
+      commentLikeId: string;
       authToken: string;
-    }) => deleteCommentLike(articleLikeId, authToken),
+    }) => deleteCommentLike(commentLikeId, authToken),
     {
       onSuccess: () => {
         queryClient.invalidateQueries('commentLikes');

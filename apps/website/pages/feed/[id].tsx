@@ -1,7 +1,13 @@
 import CommentsList from '../../components/comments/comments-list';
 import CommentForm from '../..//components/comments/comment-form';
 import { getArticlesList, getOneArticle } from '../../services/articles-api';
-import { ArticleResponseDto, ArticleHistoryDto } from '@newsfeed/data';
+import {
+  ArticleResponseDto,
+  ArticleHistoryDto,
+  CreateArticleLikePayload,
+  UpdateArticleLikePayload,
+  DeleteArticleLikePayload,
+} from '@newsfeed/data';
 import { useEffect, useState } from 'react';
 import { ArticleContext } from '../../contexts/article-context';
 import {
@@ -17,7 +23,19 @@ import Image from 'next/image';
 import ArticleAuthorInformation from '../../components/common/article-author-information';
 import { AiOutlineEye } from 'react-icons/ai';
 import Spinner from '../../components/common/spinner';
-import { useUserProfileContext } from 'apps/website/contexts/user-context';
+import { useUserProfileContext } from '../../contexts/user-context';
+import Actions from '../../components/common/actions';
+import Utils from '../../utils/Utils';
+import {
+  useCreateArticleLike,
+  useUpdateArticleLike,
+  useDeleteArticleLike,
+  useGetArticleIsLiked,
+  useGetArticlesLikesCount,
+} from '../../hooks/useArticleLikes';
+import { useGetCountOfComments } from '../../hooks/useComments';
+import { useRouter } from 'next/router';
+import { ArticleLike } from '@prisma/client';
 
 const TEXT_SIZE = {
   level1: 'text-lg',
@@ -34,6 +52,40 @@ const Article = ({ article }: ArticleProps) => {
   const [level2Elements, setLevel2Elements] = useState(null);
   const [level3Elements, setLevel3Elements] = useState(null);
   const { authToken } = useUserProfileContext();
+  const {
+    data: isArticleLiked,
+    isLoading: articleLikeLoading,
+    isIdle,
+  } = useGetArticleIsLiked(article.id, authToken);
+  const { data: countOfComments, isLoading } = useGetCountOfComments(
+    article.id
+  );
+  const { data: articlesLikeCount } = useGetArticlesLikesCount(article.id);
+  const { push, pathname } = useRouter();
+
+  const { mutate: createArticleLike } = useCreateArticleLike();
+  const { mutate: updateArticleLike } = useUpdateArticleLike();
+  const { mutate: deleteArticleLike } = useDeleteArticleLike();
+
+  const handleLikeFunction = (like: boolean) =>
+    Utils.handleLike<
+      CreateArticleLikePayload,
+      UpdateArticleLikePayload,
+      DeleteArticleLikePayload,
+      ArticleLike
+    >(
+      like,
+      isArticleLiked,
+      authToken,
+      `/api/auth/login?returnTo=/${pathname}`,
+      createArticleLike,
+      updateArticleLike,
+      deleteArticleLike,
+      push,
+      { like, articleId: article.id, authToken },
+      { like, articleLikeId: isArticleLiked?.id, authToken },
+      { articleLikeId: isArticleLiked?.id, authToken }
+    );
 
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const { mutate } = usePostArticleVisit();
@@ -159,6 +211,13 @@ const Article = ({ article }: ArticleProps) => {
             }}
           />
         </div>
+        <Actions
+          countOfComments={!isLoading ? countOfComments : 0}
+          isArticle={true}
+          handleLike={handleLikeFunction}
+          likeCount={articlesLikeCount?._sum?.like || 0}
+          isLiked={isArticleLiked?.like}
+        />
         {'comments' in articleVersionToDisplay
           ? null
           : authToken && <CommentForm />}

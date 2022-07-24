@@ -30,16 +30,15 @@ const UnsplashSearch = ({
 
   if (selectedImage) {
     return (
-      <div className="group relative flex justify-center py-2">
+      <div className="group relative flex justify-center bg-slate-100 rounded-md">
         <ImageOptions setSelectedImage={setSelectedImage} />
-        <div className="group-hover:opacity-90 transition-all">
+        <div className="flex justify-center group-hover:opacity-90 transition-all">
           <Image
             src={selectedImage}
             objectFit="cover"
             alt="article picture"
-            width={842}
-            height={615}
-            priority
+            width={589}
+            height={448}
           />
         </div>
       </div>
@@ -55,7 +54,7 @@ const UnsplashSearch = ({
           value={searchTerm}
           placeholder="Busca la imagen que vas a usar de portada"
         ></input>
-        {searchTerm ? (
+        {debouncedSearchQuery && images?.data?.results?.length !== 0 ? (
           <div className="flex justify-between p-2">
             <p
               className={`cursor-pointer ${
@@ -80,6 +79,10 @@ const UnsplashSearch = ({
 
       {isLoading ? (
         <Spinner />
+      ) : images?.data?.results?.length === 0 && debouncedSearchQuery !== '' ? (
+        <div>
+          Tu busqueda no arrojo ningun resultado, prueba con otro termino.
+        </div>
       ) : (
         <div className="relative flex flex-col justify-center">
           <div className="columns-3 [column-fill:_balance] box-border mx-auto before:box-inherit after:box-inherit">

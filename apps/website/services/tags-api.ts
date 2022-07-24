@@ -8,3 +8,10 @@ export async function getTags(): Promise<Tag[]> {
     method: 'GET',
   });
 }
+
+export async function getTag(tagId: string): Promise<Tag> {
+  return callApiService<Tag>({
+    url: getEndpoint(`tags/${tagId}`),
+    method: 'GET',
+  });
+}

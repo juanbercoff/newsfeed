@@ -1,7 +1,7 @@
 import { useForm, Controller } from 'react-hook-form';
 import {
   UpdateArticleDto,
-  ArticlesWithLikesResponseDto,
+  ArticleResponseDto,
   ArticleFormData,
 } from '@newsfeed/data';
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,7 +14,7 @@ import Utils from '../utils/Utils';
 import { useUserProfileContext } from '../contexts/user-context';
 
 type ArticleFormProps = {
-  article: ArticlesWithLikesResponseDto;
+  article: ArticleResponseDto;
 };
 
 const EditArticleForm = ({ article }: ArticleFormProps) => {

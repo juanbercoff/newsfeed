@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { CreateArticleDto, ArticleFormData } from '@newsfeed/data';
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,6 +16,15 @@ import ListBoxItem from '../components/common/list-box/list-box-item';
 import { Tag } from '@prisma/client';
 import Skeleton from 'react-loading-skeleton';
 import useBreakpoints from '../hooks/useBreakpoints';
+import useDebounce from '../hooks/useDebounce';
+import { getTag } from '../services/tags-api';
+
+const FORM_KEYS = {
+  title: 'articleTitle',
+  content: 'articleContent',
+  image: 'articleImage',
+  tag: 'articleTag',
+} as const;
 
 const NewArticleForm = () => {
   const {
@@ -23,6 +32,8 @@ const NewArticleForm = () => {
     handleSubmit,
     formState: { errors },
     control,
+    watch,
+    setValue,
   } = useForm<ArticleFormData>({
     shouldUnregister: true,
   });
@@ -47,6 +58,52 @@ const NewArticleForm = () => {
     };
     mutate({ data, authToken });
   };
+
+  const setDefaultContentValue = () => {
+    let localStorageContentValue = localStorage.getItem(FORM_KEYS.content);
+    localStorageContentValue =
+      localStorageContentValue === 'null' ||
+      localStorageContentValue === 'undefined'
+        ? ''
+        : localStorageContentValue;
+    return localStorageContentValue;
+  };
+
+  useEffect(() => {
+    setValue('title', localStorage.getItem(FORM_KEYS.title));
+    setValue('content', localStorage.getItem(FORM_KEYS.content));
+    let localStorageImageUrl = localStorage.getItem(FORM_KEYS.image);
+    localStorageImageUrl =
+      localStorageImageUrl === 'null' || localStorageImageUrl === 'undefined'
+        ? null
+        : localStorageImageUrl;
+    setValue('portraitImageUrl', localStorageImageUrl);
+    setSelectedImage(localStorageImageUrl);
+
+    let localStorageTag = localStorage.getItem(FORM_KEYS.tag);
+
+    localStorageTag =
+      localStorageTag === 'null' || localStorageTag === 'undefined'
+        ? null
+        : localStorageTag;
+    (async function () {
+      if (!localStorageTag) return;
+      const tag = await getTag(localStorageTag);
+      setSelectedTag(tag);
+      setValue('tag', localStorageTag);
+    })();
+  }, []);
+
+  /*   const debouncedTitle = useDebounce(watch('title'), 3000);
+  const debouncedContent = useDebounce(watch('content'), 3000); */
+
+  useEffect(() => {
+    localStorage.setItem(FORM_KEYS.title, watch('title'));
+    localStorage.setItem(FORM_KEYS.content, watch('content'));
+    localStorage.setItem(FORM_KEYS.image, selectedImage);
+    localStorage.setItem(FORM_KEYS.tag, selectedTag?.id);
+  }, [watch('title'), watch('content'), selectedImage, selectedTag]);
+
   const { isXs } = useBreakpoints();
   if (isXs) push('/feed');
 
@@ -98,6 +155,7 @@ const NewArticleForm = () => {
           <Controller
             control={control}
             rules={{ minLength: 200, required: true }}
+            defaultValue={setDefaultContentValue()}
             render={({ field }) => (
               <ArticleFormContentEditor
                 contentValue={field.value}

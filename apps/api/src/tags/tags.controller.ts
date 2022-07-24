@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { TagsService } from './tags.service';
 
 @Controller('tags')
@@ -7,5 +7,10 @@ export class TagsController {
   @Get()
   findAll() {
     return this.tagsService.findAll();
+  }
+
+  @Get(':tagId')
+  findOne(@Param('tagId') id: string) {
+    return this.tagsService.findOne(id);
   }
 }

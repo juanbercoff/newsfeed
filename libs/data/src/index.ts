@@ -3,6 +3,7 @@ export * from './lib/types/article-types';
 export * from './lib/types/user-types';
 export * from './lib/types/comment-types';
 export * from './lib/types/authentication-types';
+export * from './lib/types/likes-payload-types';
 
 //dtos
 export * from './lib/dtos/article.dto';

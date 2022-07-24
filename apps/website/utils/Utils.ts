@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 import DOMPurify from 'dompurify';
+import { CreateOrUpdateLikesEntityPayload } from '@newsfeed/data';
 
 export default class Utils {
   static formatDateTimeRelative(date: Date) {
@@ -17,5 +18,36 @@ export default class Utils {
   static handleError(error: unknown) {
     const errorMessage: string = (error as any)['message'];
     return errorMessage ?? 'Ha ocurrido un error';
+  }
+
+  static handleLike<
+    TCreatePayload extends CreateOrUpdateLikesEntityPayload,
+    TUpdatePayload extends CreateOrUpdateLikesEntityPayload,
+    TDeletePayload extends { authToken: string },
+    TEntity extends { like?: number }
+  >(
+    like: boolean,
+    entityLiked: TEntity | undefined,
+    authToken: string | null,
+    url: string,
+    createLike: (createPayload: TCreatePayload) => void,
+    updateLike: (updatePayload: TUpdatePayload) => void,
+    deleteLike: (deletePayload: TDeletePayload) => void,
+    push: (url: string) => Promise<boolean>,
+    createPayload: TCreatePayload,
+    updatePayload: TUpdatePayload,
+    deletePayload: TDeletePayload
+  ) {
+    if (!authToken) return push(url);
+    const likeValue = like ? 1 : -1;
+    if (entityLiked) {
+      if (entityLiked?.like === likeValue) {
+        deleteLike(deletePayload);
+      } else {
+        updateLike(updatePayload);
+      }
+    } else {
+      createLike(createPayload);
+    }
   }
 }

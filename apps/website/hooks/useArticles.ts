@@ -35,7 +35,6 @@ export function useGetArticles(
     {
       getNextPageParam: (lastPage, pages) =>
         lastPage.length === 4 ? pages.length + 1 : undefined,
-      refetchOnMount: false,
     }
   );
 }

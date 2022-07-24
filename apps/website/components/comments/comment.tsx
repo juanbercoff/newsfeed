@@ -1,5 +1,10 @@
 import Actions from '../common/actions';
-import { CommentsResponseDto } from '@newsfeed/data';
+import {
+  CommentsResponseDto,
+  CreateCommentLikePayload,
+  UpdateCommentLikePayload,
+  DeleteCommentLikePayload,
+} from '@newsfeed/data';
 import { DateTime } from 'luxon';
 import UserAvatar from '../common/user-avatar';
 import {
@@ -9,6 +14,8 @@ import {
   useCreateCommentLike,
 } from '../../hooks/useCommentsLikes';
 import { useRouter } from 'next/router';
+import Utils from '../../utils/Utils';
+import { CommentLike } from '@prisma/client';
 
 interface CommentProps {
   comment: CommentsResponseDto;
@@ -26,23 +33,25 @@ const Comment = ({ comment, comments, authToken }: CommentProps) => {
   const { mutate: updateCommentLike } = useUpdateCommentLike();
   const { mutate: deleteCommentLike } = useDeleteCommentLike();
 
-  const handleLikeFunction = (like: boolean) => {
-    if (!authToken) return push(`/api/auth/login?returnTo=/${pathname}`);
-    const likeValue = like ? 1 : -1;
-    if (commentUserLiked) {
-      if (commentUserLiked?.like === likeValue) {
-        deleteCommentLike({ articleLikeId: commentUserLiked.id, authToken });
-      } else {
-        updateCommentLike({
-          like,
-          commentLikeId: commentUserLiked?.id,
-          authToken,
-        });
-      }
-    } else {
-      createCommentLike({ like, commentId: comment.id, authToken });
-    }
-  };
+  const handleLikeFunction = (like: boolean) =>
+    Utils.handleLike<
+      CreateCommentLikePayload,
+      UpdateCommentLikePayload,
+      DeleteCommentLikePayload,
+      CommentLike
+    >(
+      like,
+      commentUserLiked,
+      authToken,
+      `/api/auth/login?returnTo=/${pathname}`,
+      createCommentLike,
+      updateCommentLike,
+      deleteCommentLike,
+      push,
+      { like: like, commentId: comment.id, authToken },
+      { like: like, commentLikeId: commentUserLiked?.id, authToken },
+      { commentLikeId: commentUserLiked.id, authToken }
+    );
 
   const getReplies = (commentId: string) => {
     return comments.filter((comment) => comment.parentCommentId === commentId);

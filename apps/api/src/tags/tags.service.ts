@@ -7,4 +7,12 @@ export class TagsService {
   findAll() {
     return this.prisma.tag.findMany();
   }
+
+  findOne(id: string) {
+    return this.prisma.tag.findFirst({
+      where: {
+        id,
+      },
+    });
+  }
 }

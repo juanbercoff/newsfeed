@@ -1,5 +1,6 @@
 import { IsUUID, IsNotEmpty, IsBoolean } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
+import { CreateOrUpdateLikesEntityPayload } from '../types/likes-payload-types';
 
 export class CreateArticleLikeDto {
   @IsNotEmpty()
@@ -29,3 +30,18 @@ export type AllArticlesLikesDto = {
     like: number;
   };
 };
+
+export interface CreateArticleLikePayload
+  extends CreateOrUpdateLikesEntityPayload {
+  articleId: string;
+}
+
+export interface UpdateArticleLikePayload
+  extends CreateOrUpdateLikesEntityPayload {
+  articleLikeId: string;
+}
+
+export interface DeleteArticleLikePayload {
+  articleLikeId: string;
+  authToken: string;
+}
