@@ -50,4 +50,7 @@ export default class Utils {
       createLike(createPayload);
     }
   }
+  static falsyStorageTransformer(value: string, returnValue: null | '') {
+    return value === 'null' || value === 'undefined' ? returnValue : value;
+  }
 }

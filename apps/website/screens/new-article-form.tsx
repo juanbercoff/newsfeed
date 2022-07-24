@@ -19,12 +19,12 @@ import useBreakpoints from '../hooks/useBreakpoints';
 import useDebounce from '../hooks/useDebounce';
 import { getTag } from '../services/tags-api';
 
-const FORM_KEYS = {
+export const FORM_KEYS = {
   title: 'articleTitle',
   content: 'articleContent',
   image: 'articleImage',
   tag: 'articleTag',
-} as const;
+};
 
 const NewArticleForm = () => {
   const {
@@ -70,22 +70,22 @@ const NewArticleForm = () => {
   };
 
   useEffect(() => {
-    setValue('title', localStorage.getItem(FORM_KEYS.title));
-    setValue('content', localStorage.getItem(FORM_KEYS.content));
+    const localStorageTitle = localStorage.getItem(FORM_KEYS.title);
+    setValue('title', Utils.falsyStorageTransformer(localStorageTitle, ''));
+    const localStorageContent = localStorage.getItem(FORM_KEYS.content);
+    setValue('content', Utils.falsyStorageTransformer(localStorageContent, ''));
     let localStorageImageUrl = localStorage.getItem(FORM_KEYS.image);
-    localStorageImageUrl =
-      localStorageImageUrl === 'null' || localStorageImageUrl === 'undefined'
-        ? null
-        : localStorageImageUrl;
+    localStorageImageUrl = Utils.falsyStorageTransformer(
+      localStorageImageUrl,
+      null
+    );
+
     setValue('portraitImageUrl', localStorageImageUrl);
     setSelectedImage(localStorageImageUrl);
 
     let localStorageTag = localStorage.getItem(FORM_KEYS.tag);
 
-    localStorageTag =
-      localStorageTag === 'null' || localStorageTag === 'undefined'
-        ? null
-        : localStorageTag;
+    localStorageTag = Utils.falsyStorageTransformer(localStorageTag, null);
     (async function () {
       if (!localStorageTag) return;
       const tag = await getTag(localStorageTag);
@@ -93,9 +93,6 @@ const NewArticleForm = () => {
       setValue('tag', localStorageTag);
     })();
   }, []);
-
-  /*   const debouncedTitle = useDebounce(watch('title'), 3000);
-  const debouncedContent = useDebounce(watch('content'), 3000); */
 
   useEffect(() => {
     localStorage.setItem(FORM_KEYS.title, watch('title'));
