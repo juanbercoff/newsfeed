@@ -42,7 +42,7 @@ export class CreateArticleDto {
 
 export class UpdateArticleDto extends PartialType(CreateArticleDto) {}
 
-export const getArticleCondition = ['latest', 'top', 'mostDiscused'] as const;
+export const getArticleCondition = ['latest', 'top', 'mostDiscussed'] as const;
 export type GetArticleCondition = typeof getArticleCondition[number];
 export type GetArticleConditionValue = {
   orderBy: string;

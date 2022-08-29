@@ -94,7 +94,7 @@ export class ArticlesService {
       top: {
         orderBy: `ORDER BY likes desc`,
       },
-      mostDiscused: {
+      mostDiscussed: {
         orderBy: `ORDER BY "countOfComments" desc`,
       },
     };

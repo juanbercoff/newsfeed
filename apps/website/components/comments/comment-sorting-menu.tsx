@@ -2,6 +2,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { SortOptions } from './comments-list';
 import { Fragment } from 'react';
 import { IoIosArrowDown } from 'react-icons/io';
+import { useTranslation } from 'next-i18next';
 
 type CommentSortingMenuProps = {
   selectedOption: SortOptions;
@@ -12,11 +13,12 @@ const CommentSortingMenu = ({
   selectedOption,
   setSelectedOption,
 }: CommentSortingMenuProps) => {
+  const { t } = useTranslation(['common', 'article']);
   return (
     <Menu as="div" className="relative pb-1 z-10">
       <Menu.Button className="flex justify-between items-center space-x-1">
         <p className="font-semibold text-blue-500 cursor-pointer text-sm">
-          {`Ordenar por: ${selectedOption}`}
+          {`${t('article:orderBy')}: ${t(selectedOption)}`}
         </p>
         <IoIosArrowDown className="text-blue-500" />
       </Menu.Button>
@@ -47,7 +49,7 @@ const CommentSortingMenu = ({
                   } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                   onClick={() => setSelectedOption(option)}
                 >
-                  {option}
+                  {t(option)}
                 </button>
               )}
             </Menu.Item>

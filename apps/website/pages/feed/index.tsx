@@ -11,6 +11,8 @@ import { useState } from 'react';
 import { Tag } from '@prisma/client';
 import ArticlesSorter from '../../components/feed/articles-sort';
 import { GetArticleCondition } from '@newsfeed/data';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import nextI18NextConfig from '../../next-i18next.config';
 
 interface FeedProps {
   articles: ArticlesResponseDto[];
@@ -63,11 +65,16 @@ const Feed = ({ articles }: FeedProps) => {
   );
 };
 
-export async function getStaticProps() {
+export async function getStaticProps({ locale }) {
   const articles = await getArticlesList({ condition: 'latest' });
   return {
     props: {
       articles,
+      ...(await serverSideTranslations(
+        locale,
+        ['common', 'top-bar'],
+        nextI18NextConfig
+      )),
     },
   };
 }

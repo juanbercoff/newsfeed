@@ -3,6 +3,7 @@ import { ArticleResponseDto, ArticleHistoryDto } from '@newsfeed/data';
 import RadioGroupComponent from '../common/radio-group/radio-group';
 import RadioGroupItem from '../common/radio-group/radio-group-item';
 import Utils from '../../utils/Utils';
+import { useTranslation } from 'next-i18next';
 
 export type VersionControlItemProps = {
   article: ArticleResponseDto;
@@ -19,6 +20,7 @@ const VersionControl = ({
   articleVersionToDisplay,
   setArticleVersionToDisplay,
 }: VersionControlItemProps) => {
+  const { t } = useTranslation('article');
   return (
     <div className="shadow hover:shadow-md bg-white">
       <RadioGroupComponent
@@ -39,7 +41,7 @@ const VersionControl = ({
           <RadioGroupItem
             use="radio"
             item={article}
-            itemLabel={`Version actual`}
+            itemLabel={t('latestVersion')}
             description={Utils.formatDateTimeRelative(article.createdAt)}
           />
         }

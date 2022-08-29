@@ -1,0 +1,10 @@
+{
+  "latestVersion": "Actual Version",
+  "reply": "Reply",
+  "cancel": "Cancel",
+  "comment": "Comment",
+  "commentErrorRequired": "Write something to comment",
+  "commentErrorMax": "The limit is 2000 characters",
+  "orderBy": "Order by",
+  "noComments": "There are not comments"
+}

@@ -3,6 +3,7 @@ import { FaRegCommentAlt } from 'react-icons/fa';
 import CommentForm from '../comments/comment-form';
 import { useState } from 'react';
 import { useArticleContext } from '../../contexts/article-context';
+import { useTranslation } from 'next-i18next';
 
 interface ActionsProps {
   countOfComments?: number;
@@ -23,6 +24,7 @@ const Actions = ({
 }: ActionsProps) => {
   const [showForm, setShowForm] = useState(false);
   const articleVersionToDisplay = useArticleContext();
+  const { t } = useTranslation('article');
 
   const handleClick = () => {
     isArticle ? setShowForm(false) : setShowForm(!showForm);
@@ -58,7 +60,7 @@ const Actions = ({
           >
             <FaRegCommentAlt size={17} />
             <p className="font-medium text-sm">
-              {isArticle ? countOfComments : 'Responder'}
+              {isArticle ? countOfComments : t('reply')}
             </p>
           </div>
         )}

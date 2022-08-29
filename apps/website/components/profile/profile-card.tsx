@@ -1,8 +1,9 @@
 import { useForm } from 'react-hook-form';
-import { useUpdateUserProfile } from '../../hooks/useUserProfile';
-import { useState } from 'react';
-import Button from '../common/button';
 import { Prisma } from '@prisma/client';
+import { useState } from 'react';
+
+import { useUpdateUserProfile } from '../../hooks/useUserProfile';
+import Button from '../common/button';
 import { useUserProfileContext } from '../../contexts/user-context';
 
 type ProfileCardProps = {
@@ -17,6 +18,7 @@ const ProfileCard = ({
   value,
   userProfileId,
   field,
+  s,
 }: ProfileCardProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const {

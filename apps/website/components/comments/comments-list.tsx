@@ -5,12 +5,13 @@ import { useArticleContext } from '../../contexts/article-context';
 import CommentSortionMenu from '../comments/comment-sorting-menu';
 import { CommentOrderBy } from '@newsfeed/data';
 import { useUserProfileContext } from '../../contexts/user-context';
+import { useTranslation } from 'next-i18next';
 
 export enum SortOptions {
-  Newest = 'Más nuevos',
-  Oldest = 'Más antiguos',
-  MostVoted = 'Mas votados',
-  LeastVoted = 'Menos votados',
+  Newest = 'latest',
+  Oldest = 'oldest',
+  MostVoted = 'top',
+  LeastVoted = 'leastVoted',
 }
 
 const CommentSortingQueryParams: { [key in SortOptions]: CommentOrderBy } = {
@@ -25,6 +26,7 @@ const CommentsList = () => {
   const articleVersionToDisplay = useArticleContext();
   const { authToken } = useUserProfileContext();
   const [selectedOption, setSelectedOption] = useState(SortOptions.Newest);
+  const { t } = useTranslation('article');
 
   const { data: comments, isLoading } = useGetComments(
     {
@@ -59,7 +61,7 @@ const CommentsList = () => {
               />
             ))
         ) : (
-          <div>No hay comentarios</div>
+          <div>{t('noComments')}</div>
         )}
       </div>
     </div>

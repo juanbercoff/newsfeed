@@ -59,7 +59,7 @@ const Comment = ({ comment, comments, authToken }: CommentProps) => {
 
   const isoStringToRelativeTime = (isoString) =>
     DateTime.fromISO(isoString).toRelative({ locale: 'es' });
-
+  //TODO: no permitir responder
   return (
     <div className="space-y-2">
       <div className="flex flex-row justify-start space-x-2 items-center">

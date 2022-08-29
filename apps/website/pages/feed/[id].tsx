@@ -36,6 +36,8 @@ import {
 import { useGetCountOfComments } from '../../hooks/useComments';
 import { useRouter } from 'next/router';
 import { ArticleLike } from '@prisma/client';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import nextI18NextConfig from '../../next-i18next.config';
 
 const TEXT_SIZE = {
   level1: 'text-lg',
@@ -205,7 +207,7 @@ const Article = ({ article }: ArticleProps) => {
         </div>
         <div>
           <div
-            className="break-all"
+            className="break-words"
             dangerouslySetInnerHTML={{
               __html: articleVersionToDisplay.articleContent,
             }}
@@ -236,11 +238,16 @@ export async function getStaticPaths() {
   };
 }
 
-export async function getStaticProps({ params }) {
+export async function getStaticProps({ params, locale }) {
   const article = await getOneArticle({ id: params.id });
   return {
     props: {
       article,
+      ...(await serverSideTranslations(
+        locale,
+        ['common', 'top-bar', 'article'],
+        nextI18NextConfig
+      )),
     },
   };
 }

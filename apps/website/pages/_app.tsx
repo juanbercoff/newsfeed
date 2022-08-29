@@ -7,6 +7,7 @@ import { UserProfileContainer } from '../contexts/user-context';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { ToastContainer } from 'react-toastify';
+import { appWithTranslation } from 'next-i18next';
 
 import App from 'next/app';
 
@@ -34,4 +35,4 @@ MyApp.getInitialProps = async (appContext) => {
   return { ...appProps };
 };
 
-export default MyApp;
+export default appWithTranslation(MyApp);

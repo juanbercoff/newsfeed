@@ -3,6 +3,7 @@ import { Fragment } from 'react';
 import Link from 'next/link';
 import UserAvatar from '../common/user-avatar';
 import { UserProfile } from '@prisma/client';
+import { useTranslation } from 'next-i18next';
 
 type AccountMenuProps = {
   userProfile: UserProfile;
@@ -11,20 +12,22 @@ type AccountMenuProps = {
 const MENU_ITEMS = [
   {
     href: '/profile',
-    label: 'Tu perfil',
+    label: 'top-bar:yourProfile',
   },
   {
     href: '/your-articles',
-    label: 'Tus articulos',
+    label: 'top-bar:yourArticles',
   },
-  { href: '/faq', label: 'Ayuda' },
+  { href: '/faq', label: 'top-bar:faq' },
   {
     href: '/api/auth/logout?returnTo=/',
-    label: 'Salir',
+    label: 'common:signOut',
   },
 ];
 
 const AccountMenu = ({ userProfile }: AccountMenuProps) => {
+  const { t } = useTranslation(['top-bar', 'common']);
+
   return (
     <Menu as="div" className="relative">
       <Menu.Button className="flex">
@@ -55,7 +58,7 @@ const AccountMenu = ({ userProfile }: AccountMenuProps) => {
                         active ? ' text-gray-900' : 'text-gray-500'
                       } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                     >
-                      {item.label}
+                      {t(item.label)}
                     </LinkWrapper>
                   )}
                 </Menu.Item>

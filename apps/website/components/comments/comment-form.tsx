@@ -4,6 +4,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useArticleContext } from '../../contexts/article-context';
 import { useCreateComment } from '../../hooks/useComments';
 import { useUserProfileContext } from '../../contexts/user-context';
+import Button from '../common/button';
+import { useTranslation } from 'next-i18next';
 
 type CommentFormData = {
   comment: string;
@@ -26,6 +28,7 @@ const CommentForm = ({ commentId, setShowForm }: CommentFormProps) => {
   } = useForm<CommentFormData>();
 
   const { mutate } = useCreateComment(reset);
+  const { t } = useTranslation('article');
 
   const onSubmit = (formData: CommentFormData) => {
     const data: CreateCommentDto = {
@@ -47,29 +50,28 @@ const CommentForm = ({ commentId, setShowForm }: CommentFormProps) => {
 
           <div className="flex justify-end p-4 bg-slate-400 gap-2">
             {commentId && (
-              <button
-                className="text-white font-semibold py-1 px-3 rounded bg-blue-500 hover:bg-blue-700  active:bg-blue-800"
+              <Button
+                use="secondary"
                 onClick={() => setShowForm(false)}
+                className="font-semibold "
               >
-                Cancelar
-              </button>
+                {t('cancel')}
+              </Button>
             )}
-            <button
-              type="submit"
+            <Button
               disabled={!!errors.comment || !watch('comment')}
-              className={`text-white font-semibold py-1 px-3 rounded ${
-                !watch('comment') || errors.comment
-                  ? 'bg-slate-200 cursor-not-allowed'
-                  : 'bg-blue-500 hover:bg-blue-700  active:bg-blue-800'
-              } `}
+              use="primary"
+              onClick={() => {
+                setShowForm ? setShowForm(false) : null;
+              }}
+              type="submit"
             >
-              Comentar
-            </button>
+              {t('comment')}
+            </Button>
           </div>
         </div>
-        {errors.comment?.type === 'required' && 'Escribi algo para comentar'}
-        {errors.comment?.type === 'maxLength' &&
-          'Superaste el limite de 2000 caracteres'}
+        {errors.comment?.type === 'required' && t('commentErrorRequired')}
+        {errors.comment?.type === 'maxLength' && t('commentErrorMax')}
       </form>
     </>
   );
