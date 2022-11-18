@@ -27,7 +27,11 @@ const CommentForm = ({ commentId, setShowForm }: CommentFormProps) => {
     reset,
   } = useForm<CommentFormData>();
 
-  const { mutate } = useCreateComment(reset);
+  const onMutateSucess = () => {
+    reset();
+    setShowForm ? setShowForm(false) : null;
+  };
+  const { mutate } = useCreateComment(onMutateSucess);
   const { t } = useTranslation('article');
 
   const onSubmit = (formData: CommentFormData) => {
@@ -62,7 +66,7 @@ const CommentForm = ({ commentId, setShowForm }: CommentFormProps) => {
               disabled={!!errors.comment || !watch('comment')}
               use="primary"
               onClick={() => {
-                setShowForm ? setShowForm(false) : null;
+                //return setShowForm ? setShowForm(false) : null;
               }}
               type="submit"
             >

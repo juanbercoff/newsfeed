@@ -90,9 +90,10 @@ export function useUpdateArticle(onSuccess: (url: string) => Promise<boolean>) {
     }) => updateArticle(articleId, data, authToken),
     {
       onSuccess: () => {
-        queryClient.refetchQueries('articles');
-        toast.success('Articulo modificado con exito');
-        onSuccess('/feed');
+        queryClient.invalidateQueries('articles');
+        onSuccess('/feed').then(() =>
+          toast.success('Articulo modificado con exito')
+        );
       },
       onError: (error) => {
         toast.error(Utils.handleError(error));

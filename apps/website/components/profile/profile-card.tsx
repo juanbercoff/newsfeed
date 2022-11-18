@@ -18,7 +18,6 @@ const ProfileCard = ({
   value,
   userProfileId,
   field,
-  s,
 }: ProfileCardProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const {

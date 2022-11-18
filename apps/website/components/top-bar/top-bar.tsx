@@ -36,7 +36,7 @@ const TopBar = () => {
               ) : !isXs ? (
                 <Link
                   href={{
-                    pathname: `articles/new`,
+                    pathname: `/articles/new`,
                   }}
                   passHref={true}
                 >
