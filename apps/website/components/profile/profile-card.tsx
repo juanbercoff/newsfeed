@@ -24,7 +24,8 @@ const ProfileCard = ({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Prisma.UserProfileUpdateInput>();
+  } = useForm();
+  // FIX useForm<Prisma.UserProfileUpdateInput> hangs Checking validity of types . indefinitely
   const { authToken } = useUserProfileContext();
   const { mutate } = useUpdateUserProfile(userProfileId, setIsEditing);
 
