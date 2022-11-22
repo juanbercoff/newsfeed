@@ -22,7 +22,6 @@ import {
 } from 'react-query';
 import { toast } from 'react-toastify';
 import Utils from '../utils/Utils';
-import { FORM_KEYS } from '../screens/new-article-form';
 
 export function useGetArticles(
   initialData: ArticlesResponseDto[],
