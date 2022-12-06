@@ -2,7 +2,7 @@ import {
   getUserProfile,
   updateUserProfile,
 } from '../services/users/users-profiles-api';
-import { Prisma } from '@prisma/client';
+import { UserProfileUpdateInput } from '@newsfeed/data';
 import { useMutation, useQueryClient } from 'react-query';
 import useAuthToken from './useAuthToken';
 import { toast } from 'react-toastify';
@@ -22,7 +22,7 @@ export function useUpdateUserProfile(
       data,
       authToken,
     }: {
-      data: Prisma.UserProfileUpdateInput;
+      data: UserProfileUpdateInput;
       authToken: string;
     }) => updateUserProfile(userProfileId, authToken, data),
     {

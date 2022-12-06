@@ -12,8 +12,8 @@ import {
   UpdateArticleDto,
   GetArticlesPayload,
   UserArticles,
+  Article,
 } from '@newsfeed/data';
-import { Article } from '@prisma/client';
 
 export async function getArticlesList({
   cursor,

@@ -1,6 +1,5 @@
 import { callApiService, getEndpoint } from './api-service-utilities';
-
-import { Tag } from '@prisma/client';
+import { Tag } from '@newsfeed/data';
 
 export async function getTags(): Promise<Tag[]> {
   return callApiService<Tag[]>({

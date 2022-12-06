@@ -1,6 +1,6 @@
 import { getEndpoint, callApiService } from '../api-service-utilities';
-import { Prisma, UserProfile } from '@prisma/client';
 import { createUserWithUserProfile, getUser } from './users-api';
+import { UserProfile, UserProfileUpdateInput } from '@newsfeed/data';
 
 export async function getUserProfile(authToken: string): Promise<UserProfile> {
   return callApiService<UserProfile>(
@@ -26,7 +26,7 @@ export async function getOrCreateUserWithUserProfile(authToken: string | null) {
 export async function updateUserProfile(
   userProfileId: string,
   authToken: string,
-  data: Prisma.UserProfileUpdateInput
+  data: UserProfileUpdateInput
 ): Promise<UserProfile> {
   return callApiService<UserProfile>(
     {

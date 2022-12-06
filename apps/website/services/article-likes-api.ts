@@ -1,7 +1,11 @@
 import { callApiService, getEndpoint } from './api-service-utilities';
 
-import { AllArticlesLikesDto, UpdateArticleLikeDto } from '@newsfeed/data';
-import { ArticleLike, Prisma } from '@prisma/client';
+import {
+  AllArticlesLikesDto,
+  UpdateArticleLikeDto,
+  ArticleLike,
+  ArticleLikeAggregateType,
+} from '@newsfeed/data';
 
 export async function getAllArticlesLikes(): Promise<AllArticlesLikesDto[]> {
   // TODO: Apply payload once it has pagination, order by, etc.
@@ -77,7 +81,7 @@ export async function updateArticleLike(
 }
 
 export async function getArticleLikesCount(articleId: string): Promise<
-  Prisma.GetArticleLikeAggregateType<{
+  ArticleLikeAggregateType<{
     _sum: {
       like: true;
     };

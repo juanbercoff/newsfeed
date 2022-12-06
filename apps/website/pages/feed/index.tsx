@@ -1,5 +1,5 @@
 import { getArticlesList } from '../../services/articles-api';
-import { ArticlesResponseDto, AllArticlesLikesDto } from '@newsfeed/data';
+import { ArticlesResponseDto, AllArticlesLikesDto, Tag } from '@newsfeed/data';
 import { useGetArticles } from '../../hooks/useArticles';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
@@ -8,7 +8,6 @@ import CardMobile from '../../components/feed/card-mobile';
 import FilterBar from '../../components/feed/filter-bar';
 import { useGetTags } from '../../hooks/useTags';
 import { useState } from 'react';
-import { Tag } from '@prisma/client';
 import ArticlesSorter from '../../components/feed/articles-sort';
 import { GetArticleCondition } from '@newsfeed/data';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';

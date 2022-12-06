@@ -7,3 +7,5 @@ const userWithUserProfileResponseDto = Prisma.validator<Prisma.UserArgs>()({
 export type UserWithUserProfileResponseDto = Prisma.UserGetPayload<
   typeof userWithUserProfileResponseDto
 >;
+
+export type UserProfileUpdateInput = Prisma.UserProfileUpdateInput;

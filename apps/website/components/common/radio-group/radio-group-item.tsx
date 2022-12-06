@@ -1,8 +1,4 @@
 import { RadioGroup } from '@headlessui/react';
-import { ArticlesResponseDto } from '@newsfeed/data';
-import { ArticleHistory } from '@prisma/client';
-import Utils from '../../../utils/Utils';
-import { BUTTON_COLOR, ButtonUse } from '../button';
 
 type Use = 'button' | 'radio';
 type StyleKey = {

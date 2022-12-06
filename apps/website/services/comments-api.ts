@@ -4,8 +4,8 @@ import {
   CreateCommentDto,
   GetCommentsListPayload,
   CommentsResponseDto,
+  Comment,
 } from '@newsfeed/data';
-import { Comment } from '@prisma/client';
 
 export async function getCommentsOfArticle({
   id,

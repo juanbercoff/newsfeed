@@ -5,10 +5,10 @@ import {
   CreateArticleLikePayload,
   UpdateArticleLikePayload,
   DeleteArticleLikePayload,
+  ArticleLike,
 } from '@newsfeed/data';
 import Actions from '../common/actions';
 import useBreakpoints from '../../hooks/useBreakpoints';
-import ArticleTags from '../common/article-tags';
 import ArticleAuthorInformation from '../common/article-author-information';
 import { useGetCountOfComments } from '../../hooks/useComments';
 import {
@@ -21,7 +21,6 @@ import {
 import { useUserProfileContext } from '../../contexts/user-context';
 import Skeleton from 'react-loading-skeleton';
 import { useRouter } from 'next/router';
-import { ArticleLike } from '@prisma/client';
 import Utils from '../../utils/Utils';
 
 interface CardProps {

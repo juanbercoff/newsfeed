@@ -7,6 +7,7 @@ import {
   CreateArticleLikePayload,
   UpdateArticleLikePayload,
   DeleteArticleLikePayload,
+  ArticleLike,
 } from '@newsfeed/data';
 import { useEffect, useState } from 'react';
 import { ArticleContext } from '../../contexts/article-context';
@@ -35,7 +36,6 @@ import {
 } from '../../hooks/useArticleLikes';
 import { useGetCountOfComments } from '../../hooks/useComments';
 import { useRouter } from 'next/router';
-import { ArticleLike } from '@prisma/client';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nextI18NextConfig from '../../next-i18next.config';
 

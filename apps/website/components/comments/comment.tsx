@@ -4,6 +4,7 @@ import {
   CreateCommentLikePayload,
   UpdateCommentLikePayload,
   DeleteCommentLikePayload,
+  CommentLike,
 } from '@newsfeed/data';
 import { DateTime } from 'luxon';
 import UserAvatar from '../common/user-avatar';
@@ -15,7 +16,6 @@ import {
 } from '../../hooks/useCommentsLikes';
 import { useRouter } from 'next/router';
 import Utils from '../../utils/Utils';
-import { CommentLike } from '@prisma/client';
 
 interface CommentProps {
   comment: CommentsResponseDto;

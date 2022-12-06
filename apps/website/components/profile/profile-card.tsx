@@ -1,10 +1,10 @@
 import { useForm } from 'react-hook-form';
-import { Prisma } from '@prisma/client';
 import { useState } from 'react';
 
 import { useUpdateUserProfile } from '../../hooks/useUserProfile';
 import Button from '../common/button';
 import { useUserProfileContext } from '../../contexts/user-context';
+import { UserProfileUpdateInput } from '@newsfeed/data';
 
 type ProfileCardProps = {
   title: string;
@@ -29,8 +29,8 @@ const ProfileCard = ({
   const { authToken } = useUserProfileContext();
   const { mutate } = useUpdateUserProfile(userProfileId, setIsEditing);
 
-  const onSubmit = (formData: Prisma.UserProfileUpdateInput) => {
-    const data: Prisma.UserProfileUpdateInput = {
+  const onSubmit = (formData: UserProfileUpdateInput) => {
+    const data: UserProfileUpdateInput = {
       ...formData,
     };
     mutate({ data, authToken });

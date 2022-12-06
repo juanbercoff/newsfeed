@@ -1,7 +1,6 @@
 import { callApiService, getEndpoint } from './api-service-utilities';
 
-import { CreateArticleTagDto } from '@newsfeed/data';
-import { ArticleTag } from '@prisma/client';
+import { CreateArticleTagDto, ArticleTag } from '@newsfeed/data';
 
 export async function tagArticle(
   { articleId }: CreateArticleTagDto,

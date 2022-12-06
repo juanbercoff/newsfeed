@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { CreateArticleDto, ArticleFormData } from '@newsfeed/data';
+import { CreateArticleDto, ArticleFormData, Tag } from '@newsfeed/data';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './article-form-style.module.css';
 import ArticleFormContentEditor from './article-form-content-editor';
@@ -13,10 +13,8 @@ import { useGetTags } from '../hooks/useTags';
 import { useUserProfileContext } from '../contexts/user-context';
 import ListBox from '../components/common/list-box/list-box';
 import ListBoxItem from '../components/common/list-box/list-box-item';
-import { Tag } from '@prisma/client';
 import Skeleton from 'react-loading-skeleton';
 import useBreakpoints from '../hooks/useBreakpoints';
-import useDebounce from '../hooks/useDebounce';
 import { getTag } from '../services/tags-api';
 
 export const FORM_KEYS = {

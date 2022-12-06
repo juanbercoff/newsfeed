@@ -1,4 +1,4 @@
-import { ArticleTag, Tag } from '@prisma/client';
+import { ArticleTag, Tag } from '@newsfeed/data';
 import TagItem from '../common/tag-item';
 
 type ArticleTagsProps = {

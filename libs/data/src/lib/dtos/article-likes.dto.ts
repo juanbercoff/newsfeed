@@ -1,6 +1,7 @@
 import { IsUUID, IsNotEmpty, IsBoolean } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateOrUpdateLikesEntityPayload } from '../types/likes-payload-types';
+import { Prisma } from '@prisma/client';
 
 export class CreateArticleLikeDto {
   @IsNotEmpty()
@@ -45,3 +46,7 @@ export interface DeleteArticleLikePayload {
   articleLikeId: string;
   authToken: string;
 }
+
+export type ArticleLikeAggregateType<
+  T extends Prisma.ArticleLikeAggregateArgs
+> = Prisma.GetArticleLikeAggregateType<T>;

@@ -1,7 +1,10 @@
 import { callApiService, getEndpoint } from './api-service-utilities';
 
-import { AllCommentsLikesDto, UpdateCommentLikeDto } from '@newsfeed/data';
-import { CommentLike } from '@prisma/client';
+import {
+  AllCommentsLikesDto,
+  UpdateCommentLikeDto,
+  CommentLike,
+} from '@newsfeed/data';
 
 export async function getAllCommentsLikes(): Promise<AllCommentsLikesDto[]> {
   // TODO: Apply payload once it has pagination, order by, etc.

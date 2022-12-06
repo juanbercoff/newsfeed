@@ -2,7 +2,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import Link from 'next/link';
 import UserAvatar from '../common/user-avatar';
-import { UserProfile } from '@prisma/client';
+import { UserProfile } from '@newsfeed/data';
 import { useTranslation } from 'next-i18next';
 
 type AccountMenuProps = {

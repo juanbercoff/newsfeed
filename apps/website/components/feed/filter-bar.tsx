@@ -2,7 +2,7 @@ import { useGetTags } from '../../hooks/useTags';
 import Spinner from '../common/spinner';
 import TagItem from '../common/tag-item';
 import { useState } from 'react';
-import { Tag } from '@prisma/client';
+import { Tag } from '@newsfeed/data';
 
 type FilterBarTags = {
   allTags: Tag[];

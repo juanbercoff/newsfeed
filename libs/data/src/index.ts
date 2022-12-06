@@ -4,6 +4,10 @@ export * from './lib/types/user-types';
 export * from './lib/types/comment-types';
 export * from './lib/types/authentication-types';
 export * from './lib/types/likes-payload-types';
+export * from './lib/types/tag-types';
+export * from './lib/types/comment-likes-types';
+export * from './lib/types/article-likes-types';
+export * from './lib/types/article-tag-types';
 
 //dtos
 export * from './lib/dtos/article.dto';

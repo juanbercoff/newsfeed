@@ -21,3 +21,14 @@ export type CommentOrderByInput = {
 export type CommentWithAuthorAndLikes = CommentWithAuthorDto & {
   commentLike: AllCommentsLikesDto;
 };
+
+export type Comment = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  content: string;
+  authorId: string;
+  articleId: string | null;
+  parentCommentId: string | null;
+  articleHistoryId: string | null;
+};
