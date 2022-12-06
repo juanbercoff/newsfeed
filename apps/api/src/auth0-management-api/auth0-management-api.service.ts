@@ -33,7 +33,7 @@ export class Auth0ManagementApiService {
       );
       return data;
     } catch (error) {
-      console.log('error', error);
+      console.log('auth0 error', error);
       throw error;
     }
   }
