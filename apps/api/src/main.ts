@@ -10,7 +10,7 @@ import { AppModule } from './app/app.module';
 import * as cookieParser from 'cookie-parser';
 
 const corsOptions = {
-  origin: 'http://localhost:4200', // TODO: Define production CORS hosts
+  origin: process.env.FRONTEND_URL ?? 'http://localhost:4200', // TODO: Define production CORS hosts
   credentials: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 };
