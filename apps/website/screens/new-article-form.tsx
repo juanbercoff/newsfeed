@@ -16,6 +16,7 @@ import ListBoxItem from '../components/common/list-box/list-box-item';
 import Skeleton from 'react-loading-skeleton';
 import useBreakpoints from '../hooks/useBreakpoints';
 import { getTag } from '../services/tags-api';
+import { useTranslation, UseTranslation } from 'next-i18next';
 
 export const FORM_KEYS = {
   title: 'articleTitle',
@@ -56,6 +57,8 @@ const NewArticleForm = () => {
     };
     mutate({ data, authToken });
   };
+
+  const { t } = useTranslation('article');
 
   const setDefaultContentValue = () => {
     let localStorageContentValue = localStorage.getItem(FORM_KEYS.content);
@@ -126,7 +129,7 @@ const NewArticleForm = () => {
               'bg-transparent p-2 rounded min-h-[108px] text-3xl w-full',
               styles.input,
             ].join(' ')}
-            placeholder="Titulo del articulo"
+            placeholder={t('titlePlaceholder')}
           ></input>
           {errors.title?.type === 'required' && 'Escribi algo para comentar'}
           <Controller
@@ -170,7 +173,7 @@ const NewArticleForm = () => {
                 position="top"
                 items={tags}
                 value={selectedTag}
-                label={selectedTag?.name ?? 'Selecciona un tag'}
+                label={selectedTag?.name ?? t('tagPlaceholder')}
                 setValue={(value) => {
                   setSelectedTag(value);
                   field.onChange(value.id);

@@ -4,6 +4,7 @@ import useDebounce from '../../hooks/useDebounce';
 import Spinner from './spinner';
 import Image from 'next/image';
 import ImageOptions from '../article-form/image-options';
+import { useTranslation } from 'next-i18next';
 
 type UnsplashSearchProps = {
   selectedImage: string;
@@ -16,6 +17,7 @@ const UnsplashSearch = ({
 }: UnsplashSearchProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
+  const { t } = useTranslation('article');
 
   const debouncedSearchQuery = useDebounce(searchTerm, 600);
   const { data: images, isLoading } = useGetImages(
@@ -52,7 +54,7 @@ const UnsplashSearch = ({
           className="outline-none border-b-2 bg-transparent w-full my-2"
           onChange={handleChange}
           value={searchTerm}
-          placeholder="Busca la imagen que vas a usar de portada"
+          placeholder={t('unsplashPlaceholder')}
         ></input>
         {debouncedSearchQuery && images?.data?.results?.length !== 0 ? (
           <div className="flex justify-between p-2">

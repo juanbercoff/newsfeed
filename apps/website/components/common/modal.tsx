@@ -1,4 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react';
+import { useTranslation } from 'next-i18next';
 import { Fragment, useRef } from 'react';
 import Button from './button';
 import { ButtonUse } from './button';
@@ -23,6 +24,7 @@ const Modal = ({
   pimaryButtonUse,
 }: ModalProps) => {
   const cancelButtonRef = useRef(null);
+  const { t } = useTranslation('common');
 
   return (
     <div>
@@ -71,7 +73,7 @@ const Modal = ({
                       use="secondary"
                       onClick={() => setIsOpen(false)}
                     >
-                      Cancelar
+                      {t('cancel')}
                     </Button>
                     <Button
                       type="button"

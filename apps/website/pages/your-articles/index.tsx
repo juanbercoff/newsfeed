@@ -7,6 +7,9 @@ import Link from 'next/link';
 import Modal from '../../components/common/modal';
 import { useUserProfileContext } from '../../contexts/user-context';
 import Skeleton from 'react-loading-skeleton';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import nextI18NextConfig from '../../next-i18next.config';
+import { useTranslation } from 'next-i18next';
 
 const YourArticles = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,6 +24,7 @@ const YourArticles = () => {
     status,
   } = useGetUserArticles(authToken);
   const { mutate } = useDeleteArticle();
+  const { t } = useTranslation(['article', 'common']);
 
   const handleDelete = () => {
     mutate({ articleId: articleIdToDelete, authToken });
@@ -36,13 +40,15 @@ const YourArticles = () => {
       <Modal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        title={'Eliminar Articulo'}
-        description="Estas seguro de que deseas eliminar el articulo? Esta accion no puede ser revertida."
-        primaryButtonText="Eliminar"
+        title={t('deleteArticle')}
+        description={t('deleteArticleDescription')}
+        primaryButtonText={t('delete', {
+          ns: 'common',
+        })}
         pimaryButtonUse="destructive"
         primaryButtonAction={handleDelete}
       />
-      <p className="text-4xl font-bold mb-4">Tus articulos</p>
+      <p className="text-4xl font-bold mb-4">{t('yourArticles')}</p>
       {articles?.length > 0 ? (
         <div className="divide-y">
           {articles?.map((article) => (
@@ -50,9 +56,9 @@ const YourArticles = () => {
               <div>
                 <p className="text-lg font-bold">{article.title}</p>
                 <p className="text-sm">
-                  {`Modificado por ultima vez el ${Utils.formatDateTimeRelative(
-                    article.updatedAt
-                  )}`}
+                  {`${t('lastModifiedDate', {
+                    ns: 'common',
+                  })} ${Utils.formatDateTimeRelative(article.updatedAt)}`}
                 </p>
               </div>
               <div className="flex space-x-2 items-center">
@@ -67,7 +73,9 @@ const YourArticles = () => {
                     size="sm"
                     disabled={article._count?.articleHistory >= 4}
                   >
-                    Editar
+                    {t('edit', {
+                      ns: 'common',
+                    })}
                   </Button>
                 </Link>
                 <Button
@@ -78,7 +86,9 @@ const YourArticles = () => {
                     setIsOpen(true);
                   }}
                 >
-                  Eliminar
+                  {t('delete', {
+                    ns: 'common',
+                  })}
                 </Button>
               </div>
             </div>
@@ -87,10 +97,26 @@ const YourArticles = () => {
       ) : isLoading || status === 'idle' ? (
         <Skeleton height={80} />
       ) : (
-        <p className="text-center text-lg">No tienes articulos</p>
+        <p className="text-center text-lg">
+          {t('noArticlesWritten', {
+            ns: 'common',
+          })}
+        </p>
       )}
     </div>
   );
 };
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        ['common', 'top-bar', 'article'],
+        nextI18NextConfig
+      )),
+    },
+  };
+}
 
 export default YourArticles;

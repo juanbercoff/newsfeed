@@ -12,6 +12,7 @@ import ArticlesSorter from '../../components/feed/articles-sort';
 import { GetArticleCondition } from '@newsfeed/data';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nextI18NextConfig from '../../next-i18next.config';
+import { useTranslation } from 'next-i18next';
 
 interface FeedProps {
   articles: ArticlesResponseDto[];
@@ -24,6 +25,7 @@ const Feed = ({ articles }: FeedProps) => {
   const formatFilterTags = () => {
     return selectedTags?.map((tag) => `tags=${tag.name}`).join('&');
   };
+  const { t } = useTranslation('common');
 
   const {
     data: articlesData,
@@ -58,7 +60,7 @@ const Feed = ({ articles }: FeedProps) => {
           </span>
         }
         {isFetchingNextPage && <Spinner />}
-        {!hasNextPage && <div className="px-2">No hay mas articulos</div>}
+        {!hasNextPage && <div className="px-2">{t('noMoreArticles')}</div>}
       </div>
     </>
   );

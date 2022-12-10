@@ -5,6 +5,9 @@ import { useGetOneArticle } from '../../../hooks/useArticles';
 import Spinner from '../../../components/common/spinner';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { getWithPageRequiredDefaultOptions } from '../../../utils/auth';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import nextI18NextConfig from '../../../next-i18next.config';
+import { getArticlesList } from '../../../services/articles-api';
 
 const EditArticle = () => {
   const router = useRouter();
@@ -34,5 +37,25 @@ const ProtectedEditArticle = withPageAuthRequired(
   EditArticle,
   getWithPageRequiredDefaultOptions()
 );
+
+export async function getStaticPaths() {
+  const articles = await getArticlesList({ condition: 'latest' });
+  return {
+    paths: articles.map((article) => ({ params: { id: article.id } })),
+    fallback: 'blocking',
+  };
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        ['common', 'top-bar'],
+        nextI18NextConfig
+      )),
+    },
+  };
+}
 
 export default ProtectedEditArticle;

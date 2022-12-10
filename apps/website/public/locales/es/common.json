@@ -1,5 +1,17 @@
 {
   "top": "Más Votados",
-  "latest": "Más Nuevos",
-  "mostDiscussed": "Más Discutidos"
+  "leastVoted": "Menos votado",
+  "latest": "Más nuevos",
+  "oldest": "Más antiguos",
+  "mostDiscussed": "Más Discutidos",
+  "signOut": "Sign out",
+  "login": "Log in",
+  "noMoreArticles": "No hay más articulos",
+  "lastModifiedDate": "Modificado por ultima vez el",
+  "noArticlesWritten": "No has escrito ningún articulo",
+  "delete": "Eliminar",
+  "edit": "Editar",
+  "cancel": "Cancelar",
+  "save": "Guardar",
+  "name": "Nombre"
 }

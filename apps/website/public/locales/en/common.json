@@ -5,5 +5,13 @@
   "oldest": "Oldest",
   "mostDiscussed": "Most Discussed",
   "signOut": "Sign out",
-  "login": "Log in"
+  "login": "Log in",
+  "noMoreArticles": "No more articles to display",
+  "lastModifiedDate": "Modified last time on",
+  "noArticlesWritten": "You have not written any articles",
+  "delete": "Delete",
+  "edit": "Edit",
+  "cancel": "Cancel",
+  "save": "Save",
+  "name": "Name"
 }

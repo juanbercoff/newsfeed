@@ -6,5 +6,11 @@
   "commentErrorRequired": "Write something to comment",
   "commentErrorMax": "The limit is 2000 characters",
   "orderBy": "Order by",
-  "noComments": "There are not comments"
+  "noComments": "There are no comments",
+  "titlePlaceholder": "Title",
+  "unsplashPlaceholder": "Search for the article's image",
+  "tagPlaceholder": "Select a tag",
+  "yourArticles": "Your Articles",
+  "deleteArticle": "Delete article",
+  "deleteArticleDescription": "Are you sure you want to delete your article? This action cannot be reversed."
 }

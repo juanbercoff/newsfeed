@@ -15,6 +15,15 @@ const nextConfig = {
     domains: ['lh3.googleusercontent.com', 'images.unsplash.com'],
   },
   i18n,
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/feed',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 module.exports = withNx(nextConfig);

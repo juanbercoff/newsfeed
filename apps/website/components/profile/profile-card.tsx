@@ -5,6 +5,7 @@ import { useUpdateUserProfile } from '../../hooks/useUserProfile';
 import Button from '../common/button';
 import { useUserProfileContext } from '../../contexts/user-context';
 import { UserProfileUpdateInput } from '@newsfeed/data';
+import { useTranslation } from 'next-i18next';
 
 type ProfileCardProps = {
   title: string;
@@ -28,6 +29,7 @@ const ProfileCard = ({
   // FIX useForm<Prisma.UserProfileUpdateInput> hangs Checking validity of types . indefinitely
   const { authToken } = useUserProfileContext();
   const { mutate } = useUpdateUserProfile(userProfileId, setIsEditing);
+  const { t } = useTranslation('common');
 
   const onSubmit = (formData: UserProfileUpdateInput) => {
     const data: UserProfileUpdateInput = {
@@ -62,7 +64,7 @@ const ProfileCard = ({
               setIsEditing(true);
             }}
           >
-            {isEditing ? 'Guardar' : 'Editar'}
+            {isEditing ? t('save') : t('edit')}
           </Button>
           {isEditing ? (
             <Button
@@ -70,7 +72,7 @@ const ProfileCard = ({
               size="sm"
               onClick={() => setIsEditing(false)}
             >
-              Cancelar
+              {t('cancel')}
             </Button>
           ) : null}
         </div>
