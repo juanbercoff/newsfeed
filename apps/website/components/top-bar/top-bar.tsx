@@ -8,11 +8,10 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import Button from '../common/button';
 import useBreakpoints from '../../hooks/useBreakpoints';
 import { useTranslation } from 'next-i18next';
-
 const TopBar = () => {
   const { userProfile, isLoading } = useUserProfileContext();
   const { isXs } = useBreakpoints();
-  const { t } = useTranslation('top-bar');
+  const { t } = useTranslation(['top-bar', 'common']);
 
   return (
     <div className="flex fixed top-0 w-full justify-center border-b border-gray-300 bg-white z-10 px-4">
@@ -58,8 +57,12 @@ const TopBar = () => {
             )}
           </div>
         ) : (
-          <div className="cursor-pointer self-center">
-            <Link href="/api/auth/login?returnTo=/feed">{t('login')}</Link>
+          <div className="self-center">
+            <Link href="/api/auth/login?returnTo=/feed">
+              <Button type="button" use="secondary" className="text-semibold">
+                {t('login', { ns: 'common' })}
+              </Button>
+            </Link>
           </div>
         )}
       </div>
