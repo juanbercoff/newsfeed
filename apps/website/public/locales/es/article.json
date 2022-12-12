@@ -1,0 +1,16 @@
+{
+  "latestVersion": "Ultima Version",
+  "reply": "Reponder",
+  "cancel": "Cancelar",
+  "comment": "Comentar",
+  "commentErrorRequired": "Escribé algo para comentar",
+  "commentErrorMax": "El limit son 2000 caracteres",
+  "orderBy": "Ordenar por",
+  "noComments": "No hay comentarios",
+  "titlePlaceholder": "Titulo",
+  "unsplashPlaceholder": "Busca la imagen para tu articulo",
+  "tagPlaceholder": "Selecciona un tag",
+  "yourArticles": "Tus artículos",
+  "deleteArticle": "Eliminar artículo",
+  "deleteArticleDescription": "Estas seguro de que queres eliminar el articulo? Esta acción no puede ser revertida"
+}
