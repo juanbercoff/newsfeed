@@ -36,8 +36,8 @@ export class UsersService {
         email: auth0User.email,
         profile: {
           create: {
-            firstName: auth0User.given_name,
-            lastName: auth0User.family_name,
+            firstName: auth0User.given_name ?? 'empty',
+            lastName: auth0User.family_name ?? 'empty',
             userName: auth0User.nickname,
           },
         },
@@ -73,8 +73,9 @@ export class UsersService {
         email: auth0User.email,
         profile: {
           create: {
-            firstName: auth0User?.given_name,
-            lastName: auth0User?.family_name,
+            // TODO: should ask for this during login
+            firstName: auth0User.given_name ?? 'empty',
+            lastName: auth0User.family_name ?? 'empty',
             userName: auth0User.nickname,
           },
         },
