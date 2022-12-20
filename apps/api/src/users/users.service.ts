@@ -26,6 +26,11 @@ export class UsersService {
       throw new Error('Invalid user id');
     }
 
+    await this.auth0ManagementApiService.assignRoleToUser(
+      auth0User.user_id,
+      'CUSTOMER'
+    );
+
     const createdUser = await this.prisma.user.upsert({
       where: {
         auth0Id: auth0User.user_id,

@@ -3,6 +3,10 @@ import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
 import { Auth0User, MachineToMachineAccessTokenResponse } from '@newsfeed/data';
 
+const ROLES = {
+  CUSTOMER: 'rol_W6gGEZ9m1DdI9zsC',
+} as const;
+
 @Injectable()
 export class Auth0ManagementApiService {
   private readonly managementApiBaseUrl: string;
@@ -47,5 +51,24 @@ export class Auth0ManagementApiService {
       }
     );
     return data;
+  }
+
+  async assignRoleToUser(auth0UserId: string, roleId: keyof typeof ROLES) {
+    const accessToken = await this.getAccessToken();
+    try {
+      await axios.post(
+        `https://newsfeed-api.us.auth0.com/api/v2/users/${auth0UserId}/roles`,
+        {
+          headers: {
+            'content-type': 'application/json',
+            authorization: `Bearer ${accessToken.access_token}`,
+            'cache-control': 'no-cache',
+          },
+          data: { roles: [ROLES[roleId]] },
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
