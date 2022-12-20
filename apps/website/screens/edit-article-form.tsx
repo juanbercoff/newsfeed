@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import { useUpdateArticle } from '../hooks/useArticles';
 import Utils from '../utils/Utils';
 import { useUserProfileContext } from '../contexts/user-context';
+import 'react-toastify/dist/ReactToastify.css';
 
 type ArticleFormProps = {
   article: ArticleResponseDto;

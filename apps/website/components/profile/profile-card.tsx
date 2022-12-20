@@ -6,6 +6,7 @@ import Button from '../common/button';
 import { useUserProfileContext } from '../../contexts/user-context';
 import { UserProfileUpdateInput } from '@newsfeed/data';
 import { useTranslation } from 'next-i18next';
+import 'react-toastify/dist/ReactToastify.css';
 
 type ProfileCardProps = {
   title: string;

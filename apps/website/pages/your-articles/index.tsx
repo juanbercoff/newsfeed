@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useGetUserArticles, useDeleteArticle } from '../../hooks/useArticles';
-import Spinner from '../../components/common/spinner';
 import Utils from '../../utils/Utils';
 import Button from '../../components/common/button';
 import Link from 'next/link';
@@ -10,6 +9,7 @@ import Skeleton from 'react-loading-skeleton';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nextI18NextConfig from '../../next-i18next.config';
 import { useTranslation } from 'next-i18next';
+import 'react-toastify/dist/ReactToastify.css';
 
 const YourArticles = () => {
   const [isOpen, setIsOpen] = useState(false);
