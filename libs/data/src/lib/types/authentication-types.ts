@@ -51,8 +51,8 @@ export type Auth0User = {
   last_login: string;
   logins_count: number;
   blocked: boolean;
-  given_name: string;
-  family_name: string;
+  given_name?: string;
+  family_name?: string;
 };
 
 export type RequestWithCookie = Request & {

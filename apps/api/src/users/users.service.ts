@@ -73,8 +73,8 @@ export class UsersService {
         email: auth0User.email,
         profile: {
           create: {
-            firstName: auth0User.given_name,
-            lastName: auth0User.family_name,
+            firstName: auth0User?.given_name,
+            lastName: auth0User?.family_name,
             userName: auth0User.nickname,
           },
         },

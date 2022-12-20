@@ -9,6 +9,7 @@ COPY ./ .
 
 RUN npm install reflect-metadata tslib rxjs @nestjs/platform-express
 RUN npx prisma generate --schema=./apps/api/prisma/schema.prisma
+RUN npx prisma migrate deploy --schema=./apps/api/prisma/schema.prisma
 RUN npx nx build api --prod
 
 WORKDIR /app/api/dist/apps/api
