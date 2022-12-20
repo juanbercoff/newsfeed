@@ -58,13 +58,13 @@ export class Auth0ManagementApiService {
     try {
       await axios.post(
         `https://newsfeed-api.us.auth0.com/api/v2/users/${auth0UserId}/roles`,
+        { roles: [ROLES[roleId]] },
         {
           headers: {
             'content-type': 'application/json',
             authorization: `Bearer ${accessToken.access_token}`,
             'cache-control': 'no-cache',
           },
-          data: { roles: [ROLES[roleId]] },
         }
       );
     } catch (e) {
