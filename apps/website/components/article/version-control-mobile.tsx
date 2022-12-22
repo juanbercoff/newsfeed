@@ -1,8 +1,8 @@
 import { VersionControlItemProps } from './version-control';
 import ListBox from '../common/list-box/list-box';
 import ListBoxItem from '../common/list-box/list-box-item';
-import { Listbox } from '@headlessui/react';
 import { useState } from 'react';
+import { useTranslation } from 'next-i18next';
 
 const VersionControlMobile = ({
   article,
@@ -11,6 +11,7 @@ const VersionControlMobile = ({
   setArticleVersionToDisplay,
 }: VersionControlItemProps) => {
   const [index, setIndex] = useState<number | null>(null);
+  const { t } = useTranslation(['article']);
   return (
     <div>
       <ListBox
@@ -18,7 +19,7 @@ const VersionControlMobile = ({
         items={articleHistory}
         value={articleVersionToDisplay}
         setValue={setArticleVersionToDisplay}
-        label={index !== null ? `Version ${index + 1}` : 'Version actual'}
+        label={index !== null ? `Version ${index + 1}` : t('latestVersion')}
         renderItem={(item, index) => (
           <ListBoxItem
             key={item.id}
@@ -32,7 +33,7 @@ const VersionControlMobile = ({
             key={article.id}
             handleClick={() => setIndex(null)}
             item={article}
-            itemLabel="Version Actual"
+            itemLabel={t('latestVersion')}
           />
         }
       />

@@ -50,7 +50,7 @@ const DepthSelector = ({
               )
             }
           >
-            Easy
+            Level 1
           </Tab>
           <Tab
             value={1}
@@ -64,7 +64,7 @@ const DepthSelector = ({
               )
             }
           >
-            Medium
+            Level 2
           </Tab>
           <Tab
             value={2}
@@ -78,7 +78,7 @@ const DepthSelector = ({
               )
             }
           >
-            Hard
+            Level 3
           </Tab>
         </Tab.List>
       </Tab.Group>
