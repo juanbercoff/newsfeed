@@ -2,6 +2,7 @@ import '../styles/globals.css';
 import 'tailwindcss/tailwind.css';
 import Layout from '../components/layout/layout';
 import type { AppProps } from 'next/app';
+import Head from 'next/head';
 import { UserProvider } from '@auth0/nextjs-auth0';
 import { UserProfileContainer } from '../contexts/user-context';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -18,6 +19,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       <UserProfileContainer>
         <QueryClientProvider client={queryClient}>
           <Layout>
+            <Head>
+              <title>Summas</title>
+              <link rel="icon" type="image/svg+xml" href="/favicon.png" />
+            </Head>
             <Component {...pageProps} />
             <ToastContainer position="bottom-center" />
           </Layout>
