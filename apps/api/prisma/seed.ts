@@ -21,6 +21,12 @@ const seed = async () => {
     },
   });
 
+  await prisma.tag.create({
+    data: {
+      name: 'Science',
+    },
+  });
+
   await prisma.user.createMany({
     data: [
       {

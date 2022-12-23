@@ -16,7 +16,7 @@ import ListBoxItem from '../components/common/list-box/list-box-item';
 import Skeleton from 'react-loading-skeleton';
 import useBreakpoints from '../hooks/useBreakpoints';
 import { getTag } from '../services/tags-api';
-import { useTranslation, UseTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next';
 
 export const FORM_KEYS = {
   title: 'articleTitle',
@@ -100,7 +100,7 @@ const NewArticleForm = () => {
     localStorage.setItem(FORM_KEYS.content, watch('content'));
     localStorage.setItem(FORM_KEYS.image, selectedImage);
     localStorage.setItem(FORM_KEYS.tag, selectedTag?.id);
-  }, [watch('title'), watch('content'), selectedImage, selectedTag]);
+  }, [watch('title'), watch('content'), selectedImage, selectedTag, watch]);
 
   const { isXs } = useBreakpoints();
   if (isXs) push('/feed');

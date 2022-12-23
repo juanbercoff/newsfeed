@@ -7,7 +7,7 @@ export const getWithPageRequiredDefaultOptions = (
 ) => {
   //TODO: more discrete onRedirecting
   return {
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(error as string);
       return <div>error</div>;
     },

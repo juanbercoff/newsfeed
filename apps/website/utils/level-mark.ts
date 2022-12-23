@@ -1,7 +1,7 @@
 import { Mark, mergeAttributes } from '@tiptap/core';
 
 export interface LevelOptions {
-  HTMLAttributes: Record<string, any>;
+  HTMLAttributes: Record<string, unknown>;
 }
 
 const LEVELS = ['level1', 'level2', 'level3'] as const;

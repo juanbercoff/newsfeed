@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { AxiosRequestHeaders, AxiosRequestConfig } from 'axios';
 import { GetArticleCondition } from '@newsfeed/data';
 
@@ -8,7 +8,7 @@ export function getEndpoint(path = '/') {
 
 export function getEndpointWithPagination(
   path = '/',
-  cursor: number = 1,
+  cursor = 1,
   filter = '',
   condition: GetArticleCondition = 'latest'
 ) {

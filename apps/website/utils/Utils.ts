@@ -16,7 +16,7 @@ export default class Utils {
   }
 
   static handleError(error: unknown) {
-    const errorMessage: string = (error as any)['message'];
+    const errorMessage: string = error['message'];
     return errorMessage ?? 'Ha ocurrido un error';
   }
 

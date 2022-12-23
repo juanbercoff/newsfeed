@@ -5,8 +5,6 @@ import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
 import Spinner from '../../components/common/spinner';
 import CardMobile from '../../components/feed/card-mobile';
-import FilterBar from '../../components/feed/filter-bar';
-import { useGetTags } from '../../hooks/useTags';
 import { useState } from 'react';
 import ArticlesSorter from '../../components/feed/articles-sort';
 import { GetArticleCondition } from '@newsfeed/data';
@@ -32,12 +30,10 @@ const Feed = ({ articles }: FeedProps) => {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-    isLoading,
   } = useGetArticles(articles, condition, formatFilterTags());
   const { ref, inView } = useInView({
     delay: 200,
   });
-  const { data: allTags, isLoading: allTagsIsLoading } = useGetTags();
 
   useEffect(() => {
     if (inView && hasNextPage) {

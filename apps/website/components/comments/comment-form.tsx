@@ -29,7 +29,7 @@ const CommentForm = ({ commentId, setShowForm }: CommentFormProps) => {
 
   const onMutateSucess = () => {
     reset();
-    setShowForm ? setShowForm(false) : null;
+    if (setShowForm) setShowForm(false);
   };
   const { mutate } = useCreateComment(onMutateSucess);
   const { t } = useTranslation('article');
