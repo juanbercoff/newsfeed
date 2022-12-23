@@ -249,6 +249,7 @@ export async function getStaticProps({ params, locale }) {
         nextI18NextConfig
       )),
     },
+    revalidate: 10,
   };
 }
 
