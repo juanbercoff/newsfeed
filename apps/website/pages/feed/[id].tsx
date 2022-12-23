@@ -229,6 +229,15 @@ const Article = ({ article }: ArticleProps) => {
   );
 };
 
+export async function getStaticPaths() {
+  const articles = await getArticlesList({ condition: 'latest' });
+
+  return {
+    paths: articles.map((article) => ({ params: { id: article.id } })),
+    fallback: false,
+  };
+}
+
 export async function getStaticProps({ params, locale }) {
   const article = await getOneArticle({ id: params.id });
   return {
