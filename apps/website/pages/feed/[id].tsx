@@ -229,16 +229,7 @@ const Article = ({ article }: ArticleProps) => {
   );
 };
 
-export async function getStaticPaths() {
-  const articles = await getArticlesList({ condition: 'latest' });
-
-  return {
-    paths: articles.map((article) => ({ params: { id: article.id } })),
-    fallback: false,
-  };
-}
-
-export async function getStaticProps({ params, locale }) {
+export async function getServerSideProps({ params, locale }) {
   const article = await getOneArticle({ id: params.id });
   return {
     props: {
@@ -249,7 +240,6 @@ export async function getStaticProps({ params, locale }) {
         nextI18NextConfig
       )),
     },
-    revalidate: 10,
   };
 }
 

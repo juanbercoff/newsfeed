@@ -38,15 +38,7 @@ const ProtectedEditArticle = withPageAuthRequired(
   getWithPageRequiredDefaultOptions()
 );
 
-export async function getStaticPaths() {
-  const articles = await getArticlesList({ condition: 'latest' });
-  return {
-    paths: articles.map((article) => ({ params: { id: article.id } })),
-    fallback: 'blocking',
-  };
-}
-
-export async function getStaticProps({ locale }) {
+export async function getServerSideProps({ locale }) {
   return {
     props: {
       ...(await serverSideTranslations(
