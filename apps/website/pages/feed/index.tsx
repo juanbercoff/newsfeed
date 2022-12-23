@@ -62,7 +62,7 @@ const Feed = ({ articles }: FeedProps) => {
   );
 };
 
-export async function getStaticProps({ locale }) {
+export async function getServerSideProps({ locale }) {
   const articles = await getArticlesList({ condition: 'latest' });
   return {
     props: {
